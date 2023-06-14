@@ -1,0 +1,276 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+<style>
+  .container,.row{
+    height : 100vh;
+  }
+  *{
+    padding:0px;
+  }
+  table, th,td {
+    border: 0.5px solid rgb(141, 125, 125,0.2);
+    border-collapse: collapse;
+    
+    text-align:center
+  }
+  table{
+    width: 100%;
+  }
+  button{
+    width: 100%;
+    height: 30px;
+    background-color:white;
+    border:none;
+
+    }
+    .staff_image{
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .hidden{
+      display:none;
+    }
+    #popup-overlay,#popup-overlay-move {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      }
+      
+      #popup-content,#popup-content-move {
+      background-color: #fff;
+      padding: 20px;
+      }
+      .booked{
+        background-color:yellow
+      }
+      .cancelled{
+        background-color:#F24C3D;
+        color:white
+      }
+      .completed{
+        background-color:#16FF00;
+        color:aliceblue;
+      }
+      .confirmed{
+        background-color: #1C82AD;
+        color: aliceblue
+      }
+      .appointment-box {
+        position: absolute;
+        
+        width: 12.5%;
+        height:33px;
+      }
+
+      #appointment-details-div {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 300px;
+        height:100vh
+        background-color: aliceblue;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        background-color:aliceblue
+      }
+</style>
+<div class="container">
+  <div class="row">
+   
+    <div class="col-md-10">
+      <table id = 'appointment-table'>
+        <thead>
+          <tr>
+            <th>Time</th>
+            {% for staff_member in staff_members %}
+            <th>{{ staff_member.name }} <img src = "{{staff_member.image.url}}" class='staff_image'> </th>
+            {%endfor%}
+          </tr>
+        </thead>
+        <tbody>
+          {% for time_slot in time_slots %}
+        <tr class="short ">
+          <th>{{ time_slot }}</th>
+          
+          {% for staff_member in staff_members %}
+          
+
+            <td class="clickable " ondrop="drop(event)" ondragover="allowDrop(event)"><div>
+              {% for appointment_details in appointment_details_list  %}
+                {% if appointment_details.staff_member == staff_member.name and appointment_details.start_time == time_slot  %}
+                  <div data-id="{{ appointment_details.id }}" data-staff-member="{{ staff_member.name }}" data-time-slot="{{ time_slot }}" draggable="true"  class="appointment-box {% if appointment_details.status == 'booked' %}booked {% elif appointment_details.status == 'cancelled'%}cancelled {% elif  appointment_details.status == 'completed' %} completed {% elif appointment_details.status == 'confirmed'  %} confirmed {% else %}hidden{% endif %}" style="height:{{appointment_details.height}}px" onclick="changeStatus('{{appointment_details.customer}}','{{appointment_details.staff_member}}','{{appointment_details.date}}',{{appointment_details.services}},{{appointment_details.id}})">
+                    <p>{{appointment_details.customer}} for {{appointment_details.services}}</p>
+                  </div>
+                  
+                  
+              
+                 {% endif %}  {% endfor %}
+              <button class="tdButton " onclick="openPopup('{{ time_slot}}','{{ staff_member.name }}','{{staff_member.id}}')"></button>
+              
+            </td>
+            
+          {% endfor %}
+
+          <!-- add more buttons here as needed -->
+        </tr>
+
+      {% endfor %}
+        </tbody>
+
+      </table>
+      <div id="appointment-details-div" class="hidden">
+        <div class="customer-name"><h4 id="customer-heading"></h4></div>
+        <div class="appointment-info">
+          <!-- Display appointment details here -->
+          <p id="service-details"></p>
+          <p id = 'staff-details'></p>
+          <p id = 'date-details'></p>
+
+        </div>
+        <div class="actions">
+          
+        </div>
+        <div class="appointment-status-form">
+          <!-- Display appointment status here -->
+          <form method='POST' id='appointment-id-form' action="">
+            {% csrf_token %}
+            <input id = 'appointment-id' type='text' name='appointment_id' class='hidden'>
+            <button onclick="appointmentStatusForm('{% url "cancel_appointment" %}')" class='btn btn-outline-danger'>Cancel</button><hr>
+            <button onclick="appointmentStatusForm('{% url "confirm_appointment" %}')" class='btn btn-outline-success'>Confirm</button><hr>
+            <button onclick="appointmentStatusForm('{% url "complete_appointment" %}')" class='btn btn-outline-success'>Complete</button><hr>
+            <button onclick="appointmentStatusForm('{% url "payment_options" %}')" class='btn btn-outline-success'>Make Payment</button><hr>
+            
+            <button onclick="appointmentStatusForm('{% url "edit_appointment" %}')" class='btn btn-outline-info'>Edit Appointment</button><hr>
+            <button onclick="appointmentStatusForm('{% url "move_appointment" %}')" class='btn btn-outline-warning'>Move Appointment</button><hr>
+          </form>
+        </div>
+        <div id="popup-overlay-move">
+          <div id="popup-content-move">
+            <h6>Move Appointments Menu</h6>
+            <form id = 'move-appointment-form' method = 'POST' action="{% url 'move_appointment' %}">
+              Staff:<input type="text" name="staff-name" id="new-staff-name" ><br>
+              Time:<input name="start-time"  id="new-start-time" class =""><br>
+              Date:<input type="date" name="date" value="{{date_chosen}}"><br>
+              <input name='appointment-id' id='move-appointment-id' ><br>
+              <button type='submit' class='btn btn-outline-warning'>Move</button><br>
+              <a class='btn btn-secondary' onclick='closePopup()'>Cancel</a>
+
+            </form> 
+          </div>
+        </div>
+        <script>
+          function appointmentStatusForm(url){
+            form = document.getElementById('appointment-id-form')
+            form.action=url
+            form.submit()
+          }
+          function allowDrop(event) {
+            event.preventDefault();
+            event.target.classList.add('drop-target');
+          }
+          function drop(event) {
+            event.preventDefault();
+            const droppedDiv = event.target; // Get the div where the element is dropped
+            const staffMember = droppedDiv.dataset.staffMember; // Retrieve the staff member value from dataset
+            const timeSlot = droppedDiv.dataset.timeSlot;
+          
+            // Get the dragged div element
+            const draggedDiv = document.getElementById(event.dataTransfer.getData("text/plain"));
+            const appointmentId = draggedDiv.dataset.id;
+
+  // Call your custom function to open the popup and initiate the appointment change
+             moveAppointment(appointmentId,staffMember,timeSlot);
+            }
+            function moveAppointment(appointmentId, staffMember,timeSlot){
+              form = document.getElementById('move-appointment-form')
+              document.getElementById('new-staff-name')=staffMember
+              document.getElementById('new-start-time')=timeSlot
+              document.getElementById('move-appointment-id')
+
+
+            }
+        </script>
+      </div>
+      <div id="popup-overlay">
+        <div id="popup-content">
+          <h6>Appointments Menu</h6>
+         <form method = 'POST' action = "{% url 'save_appointment' %}">
+          {% csrf_token %}
+          Staff:<input type="text" name="staff-name" id="staff-name" ><br>
+          Time:<input name="start-time"  id="start-time" class =""><br>
+          Date:<input type="date" name="date" value="{{date_chosen}}"><br>
+          <select name="branch" id="branch" aria-label="multiple select example">
+            <option value="{{branch_chosen.name}}">{{branch_chosen.name}}</option>
+            {% for branch in branches %}
+              <option value="{{ branch.name }}" {% if selected_branch == branch.id %}selected{% endif %}>{{ branch.name }}</option>
+            {% endfor %}
+          </select>
+      
+          <button type = 'submit' class='btn btn-success'>Add</button>
+          <hr>
+          <a onclick="closePopup()" class='btn btn-secondary'>Cancel</a>
+         </form>
+        </div>
+      </div>
+      <!-- Center section content goes here -->
+    </div>
+    <div class="col-md-2 bg-secondary">
+      
+        <form action = "{% url 'change_date_branch' %}" method = 'POST'>
+          {% csrf_token %}
+          <label> Date</label>
+          <input type='date' name='date_chosen' value = {{date_chosen}} placeholder={{date_chosen}} >
+          <label>Select Branch</label>
+          <select name='branch_chosen'>
+            <option value = "{{branch_chosen.id}}">{{branch_chosen.name}}</option>
+          {% for Branch in branches %}
+          <option value="{{ Branch.id }}">{{ Branch.name }}</option>
+          {% endfor %}
+          </select>
+          <hr>
+          <button type='submit' class = 'btn btn-primary'>Find Bookings</button>
+        </form>
+        
+      </div>
+
+    </div>
+  </div>
+</div>
+<script>
+  function openPopup( startTime,staffMemberName,staffMemberID) {
+    var form = document.getElementById("popup-form");
+    document.getElementById('popup-overlay').style.display = 'flex';
+  
+    document.getElementById("staff-name").value = staffMemberName;
+    document.getElementById("start-time").value = startTime;
+    
+    console.log(staffMemberName)
+    console.log(startTime)
+    
+    }
+    function closePopup() {
+      document.getElementById('popup-overlay').style.display = 'none';
+      }
+      function changeStatus(customer,staff,date,services,id) {
+        var div = document.getElementById('appointment-details-div')
+        document.getElementById('customer-heading').textContent=customer
+        document.getElementById('staff-details').textContent=staff
+        document.getElementById('date-details').textContent=date
+        document.getElementById('service-details').textContent=services
+        document.getElementById('appointment-id').value = id
+        div.classList.remove('hidden')
+      }
+</script>
+{% endblock %}
