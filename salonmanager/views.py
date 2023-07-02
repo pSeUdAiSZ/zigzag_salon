@@ -264,3 +264,52 @@ def change_date_branch(request):
     context = {'time_slots':time_slot_tf,'staff_members':staff_members_list,'branches':branches,'appointment_details_list':appointment_list,'date_chosen':date_chosen,
                'branch_chosen':chosen_branch}
     return render(request,'appointment_booking.html',context)
+
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Customer
+from .forms import CustomerForm
+
+def customer_list(request):
+    customers = Customer.objects.all()
+    return render(request, 'customer_list.html', {'customers': customers})
+
+def customer_detail(request, pk):
+    customer = get_object_or_404(Customer, pk=pk)
+    return render(request, 'customer_details.html', {'customer': customer})
+
+def customer_create(request):
+    if request.method == 'POST':
+        form = CustomerForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('customer_list')
+    else:
+        form = CustomerForm()
+    return render(request, 'customer_create.html', {'form': form})
+
+def customer_update(request, pk):
+    customer = get_object_or_404(Customer, pk=pk)
+    if request.method == 'POST':
+        form = CustomerForm(request.POST, instance=customer)
+        if form.is_valid():
+            form.save()
+            return redirect('customer_detail', pk=customer.pk)
+    else:
+        form = CustomerForm(instance=customer)
+    return render(request, 'customer_update.html', {'form': form, 'customer': customer})
+
+def customer_delete(request, pk):
+    customer = get_object_or_404(Customer, pk=pk)
+    if request.method == 'POST':
+        customer.delete()
+        return redirect('customer_list')
+    return render(request, 'customer_delete.html', {'customer': customer})
+
+def customer_search(request):
+    if request.method == 'GET':
+        query = request.GET.get('q')
+        if query:
+            customers = Customer.objects.filter(name__icontains=query)
+        else:
+            customers = Customer.objects.all()
+        return render(request, 'customer_list.html', {'customers': customers})
