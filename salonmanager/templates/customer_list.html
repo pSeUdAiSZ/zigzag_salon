@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  .card {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  .card-body {
+    padding: 10px;
+  }
+
+  .card-title {
+    padding-top :10px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .card-text {
+    margin-bottom: 5px;
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-danger {
+    margin-top: 10px;
+    padding-bottom:10px;
+  }
+
+ 
+</style>
+
+  <h1>Customer List</h1>
+  <!-- Search form -->
+  <form method="GET" action="{% url 'customer_search' %}">
+    <input type="text" name="q" placeholder="Search by name" value="{{ request.GET.q }}">
+    <button class="serach-btn" type="submit">Search</button>
+  </form>
+
+  <div class="row">
+    {% for customer in customers %}
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ customer.name }}</h5>
+            <p class="card-text">Phone: {{ customer.phone_number }}</p>
+            <p class="card-text">Email: {{ customer.email }}</p>
+            <p class="card-text">Profession: {{ customer.profession }}</p>
+            <p class="card-text">Address: {{ customer.address }}</p>
+            <a href="{% url 'customer_detail' customer.pk %}" class="btn btn-primary">View</a>
+            <a href="{% url 'customer_update' customer.pk %}" class="btn btn-secondary">Update</a>
+            <a href="{% url 'customer_delete' customer.pk %}" class="btn btn-danger">Delete</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <a href="{% url 'customer_create' %}" class="btn btn-primary">Add New</a>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const addNewButton = document.getElementById('add-new-button');
+      addNewButton.addEventListener('click', function() {
+        window.location.href = "{% url 'customer_create' %}";
+      });
+    });
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const ViewButton = document.getElementById('view-button');
+      addNewButton.addEventListener('click', function() {
+        window.location.href = "{% url 'customer_detail' %}";
+      });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const ViewButton = document.getElementById('view-button');
+      addNewButton.addEventListener('click', function() {
+        window.location.href = "{% url 'customer_delete' %}";
+      });
+    });
+
+
+
+  </script>
+{% endblock %}
