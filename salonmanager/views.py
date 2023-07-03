@@ -265,9 +265,12 @@ def change_date_branch(request):
                'branch_chosen':chosen_branch}
     return render(request,'appointment_booking.html',context)
 
+
+
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Customer
 from .forms import CustomerForm
+from django.contrib import messages
 
 def customer_list(request):
     customers = Customer.objects.all()
