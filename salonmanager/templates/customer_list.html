@@ -28,15 +28,60 @@
     padding-bottom:10px;
   }
 
+  .search-form {
+    display: flex;
+    align-items: center;
+  }
+
+  .search-input {
+    width: 200px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-right: 10px;
+  }
+
+  .add-new-button:hover {
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    float:right;
+    display:flex;
+    margin-left: auto;
+  }
+  .search-btn{
+    padding: 8px 12px;
+    background-color: #A9A9A9;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .search-btn:hover {
+    background-color: #808080;
+  }
+
+  
+  .search-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
  
 </style>
 
   <h1>Customer List</h1>
   <!-- Search form -->
-  <form method="GET" action="{% url 'customer_search' %}">
-    <input type="text" name="q" placeholder="Search by name" value="{{ request.GET.q }}">
-    <button class="serach-btn" type="submit">Search</button>
-  </form>
+  <div class="search-container">
+    <form method="GET" action="{% url 'customer_search' %}">
+      <input type="text" name="q" class="search-input" placeholder="Search by name" value="{{ request.GET.q }}">
+      <button class="search-btn" type="submit">Search</button>
+    </form>
+  
+    <a href="{% url 'customer_create' %}" class="btn btn-primary add-new-button">+ Add New</a>
+  </div>
 
   <div class="row">
     {% for customer in customers %}
@@ -57,7 +102,6 @@
     {% endfor %}
   </div>
 
-  <a href="{% url 'customer_create' %}" class="btn btn-primary">Add New</a>
 {% endblock %}
 
 {% block scripts %}
