@@ -45,6 +45,23 @@
        width:100%;
         padding:20px;
       }
+
+      #popup-overlay1 {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        }
+        #popup-content1 {
+          background-color: #fff;
+          padding: 20px;
+          }
+        
 </style>
 
 <div class="save-appointment">
@@ -61,8 +78,10 @@
           {% endfor %}
         </select>
         <br>
-        <a class='btn btn-outline-info'>Add New</a>
+        <a  id="add-new-customer" class='btn btn-outline-info' onclick="openPopup()">Add New</a>
         <br>
+
+        
         <label for='staff'>Selected Staff</label>
         <select id ='staff' name='selected_staff'>
                 <option value="{{selected_staff}}">{{selected_staff}}</option>
@@ -230,9 +249,85 @@
     </div>
 </div>
 
+  <!-- Popup overlay -->
+<div id="popup-overlay1" class="popup-overlay1 hidden">
+  <div id="popup-content1" class="popup-content1">
+    <h3>Add New Customer</h3>
+    <form id="new-customer-form" method = 'POST' action = "{% url 'customer_create' %}">
+      <label for="new-customer-name">Name:</label>
+      <input type="text" id="new-customer-name" name="new-customer-name" required>
+      <br>
+      <label for="new-customer-phone">Phone Number:</label>
+      <input type="text" id="new-customer-phone" name="new-customer-phone" required>
+      <br>
+      <label for="new-customer-email">Email:</label>
+      <input type="text" id="new-customer-email" name="new-customer-email" required>
+      <br>
+      <label for="new-customer-profession">Profession:</label>
+      <input type="text" id="new-customer-profession" name="new-customer-profession">
+      <br>
+      <label for="new-customer-adress">Address:</label>
+      <input type="text" id="new-customer-address" name="new-customer-address">
+      <button class='btn btn-outline-success' onclick="saveNewCustomer()">Save</button>
+      <button class='btn btn-outline-danger' onclick="closePopup()">Cancel</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  function openPopup() {
+      var popupOverlay = document.getElementById('popup-overlay1');
+      var popupContent = document.getElementById('popup-content1');
+      document.getElementById('popup-overlay1').style.display = 'flex';
+      popupOverlay.classList.remove('hidden');
+      popupContent.classList.remove('hidden');
+  }
+
+  function closePopup() {
+      document.getElementById('popup-overlay').style.display = 'none';
+      //var form = document.getElementById('popup-overlay1');
+      //var popupContent = document.getElementById('popup-content1');
+      //popupOverlay.classList.add('hidden');
+      //popupContent.classList.add('hidden');
+  }
+
+  function saveNewCustomer() {
+    var newCustomerName = document.getElementById('new-customer-name').value;
+    var newCustomerPhoneNumber = document.getElementById('new-customer-phone').value;
+    var newCustomerEmail = document.getElementById('new-customer-email').value;
+    var newCustomerProfession = document.getElementById('new-customer-profession').value;
+    var newCustomerAddress = document.getElementById('new-customer-address').value;
+    
+    // Create a new Customer object
+    var newCustomer = new Customer();
+    newCustomer.name = newCustomerName;
+    newCustomer.phone_number = newCustomerPhoneNumber;
+    newCustomer.email = newCustomerEmail;
+    newCustomer.profession = newCustomerProfession;
+    newCustomer.address = newCustomerAddress;
+
+    // Save the new customer to the database
+    newCustomer.save(function (error, savedCustomer) {
+        if (error) {
+            console.error('Error saving new customer:', error);
+        } else {
+            console.log('New customer saved successfully:', savedCustomer);
+            // Close the popup
+            closePopup();
+        }
+    });
+}
+</script>
   
-  
-  
+
+
+
+
+
+
+
+
+
 
 
     <button class='btn btn-info' type='submit'>Save Appointment</button>

@@ -43,6 +43,11 @@ def manager_dashboard(request):
     return render(request,'base.html')
 
 def appointment_booking(request):
+
+    """if request.method == 'POST':
+        selected_customer = request.POST.get('customer')
+        customer = get_object_or_404(Customer, id=selected_customer)
+    """
     time_slot_tf = timeslot_gen_tf('10:00 AM','10:00 PM')
     appointment_list=[]
     staff_members_list= StaffMember.objects.all()
@@ -265,6 +270,26 @@ def change_date_branch(request):
                'branch_chosen':chosen_branch}
     return render(request,'appointment_booking.html',context)
 
+
+from django.shortcuts import render, redirect
+from .models import Customer
+
+from django.shortcuts import render, redirect
+from .models import Customer
+
+"""def add_customer(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        phone_number = request.POST.get('phone_number')
+        email = request.POST.get('email')
+        profession = request.POST.get('profession')
+        address = request.POST.get('address')
+        customer = Customer(name=name, email=email, phone_number=phone_number, profession=profession, address=address)
+        customer.save()
+        return redirect('save_appointment')
+
+    return render(request, 'customer_create.html')
+"""
 
 
 from django.shortcuts import render, redirect, get_object_or_404

@@ -33,10 +33,9 @@ class Customer(models.Model):
     email = models.EmailField()
     profession = models.CharField(max_length=100,null=True)
     address = models.TextField()
-    
-
     def __str__(self):
         return self.name
+    
 class Appointment(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
     staff_member = models.ForeignKey(StaffMember, on_delete=models.PROTECT)
