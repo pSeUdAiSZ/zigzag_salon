@@ -90,8 +90,8 @@
           <div class="card-body">
             <h5 class="card-title">{{ branch.name }}</h5>
             <p class="card-text">Address: {{ branch.address }}</p>
-            <p class="card-text">Phone Number: {{ branch.phone_number }}</p>
-            <p class="card-text">Email: {{ branch.email }}</p>
+            <p class="card-text">Phone Number: {{ branch.phone }}</p>
+            <p class="card-text">Email: {{ email.profession }}</p>
             
             <a href="{% url 'branch_detail' branch.pk %}" class="btn btn-primary">View</a>
             <a href="{% url 'branch_update' branch.pk %}" class="btn btn-secondary">Update</a>

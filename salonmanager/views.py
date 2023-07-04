@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.views import View
 from .models import StaffMember,Customer,Service,Branch,Appointment
 
 from .utils import timeslot_gen_tf,calculate_end_time
@@ -386,6 +387,9 @@ def branch_delete(request, pk):
 
 
 
+
+
+
 from .models import StaffMember
 from .forms import StaffMemberForm
 
@@ -430,3 +434,16 @@ def staff_member_delete(request, pk):
         staff_member.delete()
         return redirect('staff_member_list')
     return render(request, 'staff_member_delete.html', {'staff_member': staff_member})
+
+
+from django.db.models import Q
+
+def staff_member_search(request):
+    if request.method == 'GET':
+        query = request.GET.get('q')
+        if query:
+            staff_members = StaffMember.objects.filter(name__icontains=query)
+        else:
+            staff_members = StaffMember.objects.all()
+        return render(request, 'staff_member_list.html', {'staff_members': staff_members})
+
