@@ -383,3 +383,44 @@ def branch_delete(request, pk):
         branch.delete()
         return redirect('branch_list')
     return render(request, 'branch_delete.html', {'branch': branch})
+
+
+
+from .models import StaffMember
+from .forms import StaffMemberForm
+
+# StaffMember list
+def staff_member_list(request):
+    staff_members = StaffMember.objects.all()
+    return render(request, 'staff_member_list.html', {'staff_members': staff_members})
+
+# StaffMember create
+def staff_member_create(request):
+    if request.method == 'POST':
+        form = StaffMemberForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('staff_member_list')
+    else:
+        form = StaffMemberForm()
+    return render(request, 'staff_member_create.html', {'form': form})
+
+# StaffMember update
+def staff_member_update(request, pk):
+    staff_member = get_object_or_404(StaffMember, pk=pk)
+    if request.method == 'POST':
+        form = StaffMemberForm(request.POST, request.FILES, instance=staff_member)
+        if form.is_valid():
+            form.save()
+            return redirect('staff_member_list')
+    else:
+        form = StaffMemberForm(instance=staff_member)
+    return render(request, 'staff_member_update.html', {'form': form, 'staff_member': staff_member})
+
+# StaffMember delete
+def staff_member_delete(request, pk):
+    staff_member = get_object_or_404(StaffMember, pk=pk)
+    if request.method == 'POST':
+        staff_member.delete()
+        return redirect('staff_member_list')
+    return render(request, 'staff_member_delete.html', {'staff_member': staff_member})
