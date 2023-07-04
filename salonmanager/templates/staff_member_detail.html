@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    .card {
+      width: 18rem;
+      margin: 20px auto;
+    }
+  
+    .card-body {
+      text-align: center;
+    }
+  
+    .card-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+  
+    .card-text {
+      margin-bottom: 10px;
+    }
+  
+    .image-container {
+      display: flex;
+      justify-content: center;
+    }
+  
+    .card-img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+  
+    }
+  
+    .button-container {
+      margin-top: 20px;
+      text-align: center;
+    }
+  </style>
+
+
+
+
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">{{ staff_member.name }}</h5>
+      <p class="card-text">Branches: {{ staff_member.branches.all|join:", " }}</p>
+      <div class="image-container">
+        <img src="{{ staff_member.image.url }}" alt="Staff Member Image" class="card-img">
+      </div>
+    </div>
+  </div>
+
+  <div class="button-container">
+    
+    <a href="{% url 'staff_member_update' staff_member.pk %}" class="btn btn-secondary">Update</a>
+    <a href="{% url 'staff_member_delete' staff_member.pk %}" class="btn btn-danger">Delete</a>
+  </div>
+{% endblock %}
+
+

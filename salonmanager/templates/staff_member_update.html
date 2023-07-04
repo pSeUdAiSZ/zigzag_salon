@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    .form-group {
+      margin-bottom: 20px;
+    }
+  
+    label {
+      display: block;
+      font-weight: bold;
+    }
+  
+    input[type="text"],
+    select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+  
+    button {
+      margin-right: 10px;
+    }
+  </style>
+
+
+<div class="col-md-6 offset-md-3">
+  <h1>Update Staff Member</h1>
+  <br/>
+
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label for="id_name">Name:</label>
+      <input type="text" id="id_name" name="name" class="form-control" value="{{ staff_member.name }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="id_branches">Branches:</label>
+      <select id="id_branches" name="branches" class="form-control" multiple>
+        {% for branch in branches %}
+          <option value="{{ branch.pk }}" {% if branch in staff_member.branches.all %}selected{% endif %}>{{ branch.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="id_image">Image:</label>
+      <input type="file" id="id_image" name="image" class="form-control-file">
+    </div>
+
+    <br/>
+    <button type="submit" class="btn btn-secondary">Update</button>
+    <a href="{% url 'staff_member_list' %}" class="btn btn-secondary">Back</a>
+  </form>
+</div>
+{% endblock %}
+
+
+
+

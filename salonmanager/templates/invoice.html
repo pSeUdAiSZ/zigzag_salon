@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin:5px
+    }
+    
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    th {
+        background-color: #f2f2f2;
+    }
+    .hidden{
+        display:none;
+    }
+</style>
+<h4>{{customer}}</h4>
+<table>
+    <tr>
+        <td>Total Price:</td>
+        <td>{{total_price}}</td>
+    </tr>
+    <tr>
+        <td>Discounted Price:</td>
+        <td>{{discounted_price}}</td>
+    </tr>
+    <tr>
+        <td>Tips:</td>
+        <td>{{tips}}</td>
+    </tr>
+    <tr>
+        <td>Amount paid:</td>
+        <td>{{amount_to_be_paid}}</td>
+    </tr>
+</table>
+<a href = "{% url 'appointment_booking' %}">Back to appointment</a>
+
+{% endblock content %}
