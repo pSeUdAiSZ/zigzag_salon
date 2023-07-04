@@ -13,3 +13,11 @@ class BranchForm(forms.ModelForm):
     class Meta:
         model = Branch
         fields = ('name', 'address', 'phone_number', 'email')
+
+
+from .models import StaffMember
+
+class StaffMemberForm(forms.ModelForm):
+    class Meta:
+        model = StaffMember
+        fields = '__all__'
