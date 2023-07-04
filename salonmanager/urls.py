@@ -30,7 +30,7 @@ urlpatterns = [
     path('branch/<int:pk>/', views.branch_detail, name='branch_detail'),
     path('branch/<int:pk>/update/', views.branch_update, name='branch_update'),
     path('branch/<int:pk>/delete/', views.branch_delete, name='branch_delete'),
-  
+     path('branch/search/', views.branch_search, name='branch_search'),
 
     path('staff-members/', views.staff_member_list, name='staff_member_list'),
     path('staff-members/create/', views.staff_member_create, name='staff_member_create'),

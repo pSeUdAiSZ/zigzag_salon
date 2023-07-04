@@ -32,6 +32,16 @@
     <button type="submit" class="btn btn-secondary">Add</button>
     <a href="{% url 'staff_member_list' %}" class="btn btn-secondary">Back</a>
   </form>
+
+  
+<script>
+  // Fetching option value attribute data from dropdown
+  $('#id_branches').on('change', function() {
+    var selectedOptions = $(this).val();
+    console.log(selectedOptions);
+    // You can perform further actions with the selected option values
+  });
+</script>
 </div>
 {% endblock %}
 
@@ -59,12 +69,4 @@
   }
 </style>
 
-<script>
-    // Fetching option value attribute data from dropdown
-    $('#id_branches').on('change', function() {
-      var selectedOptions = $(this).val();
-      console.log(selectedOptions);
-      // You can perform further actions with the selected option values
-    });
-  </script>
 {% endblock %}

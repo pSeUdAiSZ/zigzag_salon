@@ -385,6 +385,17 @@ def branch_delete(request, pk):
         return redirect('branch_list')
     return render(request, 'branch_delete.html', {'branch': branch})
 
+from django.shortcuts import render
+from .models import Branch
+
+def branch_search(request):
+    if request.method == 'GET':
+        query = request.GET.get('q')
+        if query:
+            branches = Branch.objects.filter(name__icontains=query)
+        else:
+            branches = Branch.objects.all()
+        return render(request, 'branch_list.html', {'branches': branches})
 
 
 

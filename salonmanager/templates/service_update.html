@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="col-md-6 offset-md-3">
+    <h1>Update Service</h1>
+    <br/>
+
+    <form method="POST" action="{% url 'service_update' service.pk %}" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label for="id_category">Category:</label>
+        <input type="text" id="id_category" name="category" class="form-control" value="{{ service.category }}" required>
+      </div>
+
+      <div class="form-group">
+        <label for="id_name">Name:</label>
+        <input type="text" id="id_name" name="name" class="form-control" value="{{ service.name }}" required>
+      </div>
+
+      <div class="form-group">
+        <label for="id_price">Price:</label>
+        <input type="text" id="id_price" name="price" class="form-control" value="{{ service.price }}" required>
+      </div>
+
+      <div class="form-group">
+        <label for="id_duration">Duration:</label>
+        <input type="text" id="id_duration" name="duration" class="form-control" value="{{ service.duration }}" required>
+      </div>
+
+      <div class="form-group">
+        <label for="id_image">Image:</label>
+        <input type="file" id="id_image" name="image" class="form-control-file">
+        {% if service.image %}
+          <img src="{{ service.image.url }}" alt="Service Image" class="current-image">
+        {% else %}
+          <p>No image uploaded</p>
+        {% endif %}
+      </div>
+
+      <br/>
+      <button type="submit" class="btn btn-secondary">Update</button>
+      <a href="{% url 'service_list' %}" class="btn btn-secondary">Back</a>
+    </form>
+  </div>
+{% endblock %}
+
+{% block styles %}
+<style>
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  label {
+    display: block;
+    font-weight: bold;
+  }
+
+  input[type="text"],
+  input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .current-image {
+    display: block;
+    margin-top: 10px;
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: cover;
+  }
+
+  button {
+    margin-right: 10px;
+  }
+</style>
+{% endblock %}

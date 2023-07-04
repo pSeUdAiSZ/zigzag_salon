@@ -75,7 +75,7 @@
   <h1>Branches</h1>
   <!-- Search form -->
   <div class="search-container">
-    <form method="GET" action="{% url 'customer_search' %}">
+    <form method="GET" action="{% url 'branch_search' %}">
       <input type="text" name="q" class="search-input" placeholder="Search by name" value="{{ request.GET.q }}">
       <button class="search-btn" type="submit">Search</button>
     </form>
