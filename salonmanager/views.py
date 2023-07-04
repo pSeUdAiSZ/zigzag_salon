@@ -394,6 +394,12 @@ def staff_member_list(request):
     staff_members = StaffMember.objects.all()
     return render(request, 'staff_member_list.html', {'staff_members': staff_members})
 
+# StaffMember detail
+def staff_member_detail(request, pk):
+    staff_member = get_object_or_404(StaffMember, pk=pk)
+    return render(request, 'staff_member_detail.html', {'staff_member': staff_member})
+
+
 # StaffMember create
 def staff_member_create(request):
     if request.method == 'POST':
