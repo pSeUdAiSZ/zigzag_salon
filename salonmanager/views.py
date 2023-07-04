@@ -447,3 +447,53 @@ def staff_member_search(request):
             staff_members = StaffMember.objects.all()
         return render(request, 'staff_member_list.html', {'staff_members': staff_members})
 
+
+
+from .models import Service
+from .forms import ServiceForm
+
+def service_list(request):
+    services = Service.objects.all()
+    return render(request, 'service_list.html', {'services': services})
+
+def service_create(request):
+    if request.method == 'POST':
+        form = ServiceForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('service_list')
+    else:
+        form = ServiceForm()
+    return render(request, 'service_create.html', {'form': form})
+
+def service_detail(request, pk):
+    service = get_object_or_404(Service, pk=pk)
+    return render(request, 'service_detail.html', {'service': service})
+
+def service_update(request, pk):
+    service = get_object_or_404(Service, pk=pk)
+    if request.method == 'POST':
+        form = ServiceForm(request.POST, request.FILES, instance=service)
+        if form.is_valid():
+            form.save()
+            return redirect('service_detail', pk=service.pk)
+    else:
+        form = ServiceForm(instance=service)
+    return render(request, 'service_update.html', {'form': form, 'service': service})
+
+def service_delete(request, pk):
+    service = get_object_or_404(Service, pk=pk)
+    if request.method == 'POST':
+        service.delete()
+        return redirect('service_list')
+    return render(request, 'service_delete.html', {'service': service})
+
+
+def service_search(request):
+    if request.method == 'GET':
+        query = request.GET.get('q')
+        if query:
+            services = Service.objects.filter(name__icontains=query)
+        else:
+            services = Service.objects.all()
+        return render(request, 'service_list.html', {'services': services})

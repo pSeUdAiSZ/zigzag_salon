@@ -32,11 +32,18 @@ urlpatterns = [
     path('branch/<int:pk>/delete/', views.branch_delete, name='branch_delete'),
   
 
-     path('staff-members/', views.staff_member_list, name='staff_member_list'),
+    path('staff-members/', views.staff_member_list, name='staff_member_list'),
     path('staff-members/create/', views.staff_member_create, name='staff_member_create'),
     path('staff-members/<int:pk>/', views.staff_member_detail, name='staff_member_detail'),
     path('staff-members/<int:pk>/update/', views.staff_member_update, name='staff_member_update'),
     path('staff-members/<int:pk>/delete/', views.staff_member_delete, name='staff_member_delete'),
-     path('staff-members/search/', views.staff_member_search, name='staff_member_search'),
+    path('staff-members/search/', views.staff_member_search, name='staff_member_search'),
     #path('staff-members/search/', views.StaffMemberSearchView.as_view(), name='staff_member_search'),
+
+    path('services/', views.service_list, name='service_list'),
+    path('services/create/', views.service_create, name='service_create'),
+    path('services/<int:pk>/', views.service_detail, name='service_detail'),
+    path('services/<int:pk>/update/', views.service_update, name='service_update'),
+    path('services/<int:pk>/delete/', views.service_delete, name='service_delete'),
+    path('services/search/', views.service_search, name='service_search'),
 ]

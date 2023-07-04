@@ -21,3 +21,11 @@ class StaffMemberForm(forms.ModelForm):
     class Meta:
         model = StaffMember
         fields = '__all__'
+
+
+from .models import Service
+
+class ServiceForm(forms.ModelForm):
+    class Meta:
+        model = Service
+        fields = '__all__'
