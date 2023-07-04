@@ -15,9 +15,9 @@ class Branch(models.Model):
     address = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=20)
     email = models.EmailField()
-
     def __str__(self):
         return self.name
+    
 class StaffMember(models.Model):
     name = models.CharField(max_length=50)
     branches = models.ManyToManyField(Branch)

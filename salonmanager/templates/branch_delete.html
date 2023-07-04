@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="col-md-6 offset-md-3">
+  <h1>Delete Branch</h1>
+  <br/>
+
+  <div class="alert alert-danger">
+    <p>Are you sure you want to delete the branch "{{ branch.name }}"?</p>
+  </div>
+
+  <form method="POST" action="{% url 'branch_delete' branch.pk %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a href="{% url 'branch_detail' branch.pk %}" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+  .alert {
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 4px;
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+  }
+
+  .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+  }
+
+  .btn-secondary {
+    margin-right: 10px;
+  }
+</style>
+{% endblock %}

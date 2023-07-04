@@ -22,4 +22,9 @@ urlpatterns = [
     path('<int:pk>/update/', views.customer_update, name='customer_update'),
     path('<int:pk>/delete/', views.customer_delete, name='customer_delete'),
     path('search/', views.customer_search, name='customer_search'),
+     path('branch/', views.branch_list, name='branch_list'),
+    path('branch/create/', views.branch_create, name='branch_create'),
+    path('branch/<int:pk>/', views.branch_detail, name='branch_detail'),
+    path('branch/<int:pk>/update/', views.branch_update, name='branch_update'),
+    path('branch/<int:pk>/delete/', views.branch_delete, name='branch_delete'),
 ]

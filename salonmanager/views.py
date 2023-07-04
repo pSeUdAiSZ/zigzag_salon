@@ -341,3 +341,45 @@ def customer_search(request):
         else:
             customers = Customer.objects.all()
         return render(request, 'customer_list.html', {'customers': customers})
+
+
+
+
+from .models import Branch
+from .forms import BranchForm
+
+def branch_list(request):
+    branches = Branch.objects.all()
+    return render(request, 'branch_list.html', {'branches': branches})
+
+def branch_detail(request, pk):
+    branch = Branch.objects.get(pk=pk)
+    return render(request, 'branch_details.html', {'branch': branch})
+
+def branch_create(request):
+    if request.method == 'POST':
+        form = BranchForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('branch_list')
+    else:
+        form = BranchForm()
+    return render(request, 'branch_create.html', {'form': form})
+
+def branch_update(request, pk):
+    branch = Branch.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = BranchForm(request.POST, instance=branch)
+        if form.is_valid():
+            form.save()
+            return redirect('branch_detail',pk=branch.pk)
+    else:
+        form = BranchForm(instance=branch)
+    return render(request, 'branch_update.html', {'form': form, 'branch': branch})
+
+def branch_delete(request, pk):
+    branch = Branch.objects.get(pk=pk)
+    if request.method == 'POST':
+        branch.delete()
+        return redirect('branch_list')
+    return render(request, 'branch_delete.html', {'branch': branch})
