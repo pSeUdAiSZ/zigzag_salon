@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    .card {
+      margin-bottom: 20px;
+    }
+  
+    .card-img-top {
+      height: 200px;
+      object-fit: cover;
+    }
+  
+    form {
+      display: inline-block;
+    }
+  
+    button[type="submit"] {
+      margin-right: 10px;
+    }
+  </style>
+
+
+
+
+<div class="col-md-6 offset-md-3">
+  <h1>Delete Service</h1>
+  <br/>
+
+  <p>Are you sure you want to delete the following service?</p>
+
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">{{ service.name }}</h5>
+      <p class="card-text">Category: {{ service.category }}</p>
+      <p class="card-text">Price: {{ service.price }}</p>
+      <p class="card-text">Duration: {{ service.duration }}</p>
+      {% if service.image %}
+        <img src="{{ service.image.url }}" alt="Service Image" class="card-img-top">
+      {% endif %}
+    </div>
+  </div>
+
+  <br/>
+
+  <form method="POST" action="{% url 'service_delete' service.pk %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a href="{% url 'service_list' %}" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>
+
+{% endblock %}
+
+
