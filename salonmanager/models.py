@@ -36,6 +36,15 @@ class Customer(models.Model):
     def __str__(self):
         return self.name
     
+class Packages(models.Model):
+    name = models.CharField(max_length=100)
+    price = MoneyField(max_digits=14, decimal_places=2, default_currency='AED')
+    services = models.ManyToManyField(Service)
+    customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
+    
+    def __str__(self):
+        return self.name
+    
 class Appointment(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
     staff_member = models.ForeignKey(StaffMember, on_delete=models.PROTECT)
@@ -52,3 +61,12 @@ class Appointment(models.Model):
 
         
         return f"{self.customer} - {self.services} with {self.staff_member} on {self.start_time}"
+    
+
+class Invoice(models.Model):
+    appointment = models.ForeignKey(Appointment, on_delete=models.PROTECT)
+    
+    tax = MoneyField(max_digits=14, decimal_places=2, default_currency='AED',null = True)
+    discounted_price = MoneyField(max_digits=14, decimal_places=2, default_currency='AED',null = True)
+    tips = MoneyField(max_digits=14, decimal_places=2, default_currency='AED',null = True)
+    price_to_be_paid = MoneyField(max_digits=14, decimal_places=2, default_currency='AED',null = True)

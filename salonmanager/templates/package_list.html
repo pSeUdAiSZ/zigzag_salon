@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    .card {
+      width: 18rem;
+      margin-bottom: 20px;
+    }
+  
+    .search-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+  
+    .search-btn {
+      padding: 8px 12px;
+      background-color: #A9A9A9;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  
+    .search-btn:hover {
+      background-color: #808080;
+    }
+  </style>
+
+
+
+  <h1>Packages</h1>
+  <!-- Search form -->
+  <div class="search-container">
+    <form method="GET" action="{% url 'package_search' %}">
+      <input type="text" name="q" placeholder="Search by name" value="{{ request.GET.q }}">
+      <button class="search-btn" type="submit">Search</button>
+    </form>
+    <a href="{% url 'package_create' %}" class="btn btn-primary">+ Add New</a>
+  </div>
+  
+  <div class="row">
+    {% for package in packages %}
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ package.name }}</h5>
+            <p class="card-text">Price: {{ package.price }}</p>
+            <p class="card-text">Services: {{ package.services.all|join:", " }}</p>
+            <p class="card-text">Customer: {{ package.customer }}</p>
+            <a href="{% url 'package_detail' package.pk %}" class="btn btn-primary">View</a>
+            <a href="{% url 'package_update' package.pk %}" class="btn btn-secondary">Update</a>
+            <a href="{% url 'package_delete' package.pk %}" class="btn btn-danger">Delete</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}
+
+{% block styles %}
+
+{% endblock %}

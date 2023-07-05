@@ -29,3 +29,11 @@ class ServiceForm(forms.ModelForm):
     class Meta:
         model = Service
         fields = '__all__'
+
+from .models import Packages
+
+class PackageForm(forms.ModelForm):
+    class Meta:
+        model = Packages
+        fields = ['name', 'price', 'services', 'customer']
+
