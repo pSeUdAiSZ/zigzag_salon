@@ -416,15 +416,26 @@ def staff_member_detail(request, pk):
 
 
 # StaffMember create
+from .models import Branch, StaffMember
+from .forms import StaffMemberForm
+
 def staff_member_create(request):
+    branches = Branch.objects.all()
+
     if request.method == 'POST':
-        form = StaffMemberForm(request.POST, request.FILES)
+        form = StaffMemberForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('staff_member_list')
     else:
         form = StaffMemberForm()
-    return render(request, 'staff_member_create.html', {'form': form})
+
+    context = {
+        'form': form,
+        'branches': branches
+    }
+    return render(request, 'staff_member_create.html', context)
+
 
 # StaffMember update
 def staff_member_update(request, pk):
@@ -522,12 +533,27 @@ def package_list(request):
             packages = Packages.objects.all()
         return render(request, 'package_list.html', {'packages': packages})
 
+
 def package_create(request):
-    form = PackageForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-        return redirect('package_list')
-    return render(request, 'package_create.html', {'form': form})
+    customers = Customer.objects.all()
+    services = Service.objects.all()
+
+    if request.method == 'POST':
+        form = PackageForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('package_list')
+    else:
+        form = PackageForm()
+
+    context = {
+        'form': form,
+        'customers': customers,
+        'services': services
+    }
+    return render(request, 'package_create.html', context)
+
+
 
 def package_detail(request, pk):
     package = get_object_or_404(Packages, pk=pk)
