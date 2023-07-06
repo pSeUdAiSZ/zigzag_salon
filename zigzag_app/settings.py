@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'zigzag_app.wsgi.application'
 import pymysql
 pymysql.install_as_MySQLdb()
 
-DATABASE = 1
+DATABASE = 2
 
 if DEBUG and (DATABASE == 1):
     # Use SQLite Database
