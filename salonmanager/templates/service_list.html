@@ -61,8 +61,8 @@
         <div class="card">
           <img src="{{ service.image.url }}" alt="Service Image" class="card-img-top">
           <div class="card-body">
-            <h5 class="card-title">{{ service.name }}</h5>
-            <p class="card-text">Category: {{ service.category }}</p>
+            <h5 class="card-title">{{ service.category }}</h5>
+            <p class="card-text">Name: {{ service.name }}</p>
             <p class="card-text">Price: {{ service.price }}</p>
             <p class="card-text">Duration: {{ service.duration }}</p>
             <a href="{% url 'service_detail' service.pk %}" class="btn btn-primary">View</a>

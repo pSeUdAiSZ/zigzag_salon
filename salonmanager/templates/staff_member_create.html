@@ -5,43 +5,42 @@
   <h1>Add Staff Member</h1>
   <br/>
 
-  <form method="POST" enctype="multipart/form-data">
+  <form method="POST" enctype="multipart/form-data" action="{% url 'staff_member_create' %}">
     {% csrf_token %}
-
+    
     <div class="form-group">
       <label for="id_name">Name:</label>
-      <input type="text" id="id_name" name="name" class="form-control" required>
+      {{ form.name }}
     </div>
-
+    
     <div class="form-group">
       <label for="id_branches">Branches:</label>
-      <select id="id_branches" name="branches" class="form-control" multiple required>
-        <option value="" selected disabled>Select an existing branch</option>
-        {% for branch in branches %}
-          <option value="{{ branch.pk }}">{{ branch.name }}</option>
-        {% endfor %}
-      </select>
+      {{ form.branches }}
     </div>
-
+    
     <div class="form-group">
       <label for="id_image">Image:</label>
-      <input type="file" id="id_image" name="image" class="form-control-file">
+      {{ form.image }}
     </div>
-
+    
     <br/>
     <button type="submit" class="btn btn-secondary">Add</button>
     <a href="{% url 'staff_member_list' %}" class="btn btn-secondary">Back</a>
   </form>
+  
 
   
-<script>
-  // Fetching option value attribute data from dropdown
-  $('#id_branches').on('change', function() {
-    var selectedOptions = $(this).val();
-    console.log(selectedOptions);
-    // You can perform further actions with the selected option values
-  });
+ <!-- <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const addButton = document.querySelector('.add-button');
+        if (addButton) {
+            addButton.addEventListener('click', function() {
+                window.location.href = "{% url 'staff_member_create' %}";
+            });
+        }
+    });
 </script>
+-->
 </div>
 {% endblock %}
 

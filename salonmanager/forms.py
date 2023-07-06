@@ -20,7 +20,7 @@ from .models import StaffMember
 class StaffMemberForm(forms.ModelForm):
     class Meta:
         model = StaffMember
-        fields = '__all__'
+        fields = ['name', 'branches', 'image']
 
 
 from .models import Service
@@ -28,7 +28,7 @@ from .models import Service
 class ServiceForm(forms.ModelForm):
     class Meta:
         model = Service
-        fields = '__all__'
+        fields = ['category', 'name', 'price', 'image', 'duration']
 
 from .models import Packages
 

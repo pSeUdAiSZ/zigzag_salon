@@ -483,6 +483,7 @@ def service_create(request):
         form = ServiceForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            print(form.cleaned_data)
             return redirect('service_list')
     else:
         form = ServiceForm()

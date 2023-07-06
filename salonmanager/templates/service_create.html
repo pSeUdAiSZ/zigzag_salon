@@ -49,34 +49,19 @@
 
   <form method="POST" enctype="multipart/form-data" action="{% url 'service_create' %}">
     {% csrf_token %}
-
-    <div class="form-group">
-      <label for="id_name">Name:</label>
-      <input type="text" id="id_name" name="name" class="form-control" required>
-    </div>
-
-    <div class="form-group">
-      <label for="id_category">Category:</label>
-      <input type="text" id="id_category" name="category" class="form-control" value="Hair Services" required>
-    </div>
-
-    <div class="form-group">
-      <label for="id_price">Price:</label>
-      <input type="text" id="id_price" name="price" class="form-control" required>
-    </div>
-
-    <div class="form-group">
-      <label for="id_duration">Duration:</label>
-      <input type="text" id="id_duration" name="duration" class="form-control" required>
-    </div>
-
-    <div class="form-group">
-      <label for="id_image">Image:</label>
-      <input type="file" id="id_image" name="image" class="form-control-file">
-    </div>
-
-    <br/>
-    <button type="submit" class="btn btn-secondary">Add</button>
+    <label for="id_category">Category:</label>
+    {{ form.category }}
+    <label for="id_name">Name:</label>
+    {{ form.name }}
+    <label for="id_price">Price:</label>
+    {{ form.price }}
+    <label for="id_image">Image:</label>
+    {{ form.image }}
+    <label for="id_duration">Duration:</label>
+    {{ form.duration }}
+    
+    <br>
+    <button  type="submit" class="btn btn-primary" style="background-color: #337ab7; color: white;">Save</button>
     <a href="{% url 'service_list' %}" class="btn btn-secondary">Back</a>
   </form>
 </div>
