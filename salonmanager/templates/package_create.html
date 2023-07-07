@@ -1,6 +1,35 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+<style>
+  .container {
+    margin-top: 20px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  label {
+    font-weight: bold;
+  }
+
+  input[type="text"],
+  select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  button {
+    margin-right: 10px;
+  }
+</style>
+
+
+
   <div class="container">
     <h1>Add Package</h1>
     <br>
@@ -46,30 +75,3 @@
   </div>
 {% endblock %}
 
-{% block styles %}
-<style>
-  .container {
-    margin-top: 20px;
-  }
-
-  .form-group {
-    margin-bottom: 20px;
-  }
-
-  label {
-    font-weight: bold;
-  }
-
-  input[type="text"],
-  select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-
-  button {
-    margin-right: 10px;
-  }
-</style>
-{% endblock %}
