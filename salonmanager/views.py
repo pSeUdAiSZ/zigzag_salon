@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views import View
-from .models import StaffMember,Customer,Service,Branch,Appointment
+from .models import ServiceUsage, StaffMember,Customer,Service,Branch,Appointment
 
 from .utils import timeslot_gen_tf,calculate_end_time
 
@@ -416,9 +416,6 @@ def staff_member_detail(request, pk):
 
 
 # StaffMember create
-from .models import Branch, StaffMember
-from .forms import StaffMemberForm
-
 def staff_member_create(request):
     branches = Branch.objects.all()
 
@@ -435,6 +432,7 @@ def staff_member_create(request):
         'branches': branches
     }
     return render(request, 'staff_member_create.html', context)
+
 
 
 # StaffMember update
@@ -522,8 +520,6 @@ def service_search(request):
         return render(request, 'service_list.html', {'services': services})
 
 
-
-from django.shortcuts import render, get_object_or_404, redirect
 from .forms import PackageForm
 from .models import Packages
 
@@ -535,35 +531,75 @@ def package_detail(request, package_id):
     package = get_object_or_404(Packages, id=package_id)
     return render(request, 'package_detail.html', {'package': package})
 
+from django.forms import formset_factory
+from .forms import PackageForm, ServiceUsageForm
+
 def package_create(request):
     services = Service.objects.all()
+
+    # Create a formset for the service usage counts with max_num=len(services)
+    ServiceUsageFormSet = formset_factory(ServiceUsageForm, extra=len(services))
+
     if request.method == 'POST':
         form = PackageForm(request.POST)
-        if form.is_valid():
-            form.save()
+        formset = ServiceUsageFormSet(request.POST)
+
+        if form.is_valid() and formset.is_valid():
+            package = form.save()
+
+            # Loop through the formset forms and create ServiceUsage instances for selected services
+            for service_form in formset:
+                service = service_form.cleaned_data.get('service')
+                usage_count = service_form.cleaned_data.get('usage_count')
+                if service:
+                    ServiceUsage.objects.create(package=package, service=service, usage_count=usage_count)
+
             return redirect('package_list')
     else:
         form = PackageForm()
+        formset = ServiceUsageFormSet()
+
     context = {
         'form': form,
+        'formset': formset,
         'services': services
     }
-    return render(request, 'package_create.html', {'form': form})
+    return render(request, 'package_create.html', context)
+
+
+
+
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Packages, ServiceUsage
+from .forms import PackageForm, ServiceUsageFormSet
 
 def package_update(request, package_id):
     package = get_object_or_404(Packages, pk=package_id)
+    form = PackageForm(request.POST or None, instance=package)
+    formset = ServiceUsageFormSet(request.POST or None, instance=package)
 
     if request.method == 'POST':
-        form = PackageForm(request.POST, instance=package)
-        if form.is_valid():
+        if form.is_valid() and formset.is_valid():
             form.save()
+            formset.save()
             return redirect('package_detail', package_id=package_id)
-    else:
-        form = PackageForm(instance=package)
+
+    selected_services = package.services.all()
+
+    # Adjust the number of form instances based on selected services
+    if form.is_valid():
+        formset = ServiceUsageFormSet(
+            request.POST or None,
+            instance=package,
+            queryset=ServiceUsage.objects.filter(service__in=selected_services)
+        )
 
     context = {
         'form': form,
+        'formset': formset,
         'package': package,
+       'package': package,
+        'selected_services': selected_services,
     }
     return render(request, 'package_update.html', context)
 

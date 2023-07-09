@@ -52,6 +52,13 @@ class Packages(models.Model):
         return self.name
     
 
+class ServiceUsage(models.Model):
+    package = models.ForeignKey(Packages, on_delete=models.CASCADE)
+    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    usage_count = models.PositiveIntegerField(default=0, help_text='Number of times the service can be used within the validity period')
+    def __str__(self):
+        return f"{self.package} - {self.service} ({self.usage_count})"
+
 class Appointment(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
     staff_member = models.ForeignKey(StaffMember, on_delete=models.PROTECT)
@@ -72,8 +79,15 @@ class Appointment(models.Model):
 
 class Invoice(models.Model):
     appointment = models.ForeignKey(Appointment, on_delete=models.PROTECT)
-    
     tax = MoneyField(max_digits=14, decimal_places=2, default_currency='AED',null = True)
     discounted_price = MoneyField(max_digits=14, decimal_places=2, default_currency='AED',null = True)
     tips = MoneyField(max_digits=14, decimal_places=2, default_currency='AED',null = True)
     price_to_be_paid = MoneyField(max_digits=14, decimal_places=2, default_currency='AED',null = True)
+
+
+"""class Membership(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
+    package = models.ForeignKey(Packages, on_delete=models.CASCADE)
+    family_members = models.ManyToManyField(FamilyMember)
+    start_date = models.DateField()
+    end_date = models.DateField()"""

@@ -1,14 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
 <style>
+  .container {
+    margin-top: 20px;
+  }
+
   .form-group {
     margin-bottom: 20px;
   }
 
   label {
-    display: block;
     font-weight: bold;
   }
 
@@ -25,11 +27,11 @@
   }
 </style>
 
-<div class="col-md-6 offset-md-3">
+<div class="container">
   <h1>Add Staff Member</h1>
-  <br/>
+  <br>
 
-  <form id="staff-member-form" method="POST" enctype="multipart/form-data">
+  <form method="POST" enctype="multipart/form-data" action="{% url 'staff_member_create' %}">
     {% csrf_token %}
     
     <div class="form-group">
@@ -48,25 +50,9 @@
     </div>
     
     <br/>
-    <button type="button" id="add-button" class="btn btn-secondary">Add</button>
+    <button type="submit" class="btn btn-primary">Add</button>
     <a href="{% url 'staff_member_list' %}" class="btn btn-secondary">Back</a>
   </form>
+  
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const addButton = document.getElementById('add-button');
-  const form = document.getElementById('staff-member-form');
-
-  if (addButton && form) {
-    addButton.addEventListener('click', function() {
-      form.submit();
-    });
-  }
-});
-</script>
-
 {% endblock %}
-
-
-

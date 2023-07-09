@@ -32,9 +32,28 @@ class ServiceForm(forms.ModelForm):
 
 
 from django import forms
-from .models import Packages
+from .models import Packages, ServiceUsage, Service
+from django.forms import inlineformset_factory
 
 class PackageForm(forms.ModelForm):
+    services = forms.ModelMultipleChoiceField(
+        queryset=Service.objects.all(),
+        widget=forms.CheckboxSelectMultiple
+    )
+
     class Meta:
         model = Packages
         fields = ('name', 'price', 'validity', 'services')
+
+class ServiceUsageForm(forms.ModelForm):
+    class Meta:
+        model = ServiceUsage
+        fields = ('service', 'usage_count')
+
+ServiceUsageFormSet = inlineformset_factory(
+    Packages,
+    ServiceUsage,
+    form=forms.ModelForm,
+    fields=('service', 'usage_count'),
+    extra=1,
+)

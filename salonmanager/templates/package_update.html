@@ -51,9 +51,20 @@
       {{ form.services }}
     </div>
 
+    <h2>Service Usage Counts:</h2>
+    {% for form in formset %}
+    <div class="form-group">
+        <label for="{{ form.id_for_service }}">Service:</label>
+        {{ form.service }}
+        <label for="{{ form.id_for_usage_count }}">Usage Count:</label>
+        {{ form.usage_count }}
+    </div>
+    {% endfor %}
+
     <br/>
     <button type="submit" class="btn btn-secondary">Update</button>
     <a href="{% url 'package_detail' package.pk %}" class="btn btn-secondary">Cancel</a>
   </form>
 </div>
+
 {% endblock %}

@@ -30,33 +30,29 @@
   <h1>Update Staff Member</h1>
   <br/>
 
-  <form method="POST" enctype="multipart/form-data">
+  <form method="POST" action="{% url 'staff_member_update' staff_member.pk %}">
     {% csrf_token %}
 
     <div class="form-group">
       <label for="id_name">Name:</label>
-      <input type="text" id="id_name" name="name" class="form-control" value="{{ staff_member.name }}" required>
+      {{ form.name }}
     </div>
 
     <div class="form-group">
       <label for="id_branches">Branches:</label>
-      <select id="id_branches" name="branches" class="form-control" multiple>
-        {% for branch in branches %}
-          <option value="{{ branch.pk }}" {% if branch in staff_member.branches.all %}selected{% endif %}>{{ branch.name }}</option>
-        {% endfor %}
-      </select>
+      {{ form.branches }}
     </div>
 
     <div class="form-group">
       <label for="id_image">Image:</label>
-      <input type="file" id="id_image" name="image" class="form-control-file">
+      {{ form.image }}
     </div>
 
-    <br/>
-    <button type="submit" class="btn btn-secondary">Update</button>
+    <br>
+
+    <button type="submit" class="btn btn-primary">Save</button>
     <a href="{% url 'staff_member_list' %}" class="btn btn-secondary">Back</a>
   </form>
-</div>
 {% endblock %}
 
 

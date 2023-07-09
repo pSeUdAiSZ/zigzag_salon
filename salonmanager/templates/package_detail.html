@@ -29,6 +29,24 @@
       </p>
     </div>
   </div>
+
+  <h2>Service Usage Counts:</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Service</th>
+        <th>Usage Count</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for service_usage in package.serviceusage_set.all %}
+        <tr>
+          <td>{{ service_usage.service }}</td>
+          <td>{{ service_usage.usage_count }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
   
   <br>
   <a href="{% url 'package_list' %}" class="btn btn-secondary">Back</a>

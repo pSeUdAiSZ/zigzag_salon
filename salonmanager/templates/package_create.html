@@ -67,13 +67,34 @@
 
     <div class="form-group">
       <label for="id_services">Services:</label>
-      {{ form.services }}
-    </div>
 
+      <select id="id_services" name="services" class="form-control" multiple required>
+        {% for service in services %}
+          <option value="{{ service.pk }}">{{ service.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    
+    <h2>Service Usage Counts:</h2>
+    {{ formset.management_form }}
+    {% for form in formset %}
+    <div class="form-group">
+        <label for="{{ form.id_for_service }}">Service:</label>
+        {{ form.service }}
+        <label for="{{ form.id_for_usage_count }}">Usage Count:</label>
+        {{ form.usage_count }}
+    </div>
+    {% endfor %}
+    
     <br/>
     <button type="submit" class="btn btn-primary" style="background-color: #337ab7; color: white;">Save</button>
     <a href="{% url 'package_list' %}" class="btn btn-secondary">Back</a>
   </form>
 </div>
+<script>
+  $(document).ready(function() {
+    $('#id_services').select2();
+  });
+</script>
 
 {% endblock %}

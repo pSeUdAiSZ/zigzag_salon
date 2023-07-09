@@ -98,6 +98,11 @@
             <p class="card-text">Price: {{ package.price }}</p>
             <p class="card-text">Validity: {{ package.get_validity_display }}</p>
             <p class="card-text">Services: {{ package.services.all|join:", " }}</p>
+            <ul>
+              {% for service_usage in package.serviceusage_set.all %}
+                <li>{{ service_usage.service }} - Usage Count: {{ service_usage.usage_count }}</li>
+              {% endfor %}
+            </ul>
             <a href="{% url 'package_detail' package.pk %}" class="btn btn-primary">View</a>
             <a href="{% url 'package_update' package.pk %}" class="btn btn-secondary">Update</a>
             <a href="{% url 'package_delete' package.pk %}" class="btn btn-danger">Delete</a>
