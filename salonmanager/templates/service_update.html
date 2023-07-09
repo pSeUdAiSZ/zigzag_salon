@@ -1,6 +1,37 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<style>
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  label {
+    display: block;
+    font-weight: bold;
+  }
+
+  input[type="text"],
+  input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .current-image {
+    display: block;
+    margin-top: 10px;
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: cover;
+  }
+
+  button {
+    margin-right: 10px;
+  }
+</style>
+
   <div class="col-md-6 offset-md-3">
     <h1>Update Service</h1>
     <br/>
@@ -45,35 +76,4 @@
   </div>
 {% endblock %}
 
-{% block styles %}
-<style>
-  .form-group {
-    margin-bottom: 20px;
-  }
 
-  label {
-    display: block;
-    font-weight: bold;
-  }
-
-  input[type="text"],
-  input[type="file"] {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-
-  .current-image {
-    display: block;
-    margin-top: 10px;
-    max-width: 200px;
-    max-height: 200px;
-    object-fit: cover;
-  }
-
-  button {
-    margin-right: 10px;
-  }
-</style>
-{% endblock %}

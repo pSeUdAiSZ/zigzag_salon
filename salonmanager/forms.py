@@ -30,10 +30,11 @@ class ServiceForm(forms.ModelForm):
         model = Service
         fields = ['category', 'name', 'price', 'image', 'duration']
 
+
+from django import forms
 from .models import Packages
 
 class PackageForm(forms.ModelForm):
     class Meta:
         model = Packages
-        fields = ['name', 'price', 'services', 'customer']
-
+        fields = ('name', 'price', 'validity', 'services')

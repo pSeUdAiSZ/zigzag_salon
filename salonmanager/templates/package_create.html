@@ -3,75 +3,77 @@
 {% block content %}
 
 <style>
-  .container {
-    margin-top: 20px;
-  }
+    .form-group {
+      margin-bottom: 20px;
+    }
+  
+    label {
+      display: block;
+      font-weight: bold;
+    }
+  
+    input[type="text"],
+    input[type="file"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+  
+    button {
+      margin-right: 10px;
+    }
+  
+    /* Style the image preview container */
+    .image-preview {
+      width: 200px;
+      height: 200px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+  
+    /* Style the image within the preview container */
+    .image-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
 
-  .form-group {
-    margin-bottom: 20px;
-  }
 
-  label {
-    font-weight: bold;
-  }
+<div class="col-md-6 offset-md-3">
+  <h1>Add Package</h1>
+  <br/>
 
-  input[type="text"],
-  select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
+  <form method="POST" enctype="multipart/form-data" action="{% url 'package_create' %}">
+    {% csrf_token %}
+    
+    <div class="form-group">
+      <label for="id_name">Name:</label>
+      {{ form.name }}
+    </div>
+    
+    <div class="form-group">
+      <label for="id_price">Price:</label>
+      {{ form.price }}
+    </div>
 
-  button {
-    margin-right: 10px;
-  }
-</style>
+    <div class="form-group">
+      <label for="id_validity">Validity:</label>
+      {{ form.validity }}
+    </div>
 
+    <div class="form-group">
+      <label for="id_services">Services:</label>
+      {{ form.services }}
+    </div>
 
+    <br/>
+    <button type="submit" class="btn btn-primary" style="background-color: #337ab7; color: white;">Save</button>
+    <a href="{% url 'package_list' %}" class="btn btn-secondary">Back</a>
+  </form>
+</div>
 
-  <div class="container">
-    <h1>Add Package</h1>
-    <br>
-
-    <form method="POST" action="{% url 'package_create' %}">
-      {% csrf_token %}
-      
-      <div class="form-group">
-        <label for="id_name">Name:</label>
-        <input type="text" id="id_name" name="name" class="form-control" required>
-      </div>
-      
-      <div class="form-group">
-        <label for="id_price">Price:</label>
-        <input type="text" id="id_price" name="price" class="form-control" required>
-      </div>
-
-      <div class="form-group">
-        <label for="id_services">Services:</label>
-        <select id="id_services" name="services" class="form-control" multiple required>
-            <option value="" selected disabled>Select an existing service</option>
-                {% for service in services %}
-                    <option value="{{ service.pk }}">{{ service.name }}</option>
-                {% endfor %}
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="id_customer">Customer:</label>
-        <select id="id_customer" name="customer" class="form-control" required>
-            <option value="" selected disabled>Select an existing customer</option>
-            {% for customer in customers %}
-                <option value="{{ customer.pk }}">{{ customer.name }}</option>
-            {% endfor %}
-        </select>
-      </div>
-
-      <br>
-
-      <button type="submit" class="btn btn-secondary">Add</button>
-      <a href="{% url 'package_list' %}" class="btn btn-secondary">Back</a>
-    </form>
-  </div>
 {% endblock %}
-

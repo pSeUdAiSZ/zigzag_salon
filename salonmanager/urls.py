@@ -49,10 +49,10 @@ urlpatterns = [
     path('services/<int:pk>/delete/', views.service_delete, name='service_delete'),
     path('services/search/', views.service_search, name='service_search'),
 
-     path('packages/', views.package_list, name='package_list'),
-    path('packages/create/', views.package_create, name='package_create'),
-    path('packages/<int:pk>/', views.package_detail, name='package_detail'),
-    path('packages/<int:pk>/update/', views.package_update, name='package_update'),
-    path('packages/<int:pk>/delete/', views.package_delete, name='package_delete'),
-    path('packages/search/', views.package_search, name='package_search'),
+    path('package/', views.package_list, name='package_list'),
+    path('package/<int:package_id>/', views.package_detail, name='package_detail'),
+    path('package/create/', views.package_create, name='package_create'),
+    path('package/<int:package_id>/update/', views.package_update, name='package_update'),
+    path('package/<int:package_id>/delete/', views.package_delete, name='package_delete'),
+    path('packages/search/', views.package_search, name='package_search')
 ]

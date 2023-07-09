@@ -522,10 +522,61 @@ def service_search(request):
         return render(request, 'service_list.html', {'services': services})
 
 
-from .models import Packages
+
+from django.shortcuts import render, get_object_or_404, redirect
 from .forms import PackageForm
+from .models import Packages
 
 def package_list(request):
+    packages = Packages.objects.all()
+    return render(request, 'package_list.html', {'packages': packages})
+
+def package_detail(request, package_id):
+    package = get_object_or_404(Packages, id=package_id)
+    return render(request, 'package_detail.html', {'package': package})
+
+def package_create(request):
+    services = Service.objects.all()
+    if request.method == 'POST':
+        form = PackageForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('package_list')
+    else:
+        form = PackageForm()
+    context = {
+        'form': form,
+        'services': services
+    }
+    return render(request, 'package_create.html', {'form': form})
+
+def package_update(request, package_id):
+    package = get_object_or_404(Packages, pk=package_id)
+
+    if request.method == 'POST':
+        form = PackageForm(request.POST, instance=package)
+        if form.is_valid():
+            form.save()
+            return redirect('package_detail', package_id=package_id)
+    else:
+        form = PackageForm(instance=package)
+
+    context = {
+        'form': form,
+        'package': package,
+    }
+    return render(request, 'package_update.html', context)
+
+
+def package_delete(request, package_id):
+    package = get_object_or_404(Packages, id=package_id)
+    if request.method == 'POST':
+        package.delete()
+        return redirect('package_list')
+    return render(request, 'package_delete.html', {'package': package})
+
+
+def package_search(request):
     if request.method == 'GET':
         query = request.GET.get('q')
         if query:
@@ -534,52 +585,3 @@ def package_list(request):
             packages = Packages.objects.all()
         return render(request, 'package_list.html', {'packages': packages})
 
-
-def package_create(request):
-    customers = Customer.objects.all()
-    services = Service.objects.all()
-
-    if request.method == 'POST':
-        form = PackageForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('package_list')
-    else:
-        form = PackageForm()
-
-    context = {
-        'form': form,
-        'customers': customers,
-        'services': services
-    }
-    return render(request, 'package_create.html', context)
-
-
-
-def package_detail(request, pk):
-    package = get_object_or_404(Packages, pk=pk)
-    return render(request, 'package_detail.html', {'package': package})
-
-def package_update(request, pk):
-    package = get_object_or_404(Packages, pk=pk)
-    form = PackageForm(request.POST or None, instance=package)
-    if form.is_valid():
-        form.save()
-        return redirect('package_list')
-    return render(request, 'package_update.html', {'form': form, 'package': package})
-
-def package_delete(request, pk):
-    package = get_object_or_404(Packages, pk=pk)
-    if request.method == 'POST':
-        package.delete()
-        return redirect('package_list')
-    return render(request, 'package_delete.html', {'package': package})
-
-def package_search(request):
-    query = request.GET.get('q')
-    packages = Packages.objects.filter(name__icontains=query)
-    context = {
-        'packages': packages,
-        'query': query
-    }
-    return render(request, 'package_list.html', context)

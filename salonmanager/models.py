@@ -37,14 +37,21 @@ class Customer(models.Model):
         return self.name
     
 class Packages(models.Model):
+    VALIDITY_CHOICES = (
+        ('1M', '1 month'),
+        ('6M', '6 months'),
+        ('1Y', '1 year'),
+        # Add more validity options here
+    )
     name = models.CharField(max_length=100)
     price = MoneyField(max_digits=14, decimal_places=2, default_currency='AED')
     services = models.ManyToManyField(Service)
-    customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
+    validity = models.CharField(max_length=2, choices=VALIDITY_CHOICES, default='1M')
     
     def __str__(self):
         return self.name
     
+
 class Appointment(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
     staff_member = models.ForeignKey(StaffMember, on_delete=models.PROTECT)
