@@ -42,6 +42,14 @@ urlpatterns = [
     path('staff-members/search/', views.staff_member_search, name='staff_member_search'),
     #path('staff-members/search/', views.StaffMemberSearchView.as_view(), name='staff_member_search'),
 
+
+    path('product/', views.product_list, name='product_list'),
+    path('product/create/', views.product_create, name='product_create'),
+    path('product/<int:pk>/', views.product_detail, name='product_detail'),
+    path('product/<int:pk>/update/', views.product_update, name='product_update'),
+    path('product/<int:pk>/delete/', views.product_delete, name='product_delete'),
+    path('product/search/', views.product_search, name='product_search'),
+
     path('services/', views.service_list, name='service_list'),
     path('services/create/', views.service_create, name='service_create'),
     path('services/<int:pk>/', views.service_detail, name='service_detail'),
@@ -60,4 +68,6 @@ urlpatterns = [
     path('membership/success/', views.membership_success, name='membership_success'),
     path('membership/family/add/', views.add_family_member, name='add_family_member'),
     
+
+
 ]

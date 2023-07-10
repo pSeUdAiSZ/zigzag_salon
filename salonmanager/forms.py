@@ -23,6 +23,17 @@ class StaffMemberForm(forms.ModelForm):
         fields = ['name', 'branches', 'image']
 
 
+from django import forms
+from .models import Product
+
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ['name', 'image', 'price']
+
+
+
+
 from .models import Service
 
 class ServiceForm(forms.ModelForm):
