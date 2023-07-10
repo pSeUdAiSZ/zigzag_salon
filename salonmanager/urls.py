@@ -54,5 +54,10 @@ urlpatterns = [
     path('package/create/', views.package_create, name='package_create'),
     path('package/<int:package_id>/update/', views.package_update, name='package_update'),
     path('package/<int:package_id>/delete/', views.package_delete, name='package_delete'),
-    path('packages/search/', views.package_search, name='package_search')
+    path('packages/search/', views.package_search, name='package_search'),
+
+    path('membership/purchase/', views.membership_purchase, name='membership_purchase'),
+
+    path('membership/family/add/', views.add_family_member, name='add_family_member'),
+    
 ]

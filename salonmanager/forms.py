@@ -1,5 +1,5 @@
 from django import forms
-from .models import Customer
+from .models import Customer, FamilyMember
 
 class CustomerForm(forms.ModelForm):
     class Meta:
@@ -57,3 +57,14 @@ ServiceUsageFormSet = inlineformset_factory(
     fields=('service', 'usage_count'),
     extra=1,
 )
+
+from .models import FamilyMember, Membership
+class FamilyMemberForm(forms.ModelForm):
+    class Meta:
+        model = FamilyMember
+        fields = ['customer','name', 'age', 'number']
+
+class MembershipForm(forms.ModelForm):
+    class Meta:
+        model = Membership
+        fields = ['customer', 'package', 'family_members', 'start_date', 'end_date']

@@ -84,10 +84,18 @@ class Invoice(models.Model):
     tips = MoneyField(max_digits=14, decimal_places=2, default_currency='AED',null = True)
     price_to_be_paid = MoneyField(max_digits=14, decimal_places=2, default_currency='AED',null = True)
 
+class FamilyMember(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
+    name = models.CharField(max_length=100)
+    age = models.PositiveIntegerField()
+    number = models.CharField(max_length=20)
 
-"""class Membership(models.Model):
+    def str(self):
+        return self.name
+
+class Membership(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
     package = models.ForeignKey(Packages, on_delete=models.CASCADE)
     family_members = models.ManyToManyField(FamilyMember)
     start_date = models.DateField()
-    end_date = models.DateField()"""
+    end_date = models.DateField()

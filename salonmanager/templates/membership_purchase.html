@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  label {
+    display: block;
+    font-weight: bold;
+  }
+
+  input[type="text"],
+  input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  button {
+    margin-right: 10px;
+  }
+</style>
+
+<h1>Membership Purchase</h1>
+
+<form method="POST" action="{% url 'membership_purchase' %}">
+  {% csrf_token %}
+
+  <div class="form-group">
+    <label for="id_package">Package:</label>
+    {{ form.package }}
+  </div>
+
+  <div class="form-group">
+    <label for="id_customer">Customer:</label>
+    {{ form.customer }}
+  </div>
+
+  <div class="form-group">
+    <label for="id_family_members">Family Members:</label>
+    <ul>
+      {% for family_member in family_members %}
+        <li>{{ family_member.name }} - {{ family_member.age }} - {{ family_member.number }}</li>
+      {% endfor %}
+    </ul>
+    <!--{{ form.family_members }}-->
+    <button type="button" class="btn btn-primary" id="addFamilyMemberBtn">Add Family Member</button>
+  </div>
+
+  <div class="form-group">
+    <label for="id_start_date">Start Date:</label>
+    {{ form.start_date }}
+  </div>
+
+  <div class="form-group">
+    <label for="id_end_date">End Date:</label>
+    {{ form.end_date }}
+  </div>
+
+  <button type="submit" class="btn btn-primary">Send to Payment</button>
+</form>
+
+<script>
+  document.getElementById('addFamilyMemberBtn').addEventListener('click', function() {
+    window.location.href = "{% url 'add_family_member' %}";
+  });
+</script>
+
+{% endblock %}

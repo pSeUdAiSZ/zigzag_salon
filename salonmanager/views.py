@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views import View
-from .models import ServiceUsage, StaffMember,Customer,Service,Branch,Appointment
+from .models import FamilyMember, ServiceUsage, StaffMember,Customer,Service,Branch,Appointment
 
 from .utils import timeslot_gen_tf,calculate_end_time
 
@@ -620,4 +620,86 @@ def package_search(request):
         else:
             packages = Packages.objects.all()
         return render(request, 'package_list.html', {'packages': packages})
+
+
+
+
+from django.shortcuts import render, redirect
+from .models import Packages, Customer, FamilyMember, Membership
+from .forms import MembershipForm
+
+def membership_purchase(request):
+    
+    packages = Packages.objects.all()
+    customers = Customer.objects.all()
+
+    if request.method == 'POST':
+        form = MembershipForm(request.POST)
+        if form.is_valid():
+            membership = form.save()
+            # Perform additional actions like sending payment, generating invoices, etc.
+            return redirect('membership_success')
+    else:
+        form = MembershipForm()
+
+    context = {
+        'form': form,
+        'packages': packages,
+        'customers': customers,
+    }
+    return render(request, 'membership_purchase.html', context)
+
+
+
+"""
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import FamilyMember, Customer
+from .forms import FamilyMemberForm
+
+def add_family_member(request):
+    if request.method == 'POST':
+        form = FamilyMemberForm(request.POST)
+        if form.is_valid():
+            customer_id = request.POST.get('customer_id')  # Get the selected customer ID
+            customer = get_object_or_404(Customer, id=customer_id)  # Retrieve the corresponding customer object
+            family_member = form.save(commit=False)
+            family_member.customer = customer  # Assign the customer to the family member
+            family_member.save()
+            return redirect('membership_purchase')  # Redirect to the membership purchase page or another appropriate page
+    else:
+        form = FamilyMemberForm()
+        customers = Customer.objects.all()
+        context = {
+            'customers': customers
+        }
+    return render(request, 'add_family_member.html', context)
+
+"""
+"""
+from .forms import FamilyMemberForm
+def add_family_member(request):
+    form = FamilyMemberForm()
+    context = {
+        'form': form,
+    }
+    return render(request, 'add_family_member.html', context)
+"""
+from django.shortcuts import redirect
+from .forms import FamilyMemberForm
+def add_family_member(request):
+    if request.method == 'POST':
+        form = FamilyMemberForm(request.POST)
+        if form.is_valid():
+            family_member = form.save()
+            return redirect('membership_purchase')
+    else:
+        form = FamilyMemberForm()
+    
+    context = {
+        'form': form,
+    }
+    return render(request, 'add_family_member.html', context)
+
+
+
 
