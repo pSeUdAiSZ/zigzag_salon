@@ -57,7 +57,7 @@ urlpatterns = [
     path('packages/search/', views.package_search, name='package_search'),
 
     path('membership/purchase/', views.membership_purchase, name='membership_purchase'),
-
+    path('membership/success/', views.membership_success, name='membership_success'),
     path('membership/family/add/', views.add_family_member, name='add_family_member'),
     
 ]

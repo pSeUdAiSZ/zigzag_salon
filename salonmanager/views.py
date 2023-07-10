@@ -650,6 +650,10 @@ def membership_purchase(request):
     return render(request, 'membership_purchase.html', context)
 
 
+from django.shortcuts import render
+
+def membership_success(request):
+    return render(request, 'membership_success.html')
 
 """
 from django.shortcuts import render, redirect, get_object_or_404

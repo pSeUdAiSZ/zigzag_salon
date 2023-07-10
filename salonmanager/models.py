@@ -99,3 +99,11 @@ class Membership(models.Model):
     family_members = models.ManyToManyField(FamilyMember)
     start_date = models.DateField()
     end_date = models.DateField()
+
+class Product(models.Model):
+    name = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='product_images/', null=True)
+    price = MoneyField(max_digits=14, decimal_places=2, default_currency='AED')
+
+    def str(self):
+        return self.name
