@@ -11,21 +11,39 @@ from .models import FamilyMember, ServiceUsage, StaffMember,Customer,Service,Bra
 from .utils import timeslot_gen_tf,calculate_end_time
 
 # Create your views here.
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import UserCreationForm
+
 def manager_signup(request):
-    if request.method=='POST':
-        uname=request.POST.get('username')
-        email=request.POST.get('email')
-        pass1=request.POST.get('password1')
-        pass2=request.POST.get('password2')
+    if request.method == 'POST':
+        uname = request.POST.get('username')
+        email = request.POST.get('email')
+        pass1 = request.POST.get('password1')
+        pass2 = request.POST.get('password2')
+        role = request.POST.get('role')  # Retrieve the selected role
 
-        if pass1!=pass2:
-            return HttpResponse("Your password and confirm password are not Same!!")
+        if pass1 != pass2:
+            return HttpResponse("Your password and confirm password are not the same!")
         else:
+            # Create user based on the selected role
+            if role == 'customer':
+                my_user = User.objects.create_user(uname, email, pass1)
+                # Additional customer-specific code here
+                messages.success(request, "You Have Successfully Registered! Welcome!")
+                return redirect('manager_login')  # Redirect to packages page
+            elif role == 'employee':
+                my_user = User.objects.create_user(uname, email, pass1)
+                # Additional employee-specific code here
+                return redirect('manage_login')  # Redirect to dashboard page
+            else:
+                return HttpResponse("Invalid role selection!")
 
-            my_user=User.objects.create_user(uname,email,pass1)
             my_user.save()
             return redirect('manager_login')
-    return render (request,'manager_signup.html')
+
+    return render(request, 'manager_signup.html')
+
 
 def manager_login(request):
     if request.method=='POST':
@@ -40,6 +58,8 @@ def manager_login(request):
             return redirect('manager_login')
     return render (request,'manager_login.html')
 @login_required(login_url='/salonmanager/login/')
+
+
 def manager_dashboard(request):
     return render(request,'base.html')
 
@@ -755,4 +775,6 @@ from .models import Product
 def product_search(request):
     keyword = request.GET.get('keyword')
     products = Product.objects.filter(name__icontains=keyword)
-    return render(request, 'product_search.html', {'products': products, 'keyword': keyword})
+    return render(request, 'product_list.html', {'products': products, 'keyword': keyword})
+
+
