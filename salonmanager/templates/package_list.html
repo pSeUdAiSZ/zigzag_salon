@@ -2,6 +2,25 @@
 
 {% block content %}
 <style>
+  .accordion-card {
+    margin-bottom: 20px;
+  }
+
+  .accordion-card .card-header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px;
+    cursor: pointer;
+  }
+
+  .accordion-card .card-header h5 {
+    margin-bottom: 0;
+  }
+
+  .accordion-card .card-body {
+    padding: 10px;
+  }
+
   .search-container {
     display: flex;
     align-items: center;
@@ -17,7 +36,7 @@
 
   .search-container button {
     padding: 8px 12px;
-    background-color: #A9A9A9;
+    background-color: #007bff;
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -26,32 +45,8 @@
   }
 
   .search-container button:hover {
-    background-color: #808080;
-  }
-
-  .card {
-    width: 18rem;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-    overflow: hidden;
-  }
-
-  .card-body {
-    text-align: center;
-    padding: 20px;
-  }
-
-  .card-title {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: #333;
-  }
-
-  .card-text {
-    margin-bottom: 5px;
-    color: #666;
+    background-color: #0069d9;
+    border-color: #0062cc;
   }
 
   .btn-primary {
@@ -65,62 +60,53 @@
     background-color: #0069d9;
     border-color: #0062cc;
   }
-
-  .btn-secondary {
-    background-color: #6c757d;
-    border-color: #6c757d;
-    color: #fff;
-    transition: background-color 0.3s;
-  }
-
-  .btn-secondary:hover {
-    background-color: #5a6268;
-    border-color: #545b62;
-  }
-
-  .btn-danger {
-    background-color: #dc3545;
-    border-color: #dc3545;
-    color: #fff;
-    transition: background-color 0.3s;
-  }
-
-  .btn-danger:hover {
-    background-color: #c82333;
-    border-color: #bd2130;
-  }
 </style>
 
-  <h1>Packages</h1>
-  <!-- Search form -->
-  <div class="search-container">
-    <form method="GET" action="{% url 'package_search' %}">
-      <input type="text" name="q" placeholder="Search by name" value="{{ request.GET.q }}">
-      <button type="submit">Search</button>
-    </form>
-    <a href="{% url 'package_create' %}" class="btn btn-primary">+ Add New Package</a>
-  </div>
+<h1>Packages</h1>
 
-  <div class="row">
-    {% for package in packages %}
-      <div class="col-md-4 mb-4">
-        <div class="card">
+<div class="search-container">
+  <form method="GET" action="{% url 'package_search' %}">
+    <input type="text" name="q" placeholder="Search by name" value="{{ request.GET.q }}">
+    <button type="submit">Search</button>
+  </form>
+  <a href="{% url 'package_create' %}" class="btn btn-primary">+ Add New Package</a>
+</div>
+
+<div id="accordion">
+  {% for package in packages %}
+    <div class="accordion-card">
+      <div class="card">
+        <div class="card-header" id="heading{{ package.pk }}" data-toggle="collapse" data-target="#collapse{{ package.pk }}" aria-expanded="true" aria-controls="collapse{{ package.pk }}">
+          <h5 class="mb-0">
+            {{ package.name }}
+          </h5>
+        </div>
+
+        <div id="collapse{{ package.pk }}" class="collapse show" aria-labelledby="heading{{ package.pk }}" data-parent="#accordion">
           <div class="card-body">
-            <h5 class="card-title">{{ package.name }}</h5>
-            <p class="card-text">Price: {{ package.price }}</p>
-            <p class="card-text">Validity: {{ package.get_validity_display }}</p>
-            <p class="card-text">Services: {{ package.services.all|join:", " }}</p>
+            <p><strong>Price:</strong> {{ package.price }}</p>
+            <p><strong>Validity:</strong> {{ package.get_validity_display }}</p>
+            <p><strong>Services:</strong></p>
+            <ul>
+              {% for service in package.services.all %}
+                <li>{{ service }}</li>
+              {% endfor %}
+            </ul>
+            <p><strong>Service Usage:</strong></p>
             <ul>
               {% for service_usage in package.serviceusage_set.all %}
                 <li>{{ service_usage.service }} - Usage Count: {{ service_usage.usage_count }}</li>
               {% endfor %}
             </ul>
-            <a href="{% url 'package_detail' package.pk %}" class="btn btn-primary">View</a>
-            <a href="{% url 'package_update' package.pk %}" class="btn btn-secondary">Update</a>
-            <a href="{% url 'package_delete' package.pk %}" class="btn btn-danger">Delete</a>
+            <div class="card-actions">
+              <a href="{% url 'package_detail' package.pk %}" class="btn btn-primary">View</a>
+              <a href="{% url 'package_update' package.pk %}" class="btn btn-secondary">Update</a>
+              <a href="{% url 'package_delete' package.pk %}" class="btn btn-danger">Delete</a>
+            </div>
           </div>
         </div>
       </div>
-    {% endfor %}
-  </div>
+    </div>
+  {% endfor %}
+</div>
 {% endblock %}
