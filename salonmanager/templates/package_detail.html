@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .container {
+      margin-top: 20px;
+    }
+    
+    .card {
+      width: 18rem;
+      margin-bottom: 20px;
+    }
+  </style>
+
+
+<div class="container">
+  <h1>Package Details</h1>
+  <br>
+  
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">{{ package.name }}</h5>
+      <p class="card-text">Price: {{ package.price }}</p>
+      <p class="card-text">Validity: {{ package.get_validity_display }}</p>
+      <p class="card-text">Services: 
+        {% for service in package.services.all %}
+          {{ service.name }},
+        {% endfor %}
+      </p>
+    </div>
+  </div>
+
+  <h2>Service Usage Counts:</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Service</th>
+        <th>Usage Count</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for service_usage in package.serviceusage_set.all %}
+        <tr>
+          <td>{{ service_usage.service }}</td>
+          <td>{{ service_usage.usage_count }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+  <br>
+  <a href="{% url 'package_list' %}" class="btn btn-secondary">Back</a>
+</div>
+
+{% endblock %}
+
+{% block styles %}
+
+{% endblock %}

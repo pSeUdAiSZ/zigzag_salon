@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% load static %} 
+{% block content %}
+
+<style>
+    .card {
+      width: 18rem;
+      margin-bottom: 20px;
+    }
+  
+    .card-img-top {
+      height: 200px;
+      object-fit: cover;
+    }
+  
+    button {
+      margin-right: 10px;
+    }
+  </style>
+
+
+
+
+<div class="col-md-6 offset-md-3">
+  <h1>Service Detail</h1>
+  <br/>
+
+  <div class="card">
+    {% if service.image %}
+    <img src="{{ service.image.url }}" alt="Service Image" class="card-img-top">
+    {% else %}
+    <img src="{% static 'placeholder-image.jpg' %}" alt="Placeholder Image" class="card-img-top">
+    {% endif %}
+    <div class="card-body">
+      <h5 class="card-title">{{ service.name }}</h5>
+      <p class="card-text">Category: {{ service.category }}</p>
+      <p class="card-text">Price: {{ service.price }}</p>
+      <p class="card-text">Duration: {{ service.duration }}</p>
+      <a href="{% url 'service_update' service.pk %}" class="btn btn-secondary">Update</a>
+      <a href="{% url 'service_delete' service.pk %}" class="btn btn-danger">Delete</a>
+    </div>
+  </div>
+
+  <br/>
+  <a href="{% url 'service_list' %}" class="btn btn-secondary">Back</a>
+</div>
+{% endblock %}
+

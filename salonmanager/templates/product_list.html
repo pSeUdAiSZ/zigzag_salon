@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  .card {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  .card-body {
+    padding: 10px;
+  }
+
+  .card-title {
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .card-text {
+    margin-bottom: 5px;
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-danger {
+    margin-top: 10px;
+  }
+
+  .add-new-button {
+    float: right;
+    margin-left: auto;
+  }
+
+  .search-form {
+    margin-bottom: 10px;
+  }
+
+  .search-input {
+    width: 200px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-right: 10px;
+  }
+
+  .search-button {
+    padding: 8px 12px;
+    background-color: #337ab7;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+</style>
+
+<h1>Product List</h1>
+
+<form method="GET" action="{% url 'product_search' %}" class="search-form">
+  <input type="text" name="keyword" class="search-input" placeholder="Search by keyword" value="{{ keyword }}">
+  <button type="submit" class="btn btn-primary search-button">Search</button>
+</form>
+
+<a href="{% url 'product_create' %}" class="btn btn-primary add-new-button">+ Add New</a>
+
+<div class="row">
+  {% for product in products %}
+    <div class="col-md-4 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{ product.name }}</h5>
+          <p class="card-text">Price: {{ product.price }}</p>
+          <img src="{{ product.image.url }}" alt="{{ product.name }}" class="card-img-top">
+          <a href="{% url 'product_detail' product.pk %}" class="btn btn-primary">View</a>
+          <a href="{% url 'product_update' product.pk %}" class="btn btn-secondary">Update</a>
+          <a href="{% url 'product_delete' product.pk %}" class="btn btn-danger">Delete</a>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

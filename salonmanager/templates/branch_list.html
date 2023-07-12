@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  .card {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  .card-body {
+    padding: 10px;
+  }
+
+  .card-title {
+    padding-top :10px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .card-text {
+    margin-bottom: 5px;
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-danger {
+    margin-top: 10px;
+    padding-bottom:10px;
+  }
+
+  .search-form {
+    display: flex;
+    align-items: center;
+  }
+
+  .search-input {
+    width: 200px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-right: 10px;
+  }
+
+  .add-new-button:hover {
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    float:right;
+    display:flex;
+    margin-left: auto;
+  }
+  .search-btn{
+    padding: 8px 12px;
+    background-color: #A9A9A9;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .search-btn:hover {
+    background-color: #808080;
+  }
+
+  
+  .search-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+ 
+</style>
+
+  <h1>Branches</h1>
+  <!-- Search form -->
+  <div class="search-container">
+    <form method="GET" action="{% url 'branch_search' %}">
+      <input type="text" name="q" class="search-input" placeholder="Search by name" value="{{ request.GET.q }}">
+      <button class="search-btn" type="submit">Search</button>
+    </form>
+  
+    <a href="{% url 'branch_create' %}" class="btn btn-primary add-new-button">+ Add New</a>
+  </div>
+
+  <div class="row">
+    {% for branch in branches %}
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ branch.name }}</h5>
+            <p class="card-text">Address: {{ branch.address }}</p>
+            <p class="card-text">Phone Number: {{ branch.phone }}</p>
+            <p class="card-text">Email: {{ email.profession }}</p>
+            
+            <a href="{% url 'branch_detail' branch.pk %}" class="btn btn-primary">View</a>
+            <a href="{% url 'branch_update' branch.pk %}" class="btn btn-secondary">Update</a>
+            <a href="{% url 'branch_delete' branch.pk %}" class="btn btn-danger">Delete</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const addNewButton = document.getElementById('add-new-button');
+      addNewButton.addEventListener('click', function() {
+        window.location.href = "{% url 'branch_create' %}";
+      });
+    });
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const ViewButton = document.getElementById('view-button');
+      addNewButton.addEventListener('click', function() {
+        window.location.href = "{% url 'branch_detail' %}";
+      });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const ViewButton = document.getElementById('view-button');
+      addNewButton.addEventListener('click', function() {
+        window.location.href = "{% url 'branch_delete' %}";
+      });
+    });
+
+
+
+  </script>
+{% endblock %}

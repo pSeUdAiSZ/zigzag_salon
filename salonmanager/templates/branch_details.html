@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="col-md-6 offset-md-3">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">{{ branch.name }}</h5>
+      <p class="card-text">Address: {{ branch.address }}</p>
+      <p class="card-text">Phone: {{ branch.phone_number }}</p>
+      <p class="card-text">Email: {{ branch.email }}</p>
+      <a href="{% url 'branch_list' %}" class="btn btn-secondary">Back</a>
+      <!--<a href="{% url 'branch_update' branch.pk %}" class="btn btn-secondary">Update</a>-->
+      <!--<a href="{% url 'branch_delete' branch.pk %}" class="btn btn-danger">Delete</a>-->
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+  .card {
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-body {
+    padding: 20px;
+  }
+
+  .card-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .card-text {
+    margin-bottom: 10px;
+  }
+
+  .btn-secondary,
+  .btn-danger {
+    margin-top: 10px;
+  }
+</style>
+{% endblock %}
