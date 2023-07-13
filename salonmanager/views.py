@@ -768,3 +768,69 @@ def product_search(request):
     return render(request, 'product_list.html', {'products': products, 'keyword': keyword})
 
 
+
+
+def payment_options(request, id=None, discount = 0):
+    tax=0
+    app = Appointment.objects.all()
+    print(app)
+    if request.method =='POST':
+        appointment_id = request.POST.get('appointment_id')
+        appointment = get_object_or_404(Appointment, id = appointment_id)
+        tax = .05*appointment.total_price
+        price = appointment.total_price + tax
+    else:
+        appointment = get_object_or_404(Appointment,id = id)
+        if discount == 0:
+            tax = .05*appointment.total_price
+            price = appointment.total_price+tax
+        else:
+            tax = .05*appointment.discounted_price
+            price = appointment.discounted_price+tax
+        
+    services = appointment.services.all()
+    service_list = []
+    for service in services:
+        service_dict={
+            'name':service.name,
+            'price':service.price
+        }
+        service_list.append(service_dict)
+    
+    if appointment.tips == 0:
+        pass
+    else:
+        price = price+ appointment.tips
+    appointment_details = {
+        'appointment_id':appointment.id,
+        'customer': appointment.customer,
+        'total_price':price,
+        'tax':tax,
+        'tips':appointment.tips,
+        'services': service_list ,
+        'discount':discount}
+    print(appointment_details)
+    
+    
+    return render(request,'make_payments.html',appointment_details)
+
+def add_discount(request,id):
+    appointment = get_object_or_404(Appointment,id = id)
+    if request.method =='POST':
+        discount = request.POST.get('discount')
+        print(discount)
+    price = appointment.total_price - appointment.total_price*discount*0.01
+    appointment.discounted_price = price
+    appointment.save()
+    
+    
+    return redirect('payment_options',id,discount)
+def add_tips(request,id):
+    appointment = get_object_or_404(Appointment,id = id)
+    if request.method =='POST':
+        tips = request.POST.get('tips')
+        print(tips)
+    appointment.tips=tips
+    appointment.save()
+        
+    return redirect('payment_options', id)

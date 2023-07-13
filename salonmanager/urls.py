@@ -68,6 +68,10 @@ urlpatterns = [
     path('membership/success/', views.membership_success, name='membership_success'),
     path('membership/family/add/', views.add_family_member, name='add_family_member'),
     
-
+    path('payment_options',views.payment_options,name=  'payment_options'),
+    path('payment_options/<int:id>/<int:discount>',views.payment_options,name='payment_options'),
+    path('payment_options/<int:id>',views.payment_options,name = 'payment_options'),
+    path('add_discount/<int:id>/',views.add_discount,name='add_discount'),
+    path('add_tips/<int:id>/', views.add_tips,name='add_tips')
 
 ]
