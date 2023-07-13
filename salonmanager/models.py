@@ -74,9 +74,20 @@ class Appointment(models.Model):
     date = models.DateField(null=True)
     branch = models.ForeignKey('Branch', on_delete=models.PROTECT,null=True)
     tips = MoneyField(max_digits=12,decimal_places=2,default_currency='AED',default=0.00)
+
+ # New fields
+    PAYMENT_STATUS_CHOICES = [
+        ('unpaid', 'Unpaid'),
+        ('paid', 'Paid'),
+        ('pending', 'Pending'),
+        ('cancelled', 'Cancelled'),
+    ]
+    payment_status = models.CharField(max_length=20, choices=PAYMENT_STATUS_CHOICES, default='unpaid')
+    payment_method = models.CharField(max_length=100, null=True, blank=True)
+    payment_date = models.DateTimeField(null=True, blank=True)
+    amount_paid = MoneyField(max_digits=14, decimal_places=2, default_currency='AED', null=True, blank=True)
+
     def str(self):
-
-
         return f"{self.customer} - {self.services} with {self.staff_member} on {self.start_time}"
 
     

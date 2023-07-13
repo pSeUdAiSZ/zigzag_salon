@@ -814,14 +814,16 @@ def payment_options(request, id=None, discount = 0):
     
     return render(request,'make_payments.html',appointment_details)
 
-def add_discount(request,id):
-    appointment = get_object_or_404(Appointment,id = id)
-    if request.method =='POST':
+def add_discount(request, id):
+    appointment = get_object_or_404(Appointment, id=id)
+    if request.method == 'POST':
         discount = request.POST.get('discount')
-        print(discount)
-    price = appointment.total_price - appointment.total_price*discount*0.01
-    appointment.discounted_price = price
-    appointment.save()
+        price = appointment.total_price - appointment.total_price * discount * 0.01
+        appointment.discounted_price = price
+        appointment.save()
+
+    return redirect('payment_options', id, discount)
+
     
     
     return redirect('payment_options',id,discount)
@@ -834,3 +836,32 @@ def add_tips(request,id):
     appointment.save()
         
     return redirect('payment_options', id)
+
+"""
+def process_payment(request):
+    if request.method == 'POST':
+        payment_method = request.POST.get('paymentMethod')
+        
+        # Process the payment based on the selected method
+        
+        # Redirect to a success page or show a payment confirmation message
+        
+    return redirect('payment_options')
+"""
+
+
+from django.contrib import messages
+
+def process_payment(request, appointment_id, payment_method):
+    appointment = Appointment.objects.get(id=appointment_id)
+
+    if payment_method == 'pay_with_cash':
+        appointment.status = 'paid_cash'
+    elif payment_method == 'pay_with_credit_card':
+        appointment.status = 'paid_credit_card'
+    elif payment_method == 'pay_later':
+        appointment.status = 'paid_later'
+
+    appointment.save()
+    messages.success(request, 'Payment processed successfully.')
+    return redirect('appointment_booking', appointment_id=appointment_id)

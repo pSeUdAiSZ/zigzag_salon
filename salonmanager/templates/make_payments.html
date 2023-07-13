@@ -25,49 +25,48 @@
      
       <div class="col-md-9">
         <h5> Client:{{customer}}</h5>
-        <a href = "" class = 'btn btn-info'>+Products</a>
-        <a class = 'btn btn-warning'>+Services</a>
+        <a href="#" class="btn btn-info">+Products</a>
+        <a href="#" class="btn btn-warning">+Services</a>
         
         <table>
             <thead>
                 <tr>
                     <th>Product/Service</th>
-            
                     <th>Subtotal</th>
-                    
                     <th>Total</th>
                 </tr>
             </thead>
             <tbody>
                 {% for service in services  %}
                     <tr>
-                    <td>{{service.name}}</td>
-            
-                    <td>{{service.price}}</td>
-                    <td>{{service.price }}</td>
+                        <td>{{service.name}}</td>
+                        <td>{{service.price}}</td>
+                        <td>{{service.price }}</td>
                     </tr>
                 {% endfor %}
-        
-        <!-- Add more rows as needed -->
             </tbody>
             <tfoot>
                 <tr>
                     <th colspan="1">Discount Applied</th>
-                    <td> <form action="{% url 'add_discount' id=appointment_id  %}" method = "POST">
-                        {% csrf_token %}
-                        <input name = 'discount' type='number'>
-                        <button type = 'submit' class = 'btn btn-outline-primary'>Add Discount</button>
-                    </form></td>
+                    <td>
+                        <form action="{% url 'add_discount' id=appointment_id  %}" method="POST">
+                            {% csrf_token %}
+                            <input name="discount" type="number">
+                            <button type="submit" class="btn btn-outline-primary">Add Discount</button>
+                        </form>
+                    </td>
                     <td>{{discount}}%</td>
                 </tr>
                 <tr>
                     <th colspan="1">Tips</th>
-                    <td><form action="{% url 'add_tips' id=appointment_id  %}" method = "POST">
-                        {% csrf_token %}
-                        <input name = 'tips' type='number'>
-                        <button type = 'submit' class = 'btn btn-outline-primary'>Add Tips</button>
-                    </form></td>
-                    <td>{{tips}}<td>
+                    <td>
+                        <form action="{% url 'add_tips' id=appointment_id  %}" method="POST">
+                            {% csrf_token %}
+                            <input name="tips" type="number">
+                            <button type="submit" class="btn btn-outline-primary">Add Tips</button>
+                        </form>
+                    </td>
+                    <td>{{tips}}</td>
                 </tr>
                 <tr>
                      <th colspan="1">Taxes 5%</th>
@@ -78,15 +77,99 @@
                   <th colspan="1">Total</th>
                     <td></td>
                     <td>{{total_price}}</td>
-            
                 </tr>
             </tfoot>
         </table>
-        <a class='btn btn-outline-success'>Pay</a>
+        <a href="#" class="btn btn-outline-success" onclick="showPaymentOptions()">Pay</a>
     </div>
     <div class="col-md-3">
        
     </div>
     </div>
 </div>
+
+<!-- Payment Options Modal -->
+<div class="modal" id="paymentModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Payment Options</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Choose your payment method:</p>
+        <button type="button" class="btn btn-primary" onclick="payWithCash()">Pay with Cash</button>
+        <button type="button" class="btn btn-primary" onclick="payWithCreditCard()">Pay with Credit Card</button>
+        <button type="button" class="btn btn-primary" onclick="payLater()">Pay Later</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Display appointment details 
+<h2>Appointment Details</h2>
+<p>Customer: {{ appointment.customer }}</p>
+<p>Services: {{ appointment.services.all }}</p>
+<p>Staff Member: {{ appointment.staff_member }}</p>
+<p>Date: {{ appointment.date }}</p>
+<p>Start Time: {{ appointment.start_time }}</p>
+<p>End Time: {{ appointment.end_time }}</p>
+<p>Total Price: {{ appointment.total_price }}</p>
+<p>Discounted Price: {{ appointment.discounted_price }}</p>
+<p>Amount to be Paid: {{ appointment.amount_to_be_paid }}</p>
+-->
+
+<!-- Display payment details 
+<h2>Payment Details</h2>
+{% if appointment.payment_status == 'paid' %}
+  <p>Payment Status: Paid</p>
+  <p>Amount Paid: {{ appointment.amount_paid }}</p>
+  <p>Payment Method: {{ appointment.payment_method }}</p>
+  <p>Payment Date: {{ appointment.payment_date }}</p>
+{% else %}
+  <p>Payment Status: Unpaid</p>
+  <form method="post" action="{% url 'process_payment' %}">
+    {% csrf_token %}
+    <input type="hidden" name="appointment_id" value="{{ appointment.id }}">
+    Display payment form fields
+  </form>
+{% endif %}  -->
+
+
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<!-- Include Bootstrap JS -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+<script>
+    function showPaymentOptions() {
+        $('#paymentModal').modal('show');
+    }
+    
+    function hidePaymentOptions() {
+        $('#paymentModal').modal('hide');
+    }
+    
+    function payWithCash() {
+        // code to process payment with cash
+        hidePaymentOptions();
+    }
+    
+    function payWithCreditCard() {
+        // code to process payment with credit card
+        hidePaymentOptions();
+    }
+    
+    function payLater() {
+        // code to save payment for later
+        hidePaymentOptions();
+    }
+</script>
+
 {% endblock content %}
