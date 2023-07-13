@@ -2,6 +2,19 @@
 
 {% block content %}
 <style>
+  /* Style the heading */
+  h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  /* Style the form */
+  form {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
   .form-group {
     margin-bottom: 20px;
   }
@@ -9,18 +22,54 @@
   label {
     display: block;
     font-weight: bold;
+    margin-bottom: 5px;
   }
 
   input[type="text"],
   input[type="number"] {
     width: 100%;
-    padding: 8px;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    font-size: 16px;
   }
 
   button {
     margin-right: 10px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #0062cc;
+  }
+
+  /* Style the radio buttons */
+  input[type="radio"] {
+    margin-right: 5px;
+  }
+
+  /* Style the select box */
+  select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+
+  /* Style the date picker */
+  input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
   }
 
   /* Style the modal */
@@ -31,6 +80,28 @@
   .modal-content {
     padding: 20px;
   }
+
+  /* Hide the family member checkboxes by default */
+  .members {
+    display: none;
+  }
+
+  /* Style the "Add Family Member" button */
+  #addFamilyMemberBtn {
+    display: block;
+    margin-top: 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 10px 20px;
+  }
+
+  #addFamilyMemberBtn:hover {
+    background-color: #0062cc;
+  }
 </style>
 
 <h1>Membership Purchase</h1>
@@ -39,29 +110,37 @@
   {% csrf_token %}
 
   <div class="form-group">
-    <label for="id_package">Package:</label>
-    {{ form.package }}
+    <label for="customer">Select customer:</label>
+    {% for customer in customers %}
+      <div>
+        <input type="radio" onclick="filterMembers('{{customer}}')" name="customer" value="{{ customer.id }}">{{ customer.name }}
+      </div>
+    {% endfor %}
   </div>
 
   <div class="form-group">
-    <label for="id_customer">Customer:</label>
-    {{ form.customer }}
+    <label for="family_members">Select family member:</label>
+    {% for family_member in family_members  %}
+      <div class="members" data-category="{{family_member.customer}}">
+        <input type="checkbox" name="family_member" value="{{family_member.id}}"> {{family_member.name}}
+      </div>
+    {% endfor %}
+    <a type="button" class="btn btn-primary" id="addFamilyMemberBtn">Add Family Member</a>
   </div>
 
   <div class="form-group">
-    <label for="id_family_members">Family Members:</label>
-    {{ form.family_members }}
-    <button type="button" class="btn btn-primary" id="addFamilyMemberBtn">Add Family Member</button>
+    <label for="package">Select package:</label>
+    <select id="package" name="package">
+      <option value="" selected disabled>Select an existing package</option>
+      {% for package in packages %}
+        <option value="{{package.id }}">{{package.name }}</option>
+      {% endfor %}
+    </select>
   </div>
 
   <div class="form-group">
-    <label for="id_start_date">Start Date:</label>
-    {{ form.start_date }}
-  </div>
-
-  <div class="form-group">
-    <label for="id_end_date">End Date:</label>
-    {{ form.end_date }}
+    <label for="start_date">Select Start Date:</label>
+    <input type="date" name="start_date">
   </div>
 
   <button type="submit" class="btn btn-primary">Send to Payment</button>
@@ -82,6 +161,15 @@
         <form method="POST" action="{% url 'add_family_member' %}">
           {% csrf_token %}
           <div class="form-group">
+            <label for="customer">Select customer:</label>
+            <select id="customer" name="customer">
+              <option value="" selected disabled>Select an existing customer</option>
+              {% for customer in customers %}
+                <option value="{{ customer.id }}">{{ customer.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
             <label for="id_name">Name:</label>
             <input type="text" id="id_name" name="name" class="form-control" required>
           </div>
@@ -91,7 +179,7 @@
           </div>
           <div class="form-group">
             <label for="id_number">Number:</label>
-            <input type="text" id="id_number" name="number" class="form-control" required>
+            <input type="text" id="id_number" name="phone" class="form-control" required>
           </div>
           <button type="submit" class="btn btn-primary">Add</button>
         </form>
@@ -99,10 +187,10 @@
     </div>
   </div>
 </div>
+
 <!-- Add these script tags in your HTML file -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-
 
 <script>
   $(document).ready(function() {
@@ -111,5 +199,21 @@
       $('#addFamilyMemberModal').modal('show');
     });
   });
+  
+  function filterMembers(customerId) {
+    var members = document.getElementsByClassName('members');
+
+    for (var i = 0; i < members.length; i++) {
+      var member = members[i];
+      var memberCustomer = member.getAttribute('data-category');
+
+      if (memberCustomer === customerId.toString()) {
+        member.style.display = 'block';
+      }
+      else {
+        member.style.display = 'none';
+      }
+    }
+  }
 </script>
 {% endblock %}

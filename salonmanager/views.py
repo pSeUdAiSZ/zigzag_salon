@@ -549,7 +549,8 @@ def package_list(request):
 
 def package_detail(request, package_id):
     package = get_object_or_404(Packages, id=package_id)
-    return render(request, 'package_detail.html', {'package': package})
+    service_usages = package.serviceusage_set.all()
+    return render(request, 'package_detail.html', {'package': package, 'service_usages': service_usages})
 
 from django.forms import formset_factory
 from .forms import PackageForm, ServiceUsageForm
@@ -590,38 +591,39 @@ def package_create(request):
 
 
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Packages, ServiceUsage
 from .forms import PackageForm, ServiceUsageFormSet
+from .models import Packages, ServiceUsage
 
 def package_update(request, package_id):
     package = get_object_or_404(Packages, pk=package_id)
     form = PackageForm(request.POST or None, instance=package)
-    formset = ServiceUsageFormSet(request.POST or None, instance=package)
+    formset = ServiceUsageFormSet(request.POST or None, instance=package, queryset=ServiceUsage.objects.filter(package=package))
 
     if request.method == 'POST':
         if form.is_valid() and formset.is_valid():
             form.save()
             formset.save()
+            print("Form and formset are valid. Redirecting...")
             return redirect('package_detail', package_id=package_id)
+        else:
+            print("Form or formset is not valid. Debugging form errors...")
+            print("Form Errors:", form.errors)
+            print("Formset Errors:", formset.errors)
 
     selected_services = package.services.all()
-
-    # Adjust the number of form instances based on selected services
-    if form.is_valid():
-        formset = ServiceUsageFormSet(
-            request.POST or None,
-            instance=package,
-            queryset=ServiceUsage.objects.filter(service__in=selected_services)
-        )
 
     context = {
         'form': form,
         'formset': formset,
         'package': package,
-       'package': package,
         'selected_services': selected_services,
     }
     return render(request, 'package_update.html', context)
+
+
+
+
+
 
 
 def package_delete(request, package_id):
@@ -643,7 +645,6 @@ def package_search(request):
 
 
 
-
 from django.shortcuts import render, redirect
 from .models import Packages, Customer, FamilyMember, Membership
 from .forms import MembershipForm
@@ -651,21 +652,33 @@ from .forms import MembershipForm
 def membership_purchase(request):
     
     packages = Packages.objects.all()
+    mem  = Membership.objects.all()
+    print(mem)
     customers = Customer.objects.all()
+    family_members = FamilyMember.objects.all()
+   
 
     if request.method == 'POST':
-        form = MembershipForm(request.POST)
-        if form.is_valid():
-            membership = form.save()
-            # Perform additional actions like sending payment, generating invoices, etc.
-            return redirect('membership_success')
-    else:
-        form = MembershipForm()
-
+       customer_id= request.POST.get('customer')
+       family_members_id = request.POST.getlist('family_member')
+       package_id = request.POST.get('package')
+       start_date  = request.POST.get('start_date')
+       customer = get_object_or_404(Customer,id = customer_id)
+       family_mem_list=[]
+       for family_mem in family_members_id:
+           family_members_selected = FamilyMember.objects.get(id = family_mem)
+           family_mem_list.append(family_members_selected)
+           
+           
+       
+       package = get_object_or_404(Packages,id = package_id)
+       membership = Membership.objects.create(start_date  = start_date,customer=customer,package = package)
+       membership.family_members.set(family_mem_list)
+       
     context = {
-        'form': form,
         'packages': packages,
         'customers': customers,
+        'family_members':family_members
     }
     return render(request, 'membership_purchase.html', context)
 
@@ -675,55 +688,32 @@ from django.shortcuts import render
 def membership_success(request):
     return render(request, 'membership_success.html')
 
-"""
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import FamilyMember, Customer
 from .forms import FamilyMemberForm
 
 def add_family_member(request):
     if request.method == 'POST':
-        form = FamilyMemberForm(request.POST)
-        if form.is_valid():
-            customer_id = request.POST.get('customer_id')  # Get the selected customer ID
-            customer = get_object_or_404(Customer, id=customer_id)  # Retrieve the corresponding customer object
-            family_member = form.save(commit=False)
-            family_member.customer = customer  # Assign the customer to the family member
-            family_member.save()
-            return redirect('membership_purchase')  # Redirect to the membership purchase page or another appropriate page
+        
+        customer_id = request.POST.get('customer')
+        name = request.POST.get('name')
+        age = request.POST.get('age')
+        phone = request.POST.get('phone')
+        customer = get_object_or_404(Customer, id=customer_id)  # Retrieve the corresponding customer object
+        family_member = FamilyMember()
+        family_member.customer = customer
+        family_member.age = age
+        family_member.name = name
+        family_member.number = phone# Assign the customer to the family member
+        family_member.save()
+        return redirect('membership_purchase')  # Redirect to the membership purchase page or another appropriate page
     else:
-        form = FamilyMemberForm()
+        
         customers = Customer.objects.all()
         context = {
             'customers': customers
         }
-    return render(request, 'add_family_member.html', context)
-
-"""
-"""
-from .forms import FamilyMemberForm
-def add_family_member(request):
-    form = FamilyMemberForm()
-    context = {
-        'form': form,
-    }
-    return render(request, 'add_family_member.html', context)
-"""
-from django.shortcuts import redirect
-from .forms import FamilyMemberForm
-def add_family_member(request):
-    if request.method == 'POST':
-        form = FamilyMemberForm(request.POST)
-        if form.is_valid():
-            family_member = form.save()
-            return redirect('membership_purchase')
-    else:
-        form = FamilyMemberForm()
-    
-    context = {
-        'form': form,
-    }
-    return render(request, 'add_family_member.html', context)
-
+    return render(request, 'membership_purchase.html', context)
 
 
 

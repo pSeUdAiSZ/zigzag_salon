@@ -98,7 +98,10 @@ class Membership(models.Model):
     package = models.ForeignKey(Packages, on_delete=models.CASCADE)
     family_members = models.ManyToManyField(FamilyMember)
     start_date = models.DateField()
-    end_date = models.DateField()
+    end_date = models.DateField(null=True)
+
+    def __str__(self):
+        return f"{self.package.name} Membership"
 
 class Product(models.Model):
     name = models.CharField(max_length=100)

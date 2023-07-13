@@ -248,7 +248,8 @@
 
     </div>
 </div>
-
+<button class='btn btn-info' type='submit'>Save Appointment</button>
+</form>
   <!-- Popup overlay -->
 <div id="popup-overlay1" class="popup-overlay1 hidden">
   <div id="popup-content1" class="popup-content1">
@@ -268,8 +269,8 @@
       <br>
       <label for="new-customer-adress">Address:</label>
       <input type="text" id="new-customer-address" name="new-customer-address">
-      <button class='btn btn-outline-success' onclick="saveNewCustomer()">Save</button>
-      <button class='btn btn-outline-danger' onclick="closePopup()">Cancel</button>
+      <a class='btn btn-outline-success' onclick="saveNewCustomer()">Save</a>
+      <a class='btn btn-outline-danger' onclick="closePopup()">Cancel</a>
     </form>
   </div>
 </div>
@@ -330,6 +331,5 @@
 
 
 
-    <button class='btn btn-info' type='submit'>Save Appointment</button>
-</form>
+  
 {% endblock content %}
