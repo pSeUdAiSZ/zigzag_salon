@@ -98,9 +98,9 @@
       </div>
       <div class="modal-body">
         <p>Choose your payment method:</p>
-        <button type="button" class="btn btn-primary" onclick="payWithCash()">Pay with Cash</button>
-        <button type="button" class="btn btn-primary" onclick="payWithCreditCard()">Pay with Credit Card</button>
-        <button type="button" class="btn btn-primary" onclick="payLater()">Pay Later</button>
+        <button id="pay-with-cash-button" type="button" class="btn btn-primary" onclick="payWithCash()">Pay with Cash</button>
+        <button id="credit-card-button" type="button" class="btn btn-primary" onclick="payWithCreditCard()">Pay with Credit Card</button>
+        <button id="pay-later-button" type="button" class="btn btn-primary" onclick="payLater()">Pay Later</button>
       </div>
     </div>
   </div>
@@ -171,5 +171,51 @@
         hidePaymentOptions();
     }
 </script>
+<!--
+<script>
+// Find the Pay with Cash button and add an event listener
+let payWithCashButton = document.querySelector('#pay-with-cash-button');
+payWithCashButton.addEventListener('click', function() {
+  updateAppointmentStatus('paid', function() {
+    window.location.href = '/appointment_booking.html';
+  });
+});
 
+// Find the Credit Card button and add an event listener
+let creditCardButton = document.querySelector('#credit-card-button');
+creditCardButton.addEventListener('click', function() {
+  updateAppointmentStatus('paid', function() {
+    window.location.href = '/appointment_booking.html';
+  });
+});
+
+// Find the Pay Later button and add an event listener
+let payLaterButton = document.querySelector('#pay-later-button');
+payLaterButton.addEventListener('click', function() {
+  updateAppointmentStatus('paid', function() {
+    window.location.href = '/appointment_booking.html';
+  });
+});
+
+// Function to update the status of an appointment
+function updateAppointmentStatus(newStatus, callback) {
+  let appointmentId = /* Get the ID of the appointment to update */;
+  let xhr = new XMLHttpRequest();
+  xhr.open('POST', '/update_appointment_status/');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      callback();
+    } else {
+      console.error('Error updating appointment status.');
+    }
+  };
+  let requestBody = JSON.stringify({
+    'appointment_id': appointmentId,
+    'new_status': newStatus
+  });
+  xhr.send(requestBody);
+}
+</script>
+-->
 {% endblock content %}
