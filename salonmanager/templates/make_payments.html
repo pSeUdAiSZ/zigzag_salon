@@ -1,102 +1,92 @@
 {% extends 'base.html' %}
-
 {% block content %}
 <style>
-  /* Styles for the bill */
-  .bill-container {
-    margin: 20px auto;
-    max-width: 600px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 20px;
-  }
-
-  .bill-heading {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-
-  .bill-section {
-    margin-bottom: 20px;
-  }
-
-  .bill-section-title {
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-
-  .bill-item {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 5px;
-  }
-
-  .bill-total {
-    font-weight: bold;
-    margin-top: 10px;
-  }
-
-  /* Styles for the buttons */
-  .button-container {
-    margin-top: 20px;
-  }
-
-  .btn-bill {
-    margin-right: 10px;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-
-  .btn-bill:hover {
-    background-color: #0062cc;
-  }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin:5px
+    }
+    
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    th {
+        background-color: #f2f2f2;
+    }
+    .hidden{
+        display:none;
+    }
 </style>
-
-<div class="bill-container">
-  <h2 class="bill-heading">Invoice</h2>
-
-  <div class="bill-section">
-    <h4 class="bill-section-title">Customer: {{ customer.name }}</h4>
-    <!-- Display products/packages/services here -->
-    {% for item in items %}
-    <div class="bill-item">
-      <span>{{ item.name }}</span>
-      <span>{{ item.price }}</span>
-    </div>
-    {% endfor %}
-  </div>
-
-  <div class="bill-section">
-    <h4 class="bill-section-title">Discount: {{ discount }}%</h4>
-    <div class="bill-item">
-      <span>Discount Amount:</span>
-      <span>{{ discount_amount }}</span>
-    </div>
-  </div>
-
-  <div class="bill-section">
-    <h4 class="bill-section-title">Tips: {{ tips }}</h4>
-  </div>
-
-  <div class="bill-section">
-    <h4 class="bill-section-title">Total Amount:</h4>
-    <div class="bill-total">
-      {{ total_amount }}
-    </div>
-  </div>
-
-  <div class="button-container">
-    <a href="{% url 'add_discount' id=appointment_id %}" class="btn btn-bill">Add Discount</a>
-    <a href="{% url 'add_tips' id=appointment_id %}" class="btn btn-bill">Add Tips</a>
-    <a href="#" class="btn btn-primary">Proceed to Payment</a>
-  </div>
-</div>
-{% endblock %}
+<div class="container">
+    <div class="row">
      
+      <div class="col-md-9">
+        <h5> Client:{{customer}}</h5>
+        <a href = "" class = 'btn btn-info'>+Products</a>
+        <a class = 'btn btn-warning'>+Services</a>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Product/Service</th>
+            
+                    <th>Subtotal</th>
+                    
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for service in services  %}
+                    <tr>
+                    <td>{{service.name}}</td>
+            
+                    <td>{{service.price}}</td>
+                    <td>{{service.price }}</td>
+                    </tr>
+                {% endfor %}
+        
+        <!-- Add more rows as needed -->
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="1">Discount Applied</th>
+                    <td> <form action="{% url 'add_discount' id=appointment_id  %}" method = "POST">
+                        {% csrf_token %}
+                        <input name = 'discount' type='number'>
+                        <button type = 'submit' class = 'btn btn-outline-primary'>Add Discount</button>
+                    </form></td>
+                    <td>{{discount}}%</td>
+                </tr>
+                <tr>
+                    <th colspan="1">Tips</th>
+                    <td><form action="{% url 'add_tips' id=appointment_id  %}" method = "POST">
+                        {% csrf_token %}
+                        <input name = 'tips' type='number'>
+                        <button type = 'submit' class = 'btn btn-outline-primary'>Add Tips</button>
+                    </form></td>
+                    <td>{{tips}}<td>
+                </tr>
+                <tr>
+                     <th colspan="1">Taxes 5%</th>
+                    <td></td>
+                    <td>+{{tax}}</td>
+                </tr>
+                <tr>
+                  <th colspan="1">Total</th>
+                    <td></td>
+                    <td>{{total_price}}</td>
+            
+                </tr>
+            </tfoot>
+        </table>
+        <a class='btn btn-outline-success'>Pay</a>
+    </div>
+    <div class="col-md-3">
+       
+    </div>
+    </div>
+</div>
+{% endblock content %}
