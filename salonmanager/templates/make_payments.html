@@ -106,35 +106,6 @@
   </div>
 </div>
 
-<!-- Display appointment details 
-<h2>Appointment Details</h2>
-<p>Customer: {{ appointment.customer }}</p>
-<p>Services: {{ appointment.services.all }}</p>
-<p>Staff Member: {{ appointment.staff_member }}</p>
-<p>Date: {{ appointment.date }}</p>
-<p>Start Time: {{ appointment.start_time }}</p>
-<p>End Time: {{ appointment.end_time }}</p>
-<p>Total Price: {{ appointment.total_price }}</p>
-<p>Discounted Price: {{ appointment.discounted_price }}</p>
-<p>Amount to be Paid: {{ appointment.amount_to_be_paid }}</p>
--->
-
-<!-- Display payment details 
-<h2>Payment Details</h2>
-{% if appointment.payment_status == 'paid' %}
-  <p>Payment Status: Paid</p>
-  <p>Amount Paid: {{ appointment.amount_paid }}</p>
-  <p>Payment Method: {{ appointment.payment_method }}</p>
-  <p>Payment Date: {{ appointment.payment_date }}</p>
-{% else %}
-  <p>Payment Status: Unpaid</p>
-  <form method="post" action="{% url 'process_payment' %}">
-    {% csrf_token %}
-    <input type="hidden" name="appointment_id" value="{{ appointment.id }}">
-    Display payment form fields
-  </form>
-{% endif %}  -->
-
 
 
 <!-- Include jQuery -->
@@ -150,6 +121,7 @@
 <script>
     function showPaymentOptions() {
         $('#paymentModal').modal('show');
+        
     }
     
     function hidePaymentOptions() {
@@ -171,51 +143,6 @@
         hidePaymentOptions();
     }
 </script>
-<!--
-<script>
-// Find the Pay with Cash button and add an event listener
-let payWithCashButton = document.querySelector('#pay-with-cash-button');
-payWithCashButton.addEventListener('click', function() {
-  updateAppointmentStatus('paid', function() {
-    window.location.href = '/appointment_booking.html';
-  });
-});
 
-// Find the Credit Card button and add an event listener
-let creditCardButton = document.querySelector('#credit-card-button');
-creditCardButton.addEventListener('click', function() {
-  updateAppointmentStatus('paid', function() {
-    window.location.href = '/appointment_booking.html';
-  });
-});
 
-// Find the Pay Later button and add an event listener
-let payLaterButton = document.querySelector('#pay-later-button');
-payLaterButton.addEventListener('click', function() {
-  updateAppointmentStatus('paid', function() {
-    window.location.href = '/appointment_booking.html';
-  });
-});
-
-// Function to update the status of an appointment
-function updateAppointmentStatus(newStatus, callback) {
-  let appointmentId = /* Get the ID of the appointment to update */;
-  let xhr = new XMLHttpRequest();
-  xhr.open('POST', '/update_appointment_status/');
-  xhr.setRequestHeader('Content-Type', 'application/json');
-  xhr.onload = function() {
-    if (xhr.status === 200) {
-      callback();
-    } else {
-      console.error('Error updating appointment status.');
-    }
-  };
-  let requestBody = JSON.stringify({
-    'appointment_id': appointmentId,
-    'new_status': newStatus
-  });
-  xhr.send(requestBody);
-}
-</script>
--->
 {% endblock content %}
