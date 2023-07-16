@@ -79,3 +79,12 @@ class MembershipForm(forms.ModelForm):
     class Meta:
         model = Membership
         fields = ['customer', 'package', 'family_members', 'start_date', 'end_date']
+
+
+
+from .models import Invoice
+
+class InvoiceForm(forms.ModelForm):
+    class Meta:
+        model = Invoice
+        fields = ['customer_name', 'staff_member', 'tax', 'discounted_price', 'tips', 'price_to_be_paid']

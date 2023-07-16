@@ -94,10 +94,13 @@ class Appointment(models.Model):
 
 class Invoice(models.Model):
     appointment = models.ForeignKey(Appointment, on_delete=models.PROTECT)
-    tax = MoneyField(max_digits=14, decimal_places=2, default_currency='AED',null = True)
-    discounted_price = MoneyField(max_digits=14, decimal_places=2, default_currency='AED',null = True)
-    tips = MoneyField(max_digits=14, decimal_places=2, default_currency='AED',null = True)
-    price_to_be_paid = MoneyField(max_digits=14, decimal_places=2, default_currency='AED',null = True)
+    customer_name = models.CharField(max_length=255, null=True)
+    staff_member = models.ForeignKey(StaffMember, on_delete=models.PROTECT, null=True)
+    tax = MoneyField(max_digits=14, decimal_places=2, default_currency='AED', null=True)
+    discounted_price = MoneyField(max_digits=14, decimal_places=2, default_currency='AED', null=True)
+    tips = MoneyField(max_digits=14, decimal_places=2, default_currency='AED', null=True)
+    price_to_be_paid = MoneyField(max_digits=14, decimal_places=2, default_currency='AED', null=True)
+
 
 class FamilyMember(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT)

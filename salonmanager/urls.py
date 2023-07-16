@@ -74,5 +74,7 @@ urlpatterns = [
     path('add_discount/<int:id>/',views.add_discount,name='add_discount'),
     path('add_tips/<int:id>/', views.add_tips,name='add_tips'),
     path('process_payment/', views.process_payment, name='process_payment'),
+    
+    path('payment_options/<int:id>/create_invoice/', views.create_invoice, name='create_invoice'),
 
 ]

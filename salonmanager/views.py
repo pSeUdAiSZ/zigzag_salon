@@ -774,6 +774,21 @@ def payment_options(request, id=None, discount = 0):
     tax=0
     app = Appointment.objects.all()
     print(app)
+
+
+    
+     # Create a new invoice and associate it with the appointment
+    form = InvoiceForm(request.POST)
+    if form.is_valid():
+        invoice = form.save(commit=False)
+        invoice.appointment = appointment
+        invoice.save()
+
+    app.save()
+    messages.success(request, 'Payment processed successfully.')
+    return redirect('appointment_booking', appointment_id=appointment_id)
+
+    
     if request.method =='POST':
         appointment_id = request.POST.get('appointment_id')
         appointment = get_object_or_404(Appointment, id = appointment_id)
@@ -804,6 +819,7 @@ def payment_options(request, id=None, discount = 0):
     appointment_details = {
         'appointment_id':appointment.id,
         'customer': appointment.customer,
+        'staff_member': appointment.staff_member,
         'total_price':price,
         'tax':tax,
         'tips':appointment.tips,
@@ -823,10 +839,7 @@ def add_discount(request, id):
         appointment.save()
 
     return redirect('payment_options', id, discount)
-
     
-    
-    return redirect('payment_options',id,discount)
 def add_tips(request,id):
     appointment = get_object_or_404(Appointment,id = id)
     if request.method =='POST':
@@ -837,18 +850,6 @@ def add_tips(request,id):
         
     return redirect('payment_options', id)
 
-"""
-def process_payment(request):
-    if request.method == 'POST':
-        payment_method = request.POST.get('paymentMethod')
-        
-        # Process the payment based on the selected method
-        
-        # Redirect to a success page or show a payment confirmation message
-        
-    return redirect('payment_options')
-"""
-
 
 from django.contrib import messages
 
@@ -857,11 +858,62 @@ def process_payment(request, appointment_id, payment_method):
 
     if payment_method == 'pay_with_cash':
         appointment.status = 'paid_cash'
+        appointment.save()
     elif payment_method == 'pay_with_credit_card':
         appointment.status = 'paid_credit_card'
     elif payment_method == 'pay_later':
         appointment.status = 'paid_later'
 
-    appointment.save()
-    messages.success(request, 'Payment processed successfully.')
-    return redirect('appointment_booking', appointment_id=appointment_id)
+
+
+
+"""
+from django.shortcuts import render, redirect
+from .forms import InvoiceForm
+
+def create_invoice(request):
+    if request.method == 'POST':
+        form = InvoiceForm(request.POST)
+        if form.is_valid():
+            appointment_id = request.POST.get('appointment_id')
+            invoice = form.save(commit=False)
+            invoice.appointment_id = appointment_id
+            invoice.save()
+            return redirect('invoice_detail', invoice.id)
+    else:
+        form = InvoiceForm()
+    return render(request, 'create_invoice.html', {'form': form})
+"""
+
+
+
+"""
+from django.urls import reverse
+from django.contrib import messages
+from .models import Appointment, Invoice
+from .forms import InvoiceForm
+
+def create_invoice(request, appointment_id):
+    appointment = Appointment.objects.get(id=appointment_id)
+    staff_members = StaffMember.objects.all()
+
+    if request.method == 'POST':
+        form = InvoiceForm(request.POST)
+        if form.is_valid():
+            invoice = form.save(commit=False)
+            invoice.appointment = appointment
+            invoice.save()
+            appointment.payment_status = 'paid'
+            appointment.payment_method = request.POST.get('payment_method')
+            appointment.save()
+            messages.success(request, 'Invoice created successfully.')
+            return redirect(reverse('appointment_detail', args=[appointment_id]))
+    else:
+        form = InvoiceForm()
+
+    return render(request, 'create_invoice.html', {
+        'appointment': appointment,
+        'staff_members': staff_members,
+        'form': form,
+    })
+"""

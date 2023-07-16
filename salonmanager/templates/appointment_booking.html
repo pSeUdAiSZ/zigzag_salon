@@ -156,13 +156,6 @@
             <button onclick="appointmentStatusForm('{% url "move_appointment" %}')" class='btn btn-outline-warning'>Move Appointment</button><hr>
           </form>
 
-          let payWithCashButton = document.querySelector('#pay-with-cash-button');
-          payWithCashButton.addEventListener('click', function() {
-            updateAppointmentStatus('paid', function() {
-              window.location.href = '/appointment_booking.html';
-            });
-          });
-
 
         </div>
         <div id="popup-overlay-move">
