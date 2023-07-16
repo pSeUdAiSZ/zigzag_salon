@@ -777,18 +777,6 @@ def payment_options(request, id=None, discount = 0):
 
 
     
-     # Create a new invoice and associate it with the appointment
-    form = InvoiceForm(request.POST)
-    if form.is_valid():
-        invoice = form.save(commit=False)
-        invoice.appointment = appointment
-        invoice.save()
-
-    app.save()
-    messages.success(request, 'Payment processed successfully.')
-    return redirect('appointment_booking', appointment_id=appointment_id)
-
-    
     if request.method =='POST':
         appointment_id = request.POST.get('appointment_id')
         appointment = get_object_or_404(Appointment, id = appointment_id)
@@ -865,10 +853,9 @@ def process_payment(request, appointment_id, payment_method):
         appointment.status = 'paid_later'
 
 
-
-
-"""
 from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import Appointment, Invoice
 from .forms import InvoiceForm
 
 def create_invoice(request):
@@ -876,14 +863,25 @@ def create_invoice(request):
         form = InvoiceForm(request.POST)
         if form.is_valid():
             appointment_id = request.POST.get('appointment_id')
+            appointment = Appointment.objects.get(id=appointment_id)
+
             invoice = form.save(commit=False)
-            invoice.appointment_id = appointment_id
+            invoice.appointment = appointment
             invoice.save()
-            return redirect('invoice_detail', invoice.id)
+
+            appointment.status = 'PAID'
+            appointment.save()
+
+            messages.success(request, 'Invoice created successfully.')
+            return redirect('appointment_booking', appointment_id=appointment_id)
+        else:
+            messages.error(request, 'Failed to create invoice. Please check the form and try again.')
     else:
-        form = InvoiceForm()
-    return render(request, 'create_invoice.html', {'form': form})
-"""
+        messages.error(request, 'Invalid request method. Please try again.')
+
+    # Redirect to the appointment detail page if there was an error
+    return redirect('appointment_booking', appointment_id=appointment_id)
+
 
 
 

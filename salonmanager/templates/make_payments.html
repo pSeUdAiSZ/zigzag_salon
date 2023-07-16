@@ -91,6 +91,7 @@
     </div>
 </div>
 
+<!-- Payment Options Modal -->
 
 <!-- Invoice Form Modal -->
 <div class="modal" id="invoiceModal">
@@ -101,7 +102,7 @@
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <div class="modal-body">
-        <form method="POST" action="{% url 'create_invoice' appointment.id %}">
+        <form method="POST" action="{% url 'create_invoice' %}">
           {% csrf_token %}
           <input type="hidden" name="appointment_id" value="{{appointment.id}}">
           <div class="form-group">
@@ -132,7 +133,7 @@
             <label for="price-to-be-paid">Price to be Paid:</label>
             <input type="text" class="form-control" id="price-to-be-paid" name="price_to_be_paid">
           </div>
-          <button type="submit" class="btn btn-primary">Pay</button>
+          <button type="submit" class="btn btn-primary" onclick="showPaymentOptions()">Pay</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
         </form>
       </div>
@@ -140,7 +141,7 @@
   </div>
 </div>
 
-<!-- Payment Options Modal -->
+
 <div class="modal" id="paymentModal">
   <div class="modal-dialog">
     <div class="modal-content">
