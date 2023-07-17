@@ -852,7 +852,7 @@ def process_payment(request, appointment_id, payment_method):
     elif payment_method == 'pay_later':
         appointment.status = 'paid_later'
 
-
+"""
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Appointment, Invoice
@@ -881,6 +881,29 @@ def create_invoice(request):
 
     # Redirect to the appointment detail page if there was an error
     return redirect('appointment_booking', appointment_id=appointment_id)
+
+
+
+"""
+from django.shortcuts import render, redirect
+from .models import Invoice
+from .forms import InvoiceForm
+
+def create_invoice(request):
+    if request.method == 'POST':
+        form = InvoiceForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('appointment_booking')
+    else:
+        form = InvoiceForm()
+
+    context = {'form': form}
+    return render(request, 'create_invoice.html', context)
+
+
+
+
 
 
 
