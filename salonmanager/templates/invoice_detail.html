@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+ 
+</style>
+
+<h1>Invoice Detail</h1>
+
+<table>
+  <tr>
+    <th>Appointment</th>
+    <td>{{ invoice.appointment }}</td>
+  </tr>
+  <tr>
+    <th>Customer Name</th>
+    <td>{{ invoice.customer_name }}</td>
+  </tr>
+  <tr>
+    <th>Staff Member</th>
+    <td>{{ invoice.staff_member }}</td>
+  </tr>
+  <tr>
+    <th>Tax</th>
+    <td>{{ invoice.tax }}</td>
+  </tr>
+  <tr>
+    <th>Discounted Price</th>
+    <td>{{ invoice.discounted_price }}</td>
+  </tr>
+  <tr>
+    <th>Tips</th>
+    <td>{{ invoice.tips }}</td>
+  </tr>
+  <tr>
+    <th>Price to be Paid</th>
+    <td>{{ invoice.price_to_be_paid }}</td>
+  </tr>
+</table>
+
+{% endblock %}

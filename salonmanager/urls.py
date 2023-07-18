@@ -67,7 +67,9 @@ urlpatterns = [
     path('membership/purchase/', views.membership_purchase, name='membership_purchase'),
     path('membership/success/', views.membership_success, name='membership_success'),
     path('membership/family/add/', views.add_family_member, name='add_family_member'),
-    
+    path('membership/create_invoice/', views.create_members_invoice, name='create_members_invoice'),
+    path('sales/', views.sales, name='sales'),
+
     path('payment_options',views.payment_options,name=  'payment_options'),
     path('payment_options/<int:id>/<int:discount>',views.payment_options,name='payment_options'),
     path('payment_options/<int:id>',views.payment_options,name = 'payment_options'),
@@ -75,5 +77,5 @@ urlpatterns = [
     path('add_tips/<int:id>/', views.add_tips,name='add_tips'),
     path('process_payment/', views.process_payment, name='process_payment'),
     
-   path('create_invoice/', views.create_invoice, name='create_invoice'),
+   #path('create_invoice/', views.create_invoice, name='create_invoice'),
 ]

@@ -106,7 +106,7 @@
 
 <h1>Membership Purchase</h1>
 
-<form method="POST" action="{% url 'membership_purchase' %}">
+<form method="POST" action="{% url 'create_members_invoice' %}">
   {% csrf_token %}
 
   <div class="form-group">
@@ -143,7 +143,7 @@
     <input type="date" name="start_date">
   </div>
 
-  <button type="submit" class="btn btn-primary">Send to Payment</button>
+  <button type="submit" class="btn btn-primary" name="action" value="send_to_payment">Send to Payment</button>
 </form>
 
 <!-- Family Member Modal -->

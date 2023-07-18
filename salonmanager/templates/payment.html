@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Payment</h1>
+  
+  <h2>Invoice Details</h2>
+  <p>Invoice ID: {{ invoice.id }}</p>
+  <p>Customer: {{ invoice.membership.customer }}</p>
+  <p>Total Price: {{ invoice.membership.package.price }}</p>
+  
+  <h2>Select Payment Method</h2>
+  <form method="POST" action="{% url 'process_payment' %}">
+    {% csrf_token %}
+    <input type="hidden" name="invoice_id" value="{{ invoice.id }}">
+    <label for="payment_method">Payment Method:</label>
+    <select name="payment_method" id="payment_method">
+      <option value="cash">Cash</option>
+      <option value="credit_card">Credit Card</option>
+    </select>
+    <button type="submit">Make Payment</button>
+  </form>
+{% endblock %}

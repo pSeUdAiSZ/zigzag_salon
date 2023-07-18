@@ -646,41 +646,124 @@ def package_search(request):
 
 
 from django.shortcuts import render, redirect
-from .models import Packages, Customer, FamilyMember, Membership
+from .models import Packages, Customer, FamilyMember, Membership, Invoice
 from .forms import MembershipForm
 
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Packages, Customer, FamilyMember, Membership, Invoice
+
 def membership_purchase(request):
-    
     packages = Packages.objects.all()
-    mem  = Membership.objects.all()
-    print(mem)
     customers = Customer.objects.all()
     family_members = FamilyMember.objects.all()
-   
 
     if request.method == 'POST':
-       customer_id= request.POST.get('customer')
-       family_members_id = request.POST.getlist('family_member')
-       package_id = request.POST.get('package')
-       start_date  = request.POST.get('start_date')
-       customer = get_object_or_404(Customer,id = customer_id)
-       family_mem_list=[]
-       for family_mem in family_members_id:
-           family_members_selected = FamilyMember.objects.get(id = family_mem)
-           family_mem_list.append(family_members_selected)
-           
-           
-       
-       package = get_object_or_404(Packages,id = package_id)
-       membership = Membership.objects.create(start_date  = start_date,customer=customer,package = package)
-       membership.family_members.set(family_mem_list)
-       
+        customer_id = request.POST.get('customer')
+        family_members_ids = request.POST.getlist('family_member')
+        package_id = request.POST.get('package')
+        start_date = request.POST.get('start_date')
+        
+        customer = get_object_or_404(Customer, id=customer_id)
+        family_members_selected = FamilyMember.objects.filter(id__in=family_members_ids)
+        package = get_object_or_404(Packages, id=package_id)
+        
+        # Create the membership object
+        membership = Membership.objects.create(start_date=start_date, customer=customer, package=package)
+        membership.family_members.set(family_members_selected)
+        
+        # Create the invoice object
+        invoice = Invoice.objects.create(membership=membership)
+        
+        # Redirect to the payment page with the invoice ID
+        return redirect('payment', invoice_id=invoice.id)
+    
     context = {
         'packages': packages,
         'customers': customers,
-        'family_members':family_members
+        'family_members': family_members
     }
     return render(request, 'membership_purchase.html', context)
+
+
+
+from django.shortcuts import render, redirect
+from .models import Membership, Invoice
+
+def create_members_invoice(request):
+    if request.method == 'POST':
+        # Get the form data from the request
+        customer_id = request.POST.get('customer')
+        package_id = request.POST.get('package')
+        start_date = request.POST.get('start_date')
+        
+        # Retrieve the customer and package objects
+        customer = Customer.objects.get(id=customer_id)
+        package = Membership.objects.get(id=package_id)
+        
+        # Calculate the total price for the membership
+        total_price = package.price
+        
+        # Create the invoice
+        invoice = Invoice.objects.create(
+            customer=customer,
+            total_price=total_price,
+            start_date=start_date
+        )
+        
+        # Add the package to the invoice
+        invoice.packages.add(package)
+        
+        # Redirect to the invoice detail page or payment options page
+        return redirect('invoice_detail', invoice_id=invoice.id)
+    
+    # If the request method is GET, render the template for the membership purchase form
+    return render(request, 'membership_purchase.html')
+
+
+
+"""
+
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Invoice, Appointment
+from .forms import InvoiceForm
+
+def create_members_invoice(request):
+    if request.method == 'POST':
+        form = InvoiceForm(request.POST)
+        if form.is_valid():
+            appointment_id = form.cleaned_data['appointment_id']
+            customer_name = form.cleaned_data['customer_name']
+            
+            tax = form.cleaned_data['tax']
+            discounted_price = form.cleaned_data['discounted_price']
+            tips = form.cleaned_data['tips']
+            price_to_be_paid = form.cleaned_data['price_to_be_paid']
+            
+            appointment = get_object_or_404(Appointment, id=appointment_id)
+            
+            
+            # Create the invoice object
+            invoice = Invoice.objects.create(
+                appointment=appointment,
+                customer_name=customer_name,
+                tax=tax,
+                discounted_price=discounted_price,
+                tips=tips,
+                price_to_be_paid=price_to_be_paid
+            )
+            
+            return redirect('invoice_detail', invoice_id=invoice.id)
+    else:
+        form = InvoiceForm()
+    
+    context = {'form': form}
+    return render(request, 'membership_purchase.html', context)
+
+"""
+
+
+
+
 
 
 from django.shortcuts import render
@@ -714,6 +797,17 @@ def add_family_member(request):
             'customers': customers
         }
     return render(request, 'membership_purchase.html', context)
+
+
+
+def sales(request):
+    invoices = Invoice.objects.filter(status__in=['paid_cash', 'paid_credit_card'])
+    
+    context = {
+        'invoices': invoices
+    }
+    
+    return render(request, 'sales.html', context)
 
 
 
@@ -938,3 +1032,6 @@ def create_invoice(request, appointment_id):
         'form': form,
     })
 """
+
+
+
