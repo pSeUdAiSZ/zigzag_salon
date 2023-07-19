@@ -77,5 +77,12 @@ urlpatterns = [
     path('add_tips/<int:id>/', views.add_tips,name='add_tips'),
     path('process_payment/', views.process_payment, name='process_payment'),
     
-   #path('create_invoice/', views.create_invoice, name='create_invoice'),
+    path('create_invoice/', views.create_invoice, name='create_invoice'),
+
+    path('buy_products/', views.buy_products, name='buy_products'),
+    #path('buy_product_details/<int:product_id>/', views.buy_product_details, name='buy_product_details'),
+
+    path('product/<int:product_id>/payment_options/', views.product_payment_options, name='product_payment_options'),
+    path('product/<int:product_id>/add_discount/', views.add_product_discount, name='add_product_discount'),
+    path('product/<int:product_id>/add_tips/', views.add_product_tips, name='add_product_tips'),
 ]

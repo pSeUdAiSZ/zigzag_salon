@@ -864,13 +864,13 @@ def product_search(request):
 
 
 
+
 def payment_options(request, id=None, discount = 0):
     tax=0
     app = Appointment.objects.all()
     print(app)
 
 
-    
     if request.method =='POST':
         appointment_id = request.POST.get('appointment_id')
         appointment = get_object_or_404(Appointment, id = appointment_id)
@@ -1033,5 +1033,144 @@ def create_invoice(request, appointment_id):
     })
 """
 
+
+
+
+def buy_products(request):
+    products = Product.objects.all()
+    context = {
+        'products': products
+    }
+    return render(request, 'buy_products.html', context)
+
+
+def buy_product_details(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    # Add code here to handle the purchase of the product
+    # For example, you can create an order, add the product to the order, and process the payment
+    # After successful payment, you can redirect the user to a success page or confirmation page
+    # For demonstration purposes, I'll simply render a template to show the product details
+    context = {
+        'product': product
+    }
+    return render(request, 'buy_product_details.html', context)
+
+
+
+
+
+from django.shortcuts import render, get_object_or_404
+from .models import Product
+
+def product_payment_options(request, product_id=None, discount=0):
+    tax = 0
+
+    if request.method =='POST':
+        product = get_object_or_404(Product, id=product_id)
+        tax = 0.05 * product.price
+        total_price = product.price + tax
+    else:
+        product = get_object_or_404(Product, id=product_id)
+        if discount == 0:
+            tax = 0.05 * product.price
+            total_price = product.price + tax
+        else:
+            discounted_price = product.price - (product.price * discount * 0.01)
+            tax = 0.05 * discounted_price
+            total_price = discounted_price + tax
+    """
+    if tips == 0:
+        pass
+    else:
+        total_price = total_price + tips
+    """
+  
+    context = {
+        'product': product,
+        'discount': discount,
+        'tax': tax,
+        'total_price': total_price,
+        #'tips': tips,
+    }
+
+    return render(request, 'make_product_payment.html', context)
+
+"""
+from django.shortcuts import render, get_object_or_404
+from .models import Product
+
+def product_payment_options(request):
+    tax = 0
+    total_price = 0
+    discount = 0
+    tips = 0
+    products = []
+
+    if request.method == 'POST':
+        # Handle the form submission if needed
+        pass
+    else:
+        # Get the product IDs from the user's session or any other method you use to store the selected products
+        product_ids = request.session.get('selected_products', [])  # Assuming you store product IDs in the session
+
+        # Retrieve the products based on the product IDs
+        products = Product.objects.filter(id__in=product_ids)
+
+        # Calculate the total price and tax for all products
+        for product in products:
+            total_price += product.price
+            tax += 0.05 * product.price
+
+        # Apply discount if any (you can update this logic as needed)
+        if discount != 0:
+            discounted_price = total_price - (total_price * discount * 0.01)
+            tax = 0.05 * discounted_price
+            total_price = discounted_price + tax
+
+        # Add tips to the total price (you can include tips as a variable)
+        tips = request.POST.get('tips')
+        if tips:
+            total_price += float(tips)
+
+    context = {
+        'products': products,
+        'discount': discount,
+        'tax': tax,
+        'total_price': total_price,
+        'tips': tips,
+    }
+
+    return render(request, 'make_product_payment.html', context)
+"""
+
+
+
+
+
+
+
+
+def add_product_discount(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    if request.method == 'POST':
+        discount = float(request.POST.get('discount'))
+        discounted_price = product.price - (discount * product.price * 0.01)
+        product.discounted_price = discounted_price
+        product.save()
+
+    return redirect('product_payment_options', product_id, discount)
+
+
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Product
+
+def add_product_tips(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    if request.method == 'POST':
+        tips = float(request.POST.get('tips'))
+        product.tips = tips
+        product.save()
+
+    return redirect('product_payment_options', product_id)
 
 

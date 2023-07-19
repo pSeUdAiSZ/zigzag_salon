@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 5px;
+    }
+    
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    th {
+        background-color: #f2f2f2;
+    }
+    
+    .hidden {
+        display: none;
+    }
+
+
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            <h1>Products</h1>
+            {% for product in products %}
+                <h5> Product: {{ product.name }}</h5>
+                <h5> Price: {{ product.price }}</h5>
+            {% endfor %}
+            <!-- Your existing buttons and table -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product/Service</th>
+                        <th>Subtotal</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.price }}</td>
+                        <td>{{ product.price }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="1">Discount Applied</th>
+                        <td>
+                            <form action="{% url 'add_product_discount' product.id %}" method="POST">
+                                {% csrf_token %}
+                                <input name="discount" type="number">
+                                <button type="submit" class="btn btn-outline-primary">Add Discount</button>
+                            </form>
+                        </td>
+                        <td>{{ discount }}%</td>
+                    </tr>
+                    <tr>
+                        <th colspan="1">Tips</th>
+                        <td>
+                            <form action="{% url 'add_product_tips' product.id %}" method="POST">
+                                {% csrf_token %}
+                                <input name="tips" type="number">
+                                <button type="submit" class="btn btn-outline-primary">Add Tips</button>
+                            </form>
+                        </td>
+                        <td>{{ tips }}</td>
+                    </tr>
+                    <tr>
+                        <th colspan="1">Tax (5%)</th>
+                        <td></td>
+                        <td>+{{ tax }}</td>
+                    </tr>
+                    <tr>
+                        <th colspan="1">Total</th>
+                        <td></td>
+                        <td>{{ total_price }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+            <a href="{% url 'buy_products' %}" class="btn btn-info">Add More Products</a>
+            <a href="#" class="btn btn-outline-success" onclick="showPaymentOptions()">Pay</a>
+        </div>
+        <div class="col-md-3">
+            <!-- Additional content if needed for the sidebar -->
+        </div>
+    </div>
+</div>
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<!-- Include Bootstrap JS -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    // Your existing JavaScript functions here
+</script>
+
+{% endblock content %}

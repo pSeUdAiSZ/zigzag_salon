@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    /* Global styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+}
+
+/* Card styles */
+.card {
+  width: 300px;
+  margin: 20px auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.card-img-top {
+  max-height: 200px;
+  object-fit: cover;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.card-text {
+  margin-bottom: 5px;
+}
+
+/* Custom status style */
+.card-status {
+  font-weight: bold;
+  color: green;
+}
+
+/* Additional styles for purchase status */
+.card-status.sold-out {
+  color: red;
+}
+
+.card-status.pending {
+  color: orange;
+}
+</style>
+
+
+  <div class="card">
+    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+    <div class="card-body">
+      <h5 class="card-title">{{ product.name }}</h5>
+      <p class="card-text">Price: {{ product.price }}</p>
+      <p class="card-text">Status: Purchased</p>
+      <!-- Additional information about the purchase here -->
+    </div>
+  </div>
+{% endblock %}
