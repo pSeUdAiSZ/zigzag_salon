@@ -1064,7 +1064,7 @@ from .models import Product
 
 def product_payment_options(request, product_id=None, discount=0):
     tax = 0
-
+    tips = 0
     if request.method =='POST':
         product = get_object_or_404(Product, id=product_id)
         tax = 0.05 * product.price
@@ -1078,21 +1078,39 @@ def product_payment_options(request, product_id=None, discount=0):
             discounted_price = product.price - (product.price * discount * 0.01)
             tax = 0.05 * discounted_price
             total_price = discounted_price + tax
+
+
+    if request.method == 'POST':
+        tips = request.POST.get('tips')
+        if tips:
+            tips = float(tips)
+
+    total_price += tips
     """
     if tips == 0:
         pass
     else:
         total_price = total_price + tips
     """
-  
+    """
+    products = Product.objects.all()
+    product_list=[]
+    for product in products:
+        product_dict ={
+            'name':product.name,
+            'price':product.price
+        }
+        product_list.append(product_dict)
+    """
+
     context = {
         'product': product,
         'discount': discount,
         'tax': tax,
         'total_price': total_price,
-        #'tips': tips,
+        'tips': tips,
     }
-
+    print(context)
     return render(request, 'make_product_payment.html', context)
 
 """
@@ -1146,14 +1164,10 @@ def product_payment_options(request):
 
 
 
-
-
-
-
 def add_product_discount(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     if request.method == 'POST':
-        discount = float(request.POST.get('discount'))
+        discount = request.POST.get('discount')
         discounted_price = product.price - (discount * product.price * 0.01)
         product.discounted_price = discounted_price
         product.save()
@@ -1167,10 +1181,27 @@ from .models import Product
 def add_product_tips(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     if request.method == 'POST':
-        tips = float(request.POST.get('tips'))
+        tips = request.POST.get('tips')
         product.tips = tips
         product.save()
 
     return redirect('product_payment_options', product_id)
 
 
+
+
+from django.shortcuts import render
+
+def dashboard(request):
+    #code to retrieve statistics and information for the dashboard goes here
+ 
+    total_appointments = 100
+    total_sales = 5000
+    total_customers = 200
+
+    context = {
+        'total_appointments': total_appointments,
+        'total_sales': total_sales,
+        'total_customers': total_customers,
+    }
+    return render(request, 'dashboard.html', context)

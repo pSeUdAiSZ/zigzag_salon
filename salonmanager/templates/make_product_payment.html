@@ -27,27 +27,26 @@
     <div class="row">
         <div class="col-md-9">
             <h1>Products</h1>
-            {% for product in products %}
+            
+            <!--{% for product in products %}
                 <h5> Product: {{ product.name }}</h5>
                 <h5> Price: {{ product.price }}</h5>
-            {% endfor %}
+            {% endfor %}    -->
             <!-- Your existing buttons and table -->
             <table>
                 <thead>
                     <tr>
-                        <th>Product/Service</th>
+                        <th>Products</th>
                         <th>Subtotal</th>
                         <th>Total</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for product in products %}
-                    <tr>
-                        <td>{{ product.name }}</td>
-                        <td>{{ product.price }}</td>
-                        <td>{{ product.price }}</td>
-                    </tr>
-                    {% endfor %}
+                        <tr>
+                            <td>{{ product.name }}</td>
+                            <td>{{ product.price }}</td>
+                            <td>{{ product.price }}</td>
+                        </tr>
                 </tbody>
                 <tfoot>
                     <tr>
