@@ -1195,9 +1195,9 @@ from django.shortcuts import render
 def dashboard(request):
     #code to retrieve statistics and information for the dashboard goes here
  
-    total_appointments = 100
+    total_appointments = Appointment.objects.count()
     total_sales = 5000
-    total_customers = 200
+    total_customers = Customer.objects.count()
 
     context = {
         'total_appointments': total_appointments,

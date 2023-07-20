@@ -1,8 +1,70 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+<style>
+    /* Style for the container of the dashboard */
+    .container {
+        padding: 20px;
+    }
+
+    /* Style for the header "Dashboard" */
+    h1 {
+        font-size: 32px;
+        margin-bottom: 20px;
+    }
+
+    /* Style for the "Select Date" label */
+    label {
+        margin-right: 10px;
+    }
+
+    /* Style for the "Select Date" input */
+    input[type="date"] {
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    /* Style for the cards inside the dashboard */
+    .card {
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-title {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .card-text {
+        font-size: 16px;
+    }
+
+    /* Style for the main content area */
+    .main-content {
+        padding: 20px;
+        background-color: #f7f7f7;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .chart-container {
+        width: 100%; /* Adjust the width as needed */
+        height: 300px; /* Adjust the height as needed */
+    }
+</style>
+
+
 <div class="container">
-    <h1>Dashboard</h1>
+    <div class="d-flex justify-content-between align-items-center">
+        <h1>Dashboard</h1>
+            <!-- Date selection -->
+            <div class="text-right">
+                <label for="date-selector">Select Date:</label>
+                <input type="date" id="date-selector">
+            </div>        
+    </div>
     <div class="row">
         <div class="col-md-4">
             <div class="card">
@@ -30,5 +92,132 @@
         </div>
     </div>
     <!-- Add more cards to display additional statistics and information -->
+    <div class="row mt-3">
+        <!-- First chart -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Sales Chart 1</h5>
+                    <div class="chart-container">
+                        <canvas id="sales-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Second chart -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Actual vs. Expected Revenue</h5>
+                    <div class="chart-container">
+                        <canvas id="actual-expected-revenue-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Sample data for the bar chart (replace this with your actual data)
+const salesData = {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    datasets: [{
+        label: 'Total Sales',
+        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1,
+        data: [2000, 3000, 4000, 3500, 4200, 3800, 5000],
+    }],
+};
+
+// Chart options
+const salesOptions = {
+    scales: {
+        y: {
+            beginAtZero: true,
+            ticks: {
+                precision: 0,
+            },
+        },
+    },
+    plugins: {
+        legend: {
+            display: true,
+            position: 'top',
+        },
+    },
+};
+
+// Create the bar chart
+const salesChart = new Chart(document.getElementById('sales-chart'), {
+    type: 'bar',
+    data: salesData,
+    options: salesOptions,
+});
+
+
+// Sample data and options for the Actual vs. Expected Revenue chart
+const actualExpectedRevenueData = {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    datasets: [
+        {
+            label: 'Actual Revenue',
+            data: [5000, 6500, 8000, 7200, 9000, 7500],
+            backgroundColor: 'rgba(75, 192, 192, 0.2)', // Bar chart color
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1,
+            yAxisID: 'actual-revenue-y-axis', // Assign the dataset to the left y-axis
+        },
+        {
+            label: 'Expected Revenue',
+            data: [5500, 7000, 7500, 6900, 8500, 8000],
+            fill: false,
+            borderColor: 'rgba(255, 99, 132, 1)', // Line chart color
+            borderWidth: 2,
+            type: 'line', // Use a line chart for this dataset
+            yAxisID: 'expected-revenue-y-axis', // Assign the dataset to the right y-axis
+        },
+    ],
+};
+
+const actualExpectedRevenueOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+        yAxes: [
+            {
+                id: 'actual-revenue-y-axis',
+                position: 'left',
+                ticks: {
+                    beginAtZero: true,
+                },
+            },
+            {
+                id: 'expected-revenue-y-axis',
+                position: 'right',
+                ticks: {
+                    beginAtZero: true,
+                },
+            },
+        ],
+    },
+};
+
+// Create the Actual vs. Expected Revenue chart
+const actualExpectedRevenueChart = new Chart(
+    document.getElementById('actual-expected-revenue-chart'),
+    {
+        type: 'bar', // We'll use a bar chart for the actual revenue
+        data: actualExpectedRevenueData,
+        options: actualExpectedRevenueOptions,
+    }
+);
+
+
+</script>
 </div>
 {% endblock content %}
