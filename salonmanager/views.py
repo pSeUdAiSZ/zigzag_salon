@@ -248,10 +248,12 @@ def change_date_branch(request):
     appointment_list=[]
     branches = Branch.objects.all()
     time_slot_tf = timeslot_gen_tf('10:00 AM','10:00 PM')
+
     if request.method =='POST':
         date_chosen = request.POST.get('date_chosen')
         branch_chosen = request.POST.get('branch_chosen')
         chosen_branch = get_object_or_404(Branch,id= branch_chosen)
+
     staff_members_list = StaffMember.objects.filter(branches = branch_chosen)
     appointment_list_selected = Appointment.objects.filter(date=date_chosen,branch = branch_chosen)
     print(appointment_list_selected)
@@ -287,6 +289,8 @@ def change_date_branch(request):
                 'height':height
             }
         appointment_list.append(appointment_dict)
+   
+    
     context = {'time_slots':time_slot_tf,'staff_members':staff_members_list,'branches':branches,'appointment_details_list':appointment_list,'date_chosen':date_chosen,
                'branch_chosen':chosen_branch}
     return render(request,'appointment_booking.html',context)

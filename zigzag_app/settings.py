@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'zigzag_app.wsgi.application'
 import pymysql
 pymysql.install_as_MySQLdb()
 
-DATABASE = 2
+DATABASE = 1
 
 if DEBUG and (DATABASE == 1):
     # Use SQLite Database
@@ -100,7 +100,7 @@ elif DEBUG and (DATABASE == 2):
             'USER': 'root',
             'PASSWORD': '#@?!r4B4nu',
             'HOST': 'localhost',
-            'PORT': '3306',
+            'PORT': '3307',
         }
     }
 else:

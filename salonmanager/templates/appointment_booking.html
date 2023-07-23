@@ -230,12 +230,12 @@
     </div>
     <div class="col-md-2 bg-secondary">
       
-        <form action = "{% url 'change_date_branch' %}" method = 'POST'>
+        <form id='date_branch_form' action = "{% url 'change_date_branch' %}" method = 'POST'>
           {% csrf_token %}
           <label> Date</label>
-          <input type='date' name='date_chosen' value = {{date_chosen}} placeholder={{date_chosen}} >
+          <input type='date' id='date_chosen' name='date_chosen' value = {{date_chosen}} placeholder={{date_chosen}} >
           <label>Select Branch</label>
-          <select name='branch_chosen'>
+          <select name='branch_chosen' id='branch_chosen'>
             <option value = "{{branch_chosen.id}}">{{branch_chosen.name}}</option>
           {% for Branch in branches %}
           <option value="{{ Branch.id }}">{{ Branch.name }}</option>
@@ -274,5 +274,30 @@
         document.getElementById('appointment-id').value = id
         div.classList.remove('hidden')
       }
+
+    
+      document.addEventListener('DOMContentLoaded', function () {
+        const dateInput = document.getElementById('date_chosen');
+        const branchInput = document.getElementById('branch_chosen');
+    
+       
+        dateInput.addEventListener('change', function () {
+          findBookings();
+        });
+    
+       
+        branchInput.addEventListener('change', function () {
+          findBookings();
+        });
+      });
+    
+      function findBookings() {
+        const form = document.getElementById('date_branch_form');
+        form.submit();
+      }
+
+
+      
+      
 </script>
 {% endblock %}
