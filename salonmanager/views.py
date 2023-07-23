@@ -252,10 +252,18 @@ def change_date_branch(request):
     if request.method =='POST':
         date_chosen = request.POST.get('date_chosen')
         branch_chosen = request.POST.get('branch_chosen')
-        chosen_branch = get_object_or_404(Branch,id= branch_chosen)
+        if not branch_chosen:
+            return HttpResponse("Branch not selected.", status=400)
 
-    staff_members_list = StaffMember.objects.filter(branches = branch_chosen)
-    appointment_list_selected = Appointment.objects.filter(date=date_chosen,branch = branch_chosen)
+        try:
+            branch_chosen = int(branch_chosen)
+        except ValueError:
+            return HttpResponse("Invalid branch selected.", status=400)
+
+
+        chosen_branch = get_object_or_404(Branch,id= branch_chosen)
+        staff_members_list = StaffMember.objects.filter(branches = branch_chosen)
+        appointment_list_selected = Appointment.objects.filter(date=date_chosen,branch = branch_chosen)
     print(appointment_list_selected)
     for appointment in appointment_list_selected:
         customer_id = appointment.customer_id

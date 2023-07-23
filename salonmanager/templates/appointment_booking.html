@@ -275,26 +275,23 @@
         div.classList.remove('hidden')
       }
 
-    
       document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('date_branch_form');
         const dateInput = document.getElementById('date_chosen');
         const branchInput = document.getElementById('branch_chosen');
-    
-       
+
         dateInput.addEventListener('change', function () {
-          findBookings();
+            if (branchInput.value !== "") {
+                form.submit();
+            }
         });
-    
-       
+
         branchInput.addEventListener('change', function () {
-          findBookings();
+            if (dateInput.value !== "") {
+                form.submit();
+            }
         });
-      });
-    
-      function findBookings() {
-        const form = document.getElementById('date_branch_form');
-        form.submit();
-      }
+    });
 
 
       
