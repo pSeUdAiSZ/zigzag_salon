@@ -1,28 +1,30 @@
+{% load static %}
 <!doctype html>
 <html class="no-js" lang="zxx">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title> Barber HTML-5 Template </title>
+    <title> ZigZag Salon </title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="manifest" href="site.webmanifest">
-    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
+    
+    <link rel="manifest" href="{% static 'site.webmanifest' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/favicon.ico' %}">
 
 	<!-- CSS here -->
-	<link rel="stylesheet" href="assets/css/bootstrap.min.css">
-	<link rel="stylesheet" href="assets/css/owl.carousel.min.css">
-	<link rel="stylesheet" href="assets/css/slicknav.css">
-    <link rel="stylesheet" href="assets/css/flaticon.css">
-    <link rel="stylesheet" href="assets/css/gijgo.css">
-    <link rel="stylesheet" href="assets/css/animate.min.css">
-    <link rel="stylesheet" href="assets/css/animated-headline.css">
-	<link rel="stylesheet" href="assets/css/magnific-popup.css">
-	<link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
-	<link rel="stylesheet" href="assets/css/themify-icons.css">
-	<link rel="stylesheet" href="assets/css/slick.css">
-	<link rel="stylesheet" href="assets/css/nice-select.css">
-	<link rel="stylesheet" href="assets/css/style.css">
+	<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'assets/css/owl.carousel.min.css' %}">
+	<link rel="stylesheet" href="{% static 'assets/css/slicknav.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/gijgo.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/animate.min.css' %}"> 
+    <link rel="stylesheet" href="{% static 'assets/css/animated-headline.css' %}">
+	<link rel="stylesheet" href="{% static 'assets/css/magnific-popup.css' %}">
+	<link rel="stylesheet" href="{% static 'assets/css/fontawesome-all.min.css' %}">
+	<link rel="stylesheet" href="{% static 'assets/css/themify-icons.css' %}">
+	<link rel="stylesheet" href="{% static 'assets/css/slick.css' %}">
+	<link rel="stylesheet" href="{% static 'assets/css/nice-select.css' %}">
+	<link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
 </head>
 <body>
     <!-- ? Preloader Start -->
@@ -31,7 +33,7 @@
             <div class="preloader-inner position-relative">
                 <div class="preloader-circle"></div>
                 <div class="preloader-img pere-text">
-                    <img src="assets/img/logo/loder.png" alt="">
+                    <img src="{% static 'assets/img/logo/loder.png' %}" alt="">
                 </div>
             </div>
         </div>
@@ -46,7 +48,7 @@
                         <!-- Logo -->
                         <div class="col-xl-2 col-lg-2 col-md-1">
                             <div class="logo">
-                                <a href="index.html"><img src="assets/img/logo/logo.png" alt=""></a>
+                                <a href="index.html"><img src="{% static 'assets/img/logo/logo.png' %}" alt=""></a>
                             </div>
                         </div>
                         <div class="col-xl-10 col-lg-10 col-md-10">
@@ -57,6 +59,7 @@
                                         <ul id="navigation">
                                             <li><a href="index.html">Home</a></li>
                                             <li class="active"><a href="about.html">About</a></li>
+                                            <li><a href="{% url 'about_zigzag' %}">ZigZag</a></li>
                                             <li><a href="services.html">Services</a></li>
                                             <li><a href="portfolio.html">Portfolio</a></li>
                                             <li><a href="blog.html">Blog</a>
@@ -71,7 +74,7 @@
                                     </nav>
                                 </div>
                                 <div class="header-right-btn f-right d-none d-lg-block ml-30">
-                                    <a href="from.html" class="btn header-btn">became a member</a>
+                                    <a href="{% url "become_member" %}" class="btn header-btn">become a member</a>
                                 </div>
                             </div>
                         </div>   
@@ -108,7 +111,7 @@
                     <div class="col-lg-6 col-md-11">
                         <!-- about-img -->
                         <div class="about-img ">
-                            <img src="assets/img/gallery/about.png" alt="">
+                            <img src="{% static 'assets/img/gallery/about.png' %}" alt="">
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-12">
@@ -118,16 +121,16 @@
                                 <span>About Our company</span>
                                 <h2>52 Years Of Experience In Hair cut!</h2>
                             </div>
-                            <p class="mb-30 pera-bottom">Brook presents your services with flexible, convenient and cdpoe layouts. You can select your favorite layouts & elements for cular ts with unlimited ustomization possibilities. Pixel-perfreplication of the designers is intended.</p>
-                            <p class="pera-top mb-50">Brook presents your services with flexible, convefnient and ent anipurpose layouts. You can select your favorite.</p>
-                            <img src="assets/img/gallery/signature.png" alt="">
+                            <p class="mb-30 pera-bottom">Welcome to ZigZag Gents Salon, your go-to destination for men's grooming needs. At ZigZag, we offer a wide range of services designed to provide a relaxing and rejuvenating experience for our customers. Our professional staff members are dedicated to ensuring that you leave our salon feeling refreshed and confident.</p>
+                            <p class="pera-top mb-50">We take pride in providing top-notch grooming services for men. Our services include haircuts, shaves, facials, massages, and more. We use high-quality products and modern techniques to deliver excellent results. Whether you need a fresh haircut or a soothing facial, ZigZag Gents Salon has got you covered..</p>
+                            <img src="{% static 'assets/img/gallery/signature.png' %}" alt="">
                         </div>
                     </div>
                 </div>
             </div>
             <!-- About Shape -->
             <div class="about-shape">
-                <img src="assets/img/gallery/about-shape.png" alt="">
+                <img src="{% static 'assets/img/gallery/about-shape.png' %}" alt="">
             </div>
         </section>
         <!-- About-2 Area End -->
@@ -162,11 +165,49 @@
                                 <i class="flaticon-healthcare-and-medical"></i>
                             </div> 
                             <div class="service-cap">
+                                <h4><a href="#">Waxing</a></h4>
+                                <p>Sorem spsum dolor sit amsectetur adipisclit, seddo eiusmod tempor incididunt ut laborea.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xl-4 col-lg-4 col-md-6">
+                        <div class="services-caption active text-center mb-30">
+                            <div class="service-icon">
+                                <i class="flaticon-healthcare-and-medical"></i>
+                            </div> 
+                            <div class="service-cap">
+                                <h4><a href="#">Grooming</a></h4>
+                                <p>Sorem spsum dolor sit amsectetur adipisclit, seddo eiusmod tempor incididunt ut laborea.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-4 col-lg-4 col-md-6">
+                        <div class="services-caption active text-center mb-30">
+                            <div class="service-icon">
+                                <i class="flaticon-healthcare-and-medical"></i>
+                            </div> 
+                            <div class="service-cap">
+                                <h4><a href="#">Hand and Feet Treatment</a></h4>
+                                <p>Sorem spsum dolor sit amsectetur adipisclit, seddo eiusmod tempor incididunt ut laborea.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-4 col-lg-4 col-md-6">
+                        <div class="services-caption active text-center mb-30">
+                            <div class="service-icon">
+                                <i class="flaticon-healthcare-and-medical"></i>
+                            </div> 
+                            <div class="service-cap">
                                 <h4><a href="#">Body Massege</a></h4>
                                 <p>Sorem spsum dolor sit amsectetur adipisclit, seddo eiusmod tempor incididunt ut laborea.</p>
                             </div>
                         </div>
                     </div> 
+
+
                     <div class="col-xl-4 col-lg-4 col-md-6">
                         <div class="services-caption text-center mb-30">
                             <div class="service-icon">
@@ -190,7 +231,7 @@
                     <div class="col-xl-8 col-lg-8 col-md-11 col-sm-11">
                         <div class="section-tittle text-center mb-100">
                             <span>Professional Teams</span>
-                            <h2>Our award winner hair cut exparts for you</h2>
+                            <h2>Our hair cut exparts for you</h2>
                         </div>
                     </div>
                 </div>
@@ -199,44 +240,56 @@
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-">
                         <div class="single-team mb-80 text-center">
                             <div class="team-img">
-                                <img src="assets/img/gallery/team1.png" alt="">
+                                <img src="/media/images/Maher.jpeg" alt="Maher">
                             </div>
                             <div class="team-caption">
                                 <span>Master Barber</span>
-                                <h3><a href="#">Guy C. Pulido bks</a></h3>
+                                <h3><a href="#">Maher</a></h3>
                             </div>
                         </div>
                     </div>
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-">
                         <div class="single-team mb-80 text-center">
                             <div class="team-img">
-                                <img src="assets/img/gallery/team2.png" alt="">
+                                <img src="/media/images/Sultan.jpeg"  alt="Sultan">
+                            </div>
+                            <div class="team-caption">
+                                <span>Master Barber</span>
+                                <h3><a href="#">Sultan</a></h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-">
+                        <div class="single-team mb-80 text-center">
+                            <div class="team-img">
+                                <img src="/media/images/Melisa.jpeg"  alt="Melisa">
                             </div>
                             <div class="team-caption">
                                 <span>Color Expart</span>
-                                <h3><a href="#">Steve L. Nolan</a></h3>
+                                <h3><a href="#">Melisa</a></h3>
                             </div>
                         </div>
                     </div>
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-">
                         <div class="single-team mb-80 text-center">
                             <div class="team-img">
-                                <img src="assets/img/gallery/team3.png" alt="">
+                                <img src="/media/images/Hamah.jpeg"  alt="Hamah">
                             </div>
                             <div class="team-caption">
                                 <span>Master Barber</span>
-                                <h3><a href="#">Edgar P. Mathis</a></h3>
+                                <h3><a href="#">Hamah</a></h3>
                             </div>
                         </div>
                     </div>
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-">
                         <div class="single-team mb-80 text-center">
                             <div class="team-img">
-                                <img src="assets/img/gallery/team2.png" alt="">
+                                <img src="/media/images/Ahmed.jpeg" alt="Ahmed">
                             </div>
                             <div class="team-caption">
                                 <span>Master Barber</span>
-                                <h3><a href="#">Edgar P. Mathis</a></h3>
+                                <h3><a href="#">Ahmed</a></h3>
                             </div>
                         </div>
                     </div>
@@ -258,7 +311,7 @@
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="pricing-list">
                                     <ul>
-                                        <li>Styling. . . . . . . . . . . . . . . . . . . . . . . . . . . . <span>$25</span></li>
+                                        <li>Hair Styling + Cut. . . . . . . . . . . . . . . . . . . . . . . . . . . . <span>@63 Aed</span></li>
                                         <li>Styling + Color. . . . . . . . . . . . . . . . . . . <span>$65</span></li>
                                         <li>Styling + Tint. . . . . . . . . . . . . . . . . . . . . .<span>$65</span></li>
                                         <li>  Semi-permanent wave. . . . . . . . . . . . .<span>$65</span></li>
@@ -286,8 +339,8 @@
             </div>
             <!-- pricing img -->
             <div class="pricing-img">
-                <img class="pricing-img1" src="assets/img/gallery/pricing1.png" alt="">
-                <img class="pricing-img2" src="assets/img/gallery/pricing2.png" alt="">
+                <img class="pricing-img1" src="{% static 'assets/img/gallery/pricing1.png' %}" alt="">
+                <img class="pricing-img2" src="{% static 'assets/img/gallery/pricing2.png' %}" alt="">
             </div>
         </div>
         <!-- Best Pricing Area End -->
@@ -298,7 +351,7 @@
                 <div class="row justify-content-center">
                     <div class="col-xl-6 col-lg-7 col-md-9 col-sm-10">
                         <div class="section-tittle text-center mb-100">
-                            <span>our image gellary</span>
+                            <span>our image gallary</span>
                             <h2>some images from our barber shop</h2>
                         </div>
                     </div>
@@ -306,25 +359,25 @@
                 <div class="row">
                     <div class="col-lg-4 col-md-6 col-sm-6">
                         <div class="box snake mb-30">
-                            <div class="gallery-img " style="background-image: url(assets/img/gallery/gallery1.png);"></div>
+                            <div class="gallery-img " style="background-image: url('{% static "assets/img/gallery/gallery1.png" %}');"></div>
                             <div class="overlay"></div>
                         </div>
                     </div>
                     <div class="col-lg-8 col-md-6 col-sm-6">
                         <div class="box snake mb-30">
-                            <div class="gallery-img " style="background-image: url(assets/img/gallery/gallery2.png);"></div>
+                            <div class="gallery-img " style="background-image: url('{% static "assets/img/gallery/gallery2.png" %}');"></div>
                             <div class="overlay"></div>
                         </div>
                     </div>
                     <div class="col-lg-8 col-md-6 col-sm-6">
                         <div class="box snake mb-30">
-                            <div class="gallery-img " style="background-image: url(assets/img/gallery/gallery3.png);"></div>
+                            <div class="gallery-img " style="background-image: url('{% static "assets/img/gallery/gallery3.png" %}');"></div>
                             <div class="overlay"></div>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-6">
                         <div class="box snake mb-30">
-                            <div class="gallery-img " style="background-image: url(assets/img/gallery/gallery4.png);"></div>
+                            <div class="gallery-img " style="background-image: url('{% static "assets/img/gallery/gallery4.png" %}');"></div>
                             <div class="overlay"></div>
                         </div>
                     </div>
@@ -337,7 +390,7 @@
     </main>
     <footer>
         <!--? Footer Start-->
-        <div class="footer-area section-bg" data-background="assets/img/gallery/footer_bg.png">
+        <div class="footer-area section-bg" data-background="{% static 'assets/img/gallery/footer_bg.png' %}">
             <div class="container">
                 <div class="footer-top footer-padding">
                     <div class="row d-flex justify-content-between">
@@ -345,7 +398,7 @@
                             <div class="single-footer-caption mb-50">
                                 <!-- logo -->
                                 <div class="footer-logo">
-                                    <a href="index.html"><img src="assets/img/logo/logo2_footer.png" alt=""></a>
+                                    <a href="index.html"><img src="{% static 'assets/img/logo/logo2_footer.png' %}" alt=""></a>
                                 </div>
                                 <div class="footer-tittle">
                                     <div class="footer-pera">
@@ -441,44 +494,44 @@
 
     <!-- JS here -->
 
-    <script src="./assets/js/vendor/modernizr-3.5.0.min.js"></script>
-    <!-- Jquery, Popper, Bootstrap -->
-    <script src="./assets/js/vendor/jquery-1.12.4.min.js"></script>
-    <script src="./assets/js/popper.min.js"></script>
-    <script src="./assets/js/bootstrap.min.js"></script>
-    <!-- Jquery Mobile Menu -->
-    <script src="./assets/js/jquery.slicknav.min.js"></script>
+    <script src="{% static './assets/js/vendor/modernizr-3.5.0.min.js' %}"></script>
+    <!-- Jquery, 'Popper, Bootstrap -->
+    <script src="{% static './assets/js/vendor/jquery-1.12.4.min.js' %}"></script>
+    <script src="{% static './assets/js/popper.min.js' %}"></script>
+    <script src="{% static './assets/js/bootstrap.min.js' %}"></script>
+    <!-- Jquery M{% static 'obile Menu -->
+    <script src="{% static './assets/js/jquery.slicknav.min.js' %}"></script>
 
-    <!-- Jquery Slick , Owl-Carousel Plugins -->
-    <script src="./assets/js/owl.carousel.min.js"></script>
-    <script src="./assets/js/slick.min.js"></script>
-    <!-- One Page, Animated-HeadLin -->
-    <script src="./assets/js/wow.min.js"></script>
-    <script src="./assets/js/animated.headline.js"></script>
-    <script src="./assets/js/jquery.magnific-popup.js"></script>
+    <!-- Jquery S{% static 'lick , Owl-Carousel Plugins -->
+    <script src="{% static './assets/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static './assets/js/slick.min.js' %}"></script>
+    <!-- One Page ', Animated-HeadLin -->
+    <script src="{% static './assets/js/wow.min.js' %}"></script>
+    <script src="{% static './assets/js/animated.headline.js' %}"></script>
+    <script src="{% static './assets/js/jquery.magnific-popup.js' %}"></script>
 
-    <!-- Date Picker -->
-    <script src="./assets/js/gijgo.min.js"></script>
-    <!-- Nice-select, sticky -->
-    <script src="./assets/js/jquery.nice-select.min.js"></script>
-    <script src="./assets/js/jquery.sticky.js"></script>
-    
+    <!-- Date Pi'ker -->
+    <script src="{% static './assets/js/gijgo.min.js' %}"></script>
+    <!-- Nice-sel{% static 'ect, sticky -->
+    <script src="{% static './assets/js/jquery.nice-select.min.js' %}"></script>
+    <script src="{% static './assets/js/jquery.sticky.js' %}"></script>
+   
     <!-- counter , waypoint,Hover Direction -->
-    <script src="./assets/js/jquery.counterup.min.js"></script>
-    <script src="./assets/js/waypoints.min.js"></script>
-    <script src="./assets/js/jquery.countdown.min.js"></script>
-    <script src="./assets/js/hover-direction-snake.min.js"></script>
+    <script src="{% static './assets/js/jquery.counterup.min.js' %}"></script>
+    <script src="{% static './assets/js/waypoints.min.js' %}"></script>
+    <script src="{% static './assets/js/jquery.countdown.min.js' %}"></script>
+    <script src="{% static './assets/js/hover-direction-snake.min.js' %}"></script>
 
-    <!-- contact js -->
-    <script src="./assets/js/contact.js"></script>
-    <script src="./assets/js/jquery.form.js"></script>
-    <script src="./assets/js/jquery.validate.min.js"></script>
-    <script src="./assets/js/mail-script.js"></script>
-    <script src="./assets/js/jquery.ajaxchimp.min.js"></script>
-    
+    <!-- contact 'js -->
+    <script src="{% static './assets/js/contact.js' %}"></script>
+    <script src="{% static './assets/js/jquery.form.js' %}"></script>
+    <script src="{% static './assets/js/jquery.validate.min.js' %}"></script>
+    <script src="{% static './assets/js/mail-script.js' %}"></script>
+    <script src="{% static './assets/js/jquery.ajaxchimp.min.js' %}"></script>
+   
     <!-- Jquery Plugins, main Jquery -->	
-    <script src="./assets/js/plugins.js"></script>
-    <script src="./assets/js/main.js"></script>
+    <script src="{% static './assets/js/plugins.js' %}"></script>
+    <script src="{% static './assets/js/main.js' %}"></script>
     
     </body>
 </html>

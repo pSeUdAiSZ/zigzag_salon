@@ -32,7 +32,7 @@
             <div class="preloader-inner position-relative">
                 <div class="preloader-circle"></div>
                 <div class="preloader-img pere-text">
-                    <img src="{% static 'assets/img/logo/loder.png' %}" alt="">
+                    <img src="media\images\logo.jpg" alt="">
                 </div>
             </div>
         </div>
@@ -57,23 +57,23 @@
                                     <nav>
                                         <ul id="navigation">
                                             <li class="active"><a href="index.html">Home</a></li>
-                                            <li><a href="about.html">About</a></li>
-                                            <li><a href="{% url "manager_login" %}">ZigZag</a></li>
-                                            <li><a href="services.html">Services</a></li>
-                                            <li><a href="portfolio.html">Portfolio</a></li>
-                                            <li><a href="blog.html">Blog</a>
+                                            <li><a href="{% url 'about' %}">About</a></li>
+                                            <li><a href="{% url 'about_zigzag' %}">ZigZag</a></li>
+                                            <li><a href="{% url 'services' %}">Services</a></li>
+                                            <li><a href="{% url 'portfolio' %}">Portfolio</a></li>
+                                            <li><a href="#">Blog</a>
                                                 <ul class="submenu">
-                                                    <li><a href="blog.html">Blog</a></li>
-                                                    <li><a href="blog_details.html">Blog Details</a></li>
-                                                    <li><a href="elements.html">Element</a></li>
+                                                    <li><a href="{% url 'blog_details' %}">Blog</a></li>
+                                                    <li><a href="{% url 'blog_details' %}">Blog Details</a></li>
+                                                    <li><a href="#">Element</a></li>
                                                 </ul>
                                             </li>
-                                            <li><a href="contact.html">Contact</a></li>
+                                            <li><a href="{% url 'contact' %}">Contact</a></li>
                                         </ul>
                                     </nav>
                                 </div>
                                 <div class="header-right-btn f-right d-none d-lg-block ml-30">
-                                    <a href="{% url "membership_purchase" %}" class="btn header-btn">become a member</a>
+                                    <a href="{% url "become_member" %}" class="btn header-btn">become a member</a>
                                 </div>
                             </div>
                         </div>   
@@ -221,7 +221,7 @@
                     <div class="col-xl-8 col-lg-8 col-md-11 col-sm-11">
                         <div class="section-tittle text-center mb-100">
                             <span>Professional Teams</span>
-                            <h2>Our award winner hair cut exparts for you</h2>
+                            <h2>Our hair cut exparts for you</h2>
                         </div>
                     </div>
                 </div>
@@ -230,44 +230,56 @@
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-">
                         <div class="single-team mb-80 text-center">
                             <div class="team-img">
-                                <img src="{% static 'assets/img/gallery/team1.png' %}" alt="">
+                                <img src="/media/images/Maher.jpeg" alt="Maher">
                             </div>
                             <div class="team-caption">
                                 <span>Master Barber</span>
-                                <h3><a href="#">Guy C. Pulido bks</a></h3>
+                                <h3><a href="#">Maher</a></h3>
                             </div>
                         </div>
                     </div>
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-">
                         <div class="single-team mb-80 text-center">
                             <div class="team-img">
-                                <img src="{% static 'assets/img/gallery/team2.png'%}" alt="">
+                                <img src="/media/images/Sultan.jpeg"  alt="Sultan">
+                            </div>
+                            <div class="team-caption">
+                                <span>Master Barber</span>
+                                <h3><a href="#">Sultan</a></h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-">
+                        <div class="single-team mb-80 text-center">
+                            <div class="team-img">
+                                <img src="/media/images/Melisa.jpeg"  alt="Melisa">
                             </div>
                             <div class="team-caption">
                                 <span>Color Expart</span>
-                                <h3><a href="#">Steve L. Nolan</a></h3>
+                                <h3><a href="#">Melisa</a></h3>
                             </div>
                         </div>
                     </div>
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-">
                         <div class="single-team mb-80 text-center">
                             <div class="team-img">
-                                <img src="{% static 'assets/img/gallery/team3.png' %}" alt="">
+                                <img src="/media/images/Hamah.jpeg"  alt="Hamah">
                             </div>
                             <div class="team-caption">
                                 <span>Master Barber</span>
-                                <h3><a href="#">Edgar P. Mathis</a></h3>
+                                <h3><a href="#">Hamah</a></h3>
                             </div>
                         </div>
                     </div>
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-">
                         <div class="single-team mb-80 text-center">
                             <div class="team-img">
-                                <img src="{% static 'assets/img/gallery/team2.png' %}" alt="">
+                                <img src="/media/images/Ahmed.jpeg" alt="Ahmed">
                             </div>
                             <div class="team-caption">
                                 <span>Master Barber</span>
-                                <h3><a href="#">Edgar P. Mathis</a></h3>
+                                <h3><a href="#">Ahmed</a></h3>
                             </div>
                         </div>
                     </div>
@@ -470,7 +482,7 @@
                             <div class="single-footer-caption mb-50">
                                 <!-- logo -->
                                 <div class="footer-logo">
-                                    <a href="index.html"><img src="{% static 'assets/img/logo/logo2_footer.png' %}" alt=""></a>
+                                    <a href="index.html"><img src="media\images\logo.jpg" alt=""></a>
                                 </div>
                                 <div class="footer-tittle">
                                     <div class="footer-pera">
