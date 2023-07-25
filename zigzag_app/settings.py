@@ -41,9 +41,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'widget_tweaks',
     'salonmanager',
     'website',
+    'customer_side',
+    'pages'
 ]
+
+AUTH_USER_MODEL = 'customer_side.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
