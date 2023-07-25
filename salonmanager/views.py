@@ -42,7 +42,7 @@ def manager_signup(request):
             my_user.save()
             return redirect('manager_login')
 
-    return render(request, 'manager_signup.html')
+    return render(request, 'customer_signup.html')
 
 
 def manager_login(request):
@@ -55,8 +55,8 @@ def manager_login(request):
             
             return redirect('manager_dashboard')
         else:
-            return redirect('manager_login')
-    return render (request,'manager_login.html')
+            return redirect('customer_login')
+    return render (request,'customer_login.html')
 @login_required(login_url='/salonmanager/login/')
 
 
