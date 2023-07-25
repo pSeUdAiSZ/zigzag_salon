@@ -45,13 +45,10 @@ INSTALLED_APPS = [
     'salonmanager',
     'website',
     'customer_side',
-<<<<<<< HEAD
-=======
-    'pages'
->>>>>>> 8ad155f1f8fcefdf81df3ba988c46cc91e46c98e
+
 ]
 
-AUTH_USER_MODEL = 'customer_side.User'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
