@@ -1,5 +1,3 @@
-
-
 from imaplib import _Authenticator
 from pyexpat.errors import messages
 from django.http import HttpResponse
@@ -26,7 +24,7 @@ def customer_signup(request):
     return render (request,'customer_signup.html')
 
 
-@login_required(login_url='/customer_side/login/')
+@login_required(login_url='salonmanager/')
 
 def customer_login(request):
     if request.method=='POST':
