@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('salonmanager/',include('salonmanager.urls')),
     path('', include('website.urls')),
+    path('', include('customer_side.urls')),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

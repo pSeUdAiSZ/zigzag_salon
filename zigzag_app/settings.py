@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'salonmanager',
     'website',
+    'customer_side',
 ]
 
 MIDDLEWARE = [
