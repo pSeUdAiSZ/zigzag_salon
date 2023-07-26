@@ -111,22 +111,26 @@
 
   <div class="form-group">
     <label for="customer">Select customer:</label>
-    {% for customer in customers %}
-      <div>
-        <input type="radio" onclick="filterMembers('{{customer}}')" name="customer" value="{{ customer.id }}">{{ customer.name }}
-      </div>
-    {% endfor %}
+    <input type="search" list="mylist" name="customer" id="customerSelect" onchange="filterMembers(this.value)">
+    <datalist id="mylist">
+      {% for customer in customers %}
+        <option value="{{ customer.id }}">{{ customer.name }}</option>
+      {% endfor %}
+    </datalist>
   </div>
-
+  
+  
+ 
   <div class="form-group">
     <label for="family_members">Select family member:</label>
-    {% for family_member in family_members  %}
-      <div class="members" data-category="{{family_member.customer}}">
-        <input type="checkbox" name="family_member" value="{{family_member.id}}"> {{family_member.name}}
+    {% for family_member in family_members %}
+      <div class="members" data-category="{{ family_member.customer.id }}">
+        <input type="checkbox" name="family_member" value="{{ family_member.id }}"> {{ family_member.name }}
       </div>
     {% endfor %}
     <a type="button" class="btn btn-primary" id="addFamilyMemberBtn">Add Family Member</a>
   </div>
+ 
 
   <div class="form-group">
     <label for="package">Select package:</label>
@@ -198,8 +202,15 @@
     $('#addFamilyMemberBtn').on('click', function() {
       $('#addFamilyMemberModal').modal('show');
     });
+
+    // Event listener for customer selection
+    $('#customerSelect').on('change', function() {
+      var selectedCustomerId = $(this).val();
+      filterMembers(selectedCustomerId);
+    });
   });
-  
+
+  // Filter the family members based on the selected customer ID
   function filterMembers(customerId) {
     var members = document.getElementsByClassName('members');
 
@@ -209,11 +220,11 @@
 
       if (memberCustomer === customerId.toString()) {
         member.style.display = 'block';
-      }
-      else {
+      } else {
         member.style.display = 'none';
       }
     }
   }
 </script>
+
 {% endblock %}

@@ -655,6 +655,17 @@ def package_search(request):
             packages = Packages.objects.all()
         return render(request, 'package_list.html', {'packages': packages})
 
+def buy_package(request):
+    packages = Packages.objects.all()
+    print(packages)
+    context = {
+        'packages': packages,
+    }
+    return render(request, 'buy_package.html', context)
+
+
+
+
 
 
 from django.shortcuts import render, redirect
@@ -695,6 +706,7 @@ def membership_purchase(request):
         'family_members': family_members
     }
     return render(request, 'membership_purchase.html', context)
+
 
 
 
@@ -810,6 +822,16 @@ def add_family_member(request):
         }
     return render(request, 'membership_purchase.html', context)
 
+
+from django.http import JsonResponse
+
+def get_family_members(request):
+    if request.method == 'GET' and 'customer_id' in request.GET:
+        customer_id = request.GET.get('customer_id')
+        family_members = FamilyMember.objects.filter(customer_id=customer_id)
+        data = {'family_members': list(family_members.values('id', 'name', 'customer'))}
+        return JsonResponse(data)
+    return JsonResponse({'error': 'Invalid request'})
 
 
 def sales(request):
@@ -1202,7 +1224,13 @@ def add_product_tips(request, product_id):
 
 
 
-from django.shortcuts import render
+
+
+
+
+
+
+
 
 def dashboard(request):
     #code to retrieve statistics and information for the dashboard goes here
