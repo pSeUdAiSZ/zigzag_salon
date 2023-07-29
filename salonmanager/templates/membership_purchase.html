@@ -111,6 +111,7 @@
 
   <div class="form-group">
     <label for="customer">Select customer:</label>
+    <input type="hidden" name="customer" value="{{ customer_id }}">
     <input type="search" list="mylist" name="customer" id="customerSelect" onchange="filterMembers(this.value)">
     <datalist id="mylist">
       {% for customer in customers %}
@@ -137,7 +138,9 @@
     <select id="package" name="package">
       <option value="" selected disabled>Select an existing package</option>
       {% for package in packages %}
-        <option value="{{package.id }}">{{package.name }}</option>
+        <option value="{{package.id }}" {% if package.id == selected_package.id %}selected{% endif %}>
+          {{package.name }}
+        </option>
       {% endfor %}
     </select>
   </div>

@@ -658,10 +658,13 @@ def package_search(request):
 def buy_package(request):
     packages = Packages.objects.all()
     print(packages)
+    customer_id = request.session.get('customer_id', None)
+    print(f"Received customer_id: {customer_id}")
     context = {
         'packages': packages,
+        'customer_id': customer_id,
     }
-    return render(request, 'buy_package.html', context)
+    return render (request, 'buy_package.html', context)
 
 
 
@@ -679,9 +682,14 @@ def membership_purchase(request):
     packages = Packages.objects.all()
     customers = Customer.objects.all()
     family_members = FamilyMember.objects.all()
+    selected_package = None
 
     if request.method == 'POST':
+        package_id = request.POST.get('package_id')
+        selected_package = get_object_or_404(Packages, id=package_id)
         customer_id = request.POST.get('customer')
+        print(f"Selected package_id: {package_id}")
+        print(f"Selected customer_id: {customer_id}")
         family_members_ids = request.POST.getlist('family_member')
         package_id = request.POST.get('package')
         start_date = request.POST.get('start_date')
@@ -699,11 +707,12 @@ def membership_purchase(request):
         
         # Redirect to the payment page with the invoice ID
         return redirect('payment', invoice_id=invoice.id)
-    
+   
     context = {
         'packages': packages,
         'customers': customers,
-        'family_members': family_members
+        'family_members': family_members,
+        'selected_package': selected_package,  
     }
     return render(request, 'membership_purchase.html', context)
 

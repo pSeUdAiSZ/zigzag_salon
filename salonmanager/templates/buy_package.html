@@ -81,8 +81,10 @@
           </ul>
           <!-- Add your payment processing logic here if needed -->
           <!-- You can provide a button for the user to complete the purchase -->
-          <form method="post">
+          <form method="post" action="{% url 'membership_purchase' %}">
             {% csrf_token %}
+            <input type="hidden" name="customer" value="{{ customer_id  }}">
+            <input type="hidden" name="package_id" value="{{ package.id }}">
             <button type="submit" class="btn btn-primary">Buy Now</button>
           </form>
         </div>
