@@ -75,9 +75,9 @@ urlpatterns = [
     path('payment_options/<int:id>',views.payment_options,name = 'payment_options'),
     path('add_discount/<int:id>/',views.add_discount,name='add_discount'),
     path('add_tips/<int:id>/', views.add_tips,name='add_tips'),
-    path('process_payment/', views.process_payment, name='process_payment'),
+    path('payment_options/process_payment/', views.process_payment, name='process_payment'),
     
-    path('create_invoice/', views.create_invoice, name='create_invoice'),
+    path('payment_options/create_invoice/', views.create_invoice, name='create_invoice'),
 
     path('buy_products/', views.buy_products, name='buy_products'),
     #path('buy_product_details/<int:product_id>/', views.buy_product_details, name='buy_product_details'),

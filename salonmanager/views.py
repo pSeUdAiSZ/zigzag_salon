@@ -304,6 +304,108 @@ def change_date_branch(request):
     return render(request,'appointment_booking.html',context)
 
 
+
+def payment_options(request, id=None, discount = 0):
+    tax=0
+    app = Appointment.objects.all()
+    print(app)
+
+
+    if request.method =='POST':
+        appointment_id = request.POST.get('appointment_id')
+        appointment = get_object_or_404(Appointment, id = appointment_id)
+        tax = .05*appointment.total_price
+        price = appointment.total_price + tax
+    else:
+        appointment = get_object_or_404(Appointment,id = id)
+        if discount == 0:
+            tax = .05*appointment.total_price
+            price = appointment.total_price+tax
+        else:
+            tax = .05*appointment.discounted_price
+            price = appointment.discounted_price+tax
+        
+    services = appointment.services.all()
+    service_list = []
+    for service in services:
+        service_dict={
+            'name':service.name,
+            'price':service.price
+        }
+        service_list.append(service_dict)
+    
+    if appointment.tips == 0:
+        pass
+    else:
+        price = price+ appointment.tips
+    appointment_details = {
+        'appointment_id':appointment.id,
+        'customer': appointment.customer,
+        'staff_member': appointment.staff_member,
+        'total_price':price,
+        'tax':tax,
+        'tips':appointment.tips,
+        'services': service_list ,
+        'discount':discount}
+    print(appointment_details)
+    
+    
+    return render(request,'make_payments.html',appointment_details)
+
+def add_discount(request, id):
+    appointment = get_object_or_404(Appointment, id=id)
+    if request.method == 'POST':
+        discount = request.POST.get('discount')
+        price = appointment.total_price - appointment.total_price * discount * 0.01
+        appointment.discounted_price = price
+        appointment.save()
+
+    return redirect('payment_options', id, discount)
+    
+def add_tips(request,id):
+    appointment = get_object_or_404(Appointment,id = id)
+    if request.method =='POST':
+        tips = request.POST.get('tips')
+        print(tips)
+    appointment.tips=tips
+    appointment.save()
+        
+    return redirect('payment_options', id)
+
+
+from django.contrib import messages
+
+def process_payment(request, appointment_id, payment_method):
+    appointment = Appointment.objects.get(id=appointment_id)
+
+    if payment_method == 'pay_with_cash':
+        appointment.status = 'paid_cash'
+        appointment.save()
+    elif payment_method == 'pay_with_credit_card':
+        appointment.status = 'paid_credit_card'
+    elif payment_method == 'pay_later':
+        appointment.status = 'paid_later'
+
+
+from .models import Invoice
+from .forms import InvoiceForm
+
+def create_invoice(request):
+    if request.method == 'POST':
+        form = InvoiceForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('appointment_booking')
+    else:
+        form = InvoiceForm()
+
+    context = {'form': form}
+    return render(request, 'create_invoice.html', context)
+
+
+
+#customer CRUD
+
 from django.shortcuts import render, redirect
 from .models import Customer
 
@@ -908,86 +1010,7 @@ def product_search(request):
 
 
 
-def payment_options(request, id=None, discount = 0):
-    tax=0
-    app = Appointment.objects.all()
-    print(app)
 
-
-    if request.method =='POST':
-        appointment_id = request.POST.get('appointment_id')
-        appointment = get_object_or_404(Appointment, id = appointment_id)
-        tax = .05*appointment.total_price
-        price = appointment.total_price + tax
-    else:
-        appointment = get_object_or_404(Appointment,id = id)
-        if discount == 0:
-            tax = .05*appointment.total_price
-            price = appointment.total_price+tax
-        else:
-            tax = .05*appointment.discounted_price
-            price = appointment.discounted_price+tax
-        
-    services = appointment.services.all()
-    service_list = []
-    for service in services:
-        service_dict={
-            'name':service.name,
-            'price':service.price
-        }
-        service_list.append(service_dict)
-    
-    if appointment.tips == 0:
-        pass
-    else:
-        price = price+ appointment.tips
-    appointment_details = {
-        'appointment_id':appointment.id,
-        'customer': appointment.customer,
-        'staff_member': appointment.staff_member,
-        'total_price':price,
-        'tax':tax,
-        'tips':appointment.tips,
-        'services': service_list ,
-        'discount':discount}
-    print(appointment_details)
-    
-    
-    return render(request,'make_payments.html',appointment_details)
-
-def add_discount(request, id):
-    appointment = get_object_or_404(Appointment, id=id)
-    if request.method == 'POST':
-        discount = request.POST.get('discount')
-        price = appointment.total_price - appointment.total_price * discount * 0.01
-        appointment.discounted_price = price
-        appointment.save()
-
-    return redirect('payment_options', id, discount)
-    
-def add_tips(request,id):
-    appointment = get_object_or_404(Appointment,id = id)
-    if request.method =='POST':
-        tips = request.POST.get('tips')
-        print(tips)
-    appointment.tips=tips
-    appointment.save()
-        
-    return redirect('payment_options', id)
-
-
-from django.contrib import messages
-
-def process_payment(request, appointment_id, payment_method):
-    appointment = Appointment.objects.get(id=appointment_id)
-
-    if payment_method == 'pay_with_cash':
-        appointment.status = 'paid_cash'
-        appointment.save()
-    elif payment_method == 'pay_with_credit_card':
-        appointment.status = 'paid_credit_card'
-    elif payment_method == 'pay_later':
-        appointment.status = 'paid_later'
 
 """
 from django.shortcuts import render, redirect
@@ -1022,21 +1045,7 @@ def create_invoice(request):
 
 
 """
-from django.shortcuts import render, redirect
-from .models import Invoice
-from .forms import InvoiceForm
 
-def create_invoice(request):
-    if request.method == 'POST':
-        form = InvoiceForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('appointment_booking')
-    else:
-        form = InvoiceForm()
-
-    context = {'form': form}
-    return render(request, 'create_invoice.html', context)
 
 
 

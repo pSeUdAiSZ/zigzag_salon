@@ -83,7 +83,7 @@
                 </tr>
             </tfoot>
         </table>
-        <a href="#" class="btn btn-outline-success" onclick="showInvoice()">Pay</a>
+        <button type="button" class="btn btn-primary" onclick="showInvoice()">Pay</button>
     </div>
     <div class="col-md-3">
        
@@ -91,7 +91,7 @@
     </div>
 </div>
 
-<!-- Payment Options Modal -->
+<!-- Payment Options Modal -->   
 
 <!-- Invoice Form Modal -->
 <div class="modal" id="invoiceModal">
@@ -104,34 +104,37 @@
       <div class="modal-body">
         <form method="POST" action="{% url 'create_invoice' %}">
           {% csrf_token %}
-          <input type="hidden" name="appointment_id" value="{{appointment.id}}">
+          <!-- Add prefilled values to the corresponding form fields -->
+          <input type="hidden" name="appointment_id" value="{{ appointment.id }}">
           <div class="form-group">
             <label for="customer-name">Customer Name:</label>
-            <input type="text" class="form-control" id="customer-name" name="customer_name">
+            <input type="text" class="form-control" id="customer-name" name="customer_name" value="{{ appointment.customer }}">
           </div>
           <div class="form-group">
             <label for="staff-member">Staff Member:</label>
             <select class="form-control" id="staff-member" name="staff_member">
               {% for staff_member in staff_members %}
-                <option value="{{staff_member.id}}">{{staff_member}}</option>
+                <option value="{{ staff_member.id }}" {% if staff_member.id == appointment.staff_member.id %}selected{% endif %}>
+                  {{ staff_member.name }}
+                </option>
               {% endfor %}
             </select>
           </div>
           <div class="form-group">
             <label for="tax">Tax:</label>
-            <input type="text" class="form-control" id="tax" name="tax">
+            <input type="text" class="form-control" id="tax" name="tax" value="{{ appointment.tax }}">
           </div>
           <div class="form-group">
             <label for="discounted-price">Discounted Price:</label>
-            <input type="text" class="form-control" id="discounted-price" name="discounted_price">
+            <input type="text" class="form-control" id="discounted-price" name="discounted_price" value="{{ appointment.discounted_price }}">
           </div>
           <div class="form-group">
             <label for="tips">Tips:</label>
-            <input type="text" class="form-control" id="tips" name="tips">
+            <input type="text" class="form-control" id="tips" name="tips" value="{{ appointment.tips }}">
           </div>
           <div class="form-group">
             <label for="price-to-be-paid">Price to be Paid:</label>
-            <input type="text" class="form-control" id="price-to-be-paid" name="price_to_be_paid">
+            <input type="text" class="form-control" id="price-to-be-paid" name="price_to_be_paid" value="{{ appointment.total_price }}">
           </div>
           <button type="submit" class="btn btn-primary" onclick="showPaymentOptions()">Pay</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -177,11 +180,13 @@
       
     
     }
+    
     function showInvoice() {
       
       $('#invoiceModal').modal('show');
   
   }
+  
     function hidePaymentOptions() {
         $('#paymentModal').modal('hide');
     }
@@ -210,6 +215,40 @@
     }
 
     */
+
+    function showInvoice() {
+      // Get the values from the existing form fields
+      const customerName = $('#customer-name').text().trim();
+      const staffMember = $('#staff-member').text().trim();
+      const tax = '+{{ tax }}'; // Use the Django template tag to pass the value
+      const discountedPrice = '{{ discounted_price }}'; // Use the Django template tag to pass the value
+      const tips = '{{ tips }}'; // Use the Django template tag to pass the value
+      const totalPrice = '{{ total_price }}'; // Use the Django template tag to pass the value
+
+      // Update the form fields in the Invoice Form Modal with the prefilled information
+      $('#invoiceModal #customer-name').val(customerName);
+      $('#invoiceModal #staff-member').val(staffMember);
+      $('#invoiceModal #tax').val(tax);
+      $('#invoiceModal #discounted-price').val(discountedPrice);
+      $('#invoiceModal #tips').val(tips);
+      $('#invoiceModal #price-to-be-paid').val(totalPrice);
+
+      // Show the Invoice Form Modal
+      $('#invoiceModal').modal('show');
+    }
+
+    // Handle form submission for the Invoice Form
+    $('#invoiceForm').on('submit', function(e) {
+      e.preventDefault();
+
+      // Get the form data
+      const formData = $(this).serialize();
+      console.log(formData); // Check the form data in the console (optional)
+
+      // You can now submit the form via AJAX or using the regular form submission
+      // Here, I'm using the regular form submission
+      this.submit();
+    });
 </script>
 
 {% endblock content %}
