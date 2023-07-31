@@ -21,6 +21,9 @@
 
     table th {
         background-color: #f2f2f2;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .table-container {
@@ -30,8 +33,12 @@
     }
 
     .table-wrapper {
-        width: calc(50% - 10px); /* Adjust width as needed */
+        width: calc(60% - 20px); /* Adjust width as needed */
         margin-bottom: 20px; /* Add margin between tables */
+    }
+    .table-header,
+    .table-cell {
+        padding: 10px;
     }
     
     .toggle-container {
@@ -122,33 +129,32 @@
         <h4>Sales:</h4>
         <table class="table table-bordered">
             <!-- Sales table content goes here -->
-            <!-- ... -->
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>Date</th>
-                        <th>Sr. No.</th>
+                        <th class="table-header">Date</th>
+                        <th class="table-header">Sr. No.</th>
                         {% for staff_member in staff_members %}
-                            <th>{{ staff_member.name }} </th> <!--({{ staff_member.short_name }})-->
+                            <th class="table-header">{{ staff_member.name }} </th> <!--({{ staff_member.short_name }})-->
                         {% endfor %}
-                        <th>Total Inc. VAT</th>
-                        <th>Vatable Amount</th>
-                        <th>VAT</th>
+                        <th class="table-header">Total Inc. VAT</th>
+                        <th class="table-header">Vatable Amount</th>
+                        <th class="table-header">VAT</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for date in sales_dates %}
                         <tr>
-                            <td>{{ date }}</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
+                            <td class="table-cell">{{ date }}</td>
+                            <td class="table-cell">-</td>
+                            <td class="table-cell">-</td>
+                            <td class="table-cell">-</td>
+                            <td class="table-cell">-</td>
+                            <td class="table-cell">-</td>
+                            <td class="table-cell">-</td>
+                            <td class="table-cell">-</td>
+                            <td class="table-cell">-</td>
+                            <td class="table-cell">-</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -165,25 +171,25 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>Date</th>
-                        <th>Bill #</th>
-                        <th>Party Name</th>
-                        <th>Party TRN</th>
-                        <th>Vatable</th>
-                        <th>VAT</th>
-                        <th>Total</th>
+                        <th class="table-header">Date</th>
+                        <th class="table-header">Bill #</th>
+                        <th class="table-header">Party Name</th>
+                        <th class="table-header">Party TRN</th>
+                        <th class="table-header">Vatable</th>
+                        <th class="table-header">VAT</th>
+                        <th class="table-header">Total</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for date in purchase_dates %}
                         <tr>
-                            <td>{{ date }}</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
+                            <td class="table-cell">{{ date }}</td>
+                            <td class="table-cell">-</td>
+                            <td class="table-cell">-</td>
+                            <td class="table-cell">-</td>
+                            <td class="table-cell">-</td>
+                            <td class="table-cell">-</td>
+                            <td class="table-cell">-</td>
                             
                         </tr>
                     {% endfor %}
