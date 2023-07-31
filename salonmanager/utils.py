@@ -29,4 +29,14 @@ def calculate_end_time(start_time,duration):
     
         
         # Calculate end time by adding duration to start time
-    
+
+
+from datetime import datetime, timedelta
+
+def date_range(start_date, end_date):
+    current_date = start_date
+    date_list = []
+    while current_date <= end_date:
+        date_list.append(current_date.strftime('%d-%b-%y'))
+        current_date += timedelta(days=1)
+    return date_list

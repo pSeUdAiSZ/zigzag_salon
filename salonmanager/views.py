@@ -1,4 +1,5 @@
 from datetime import date, timedelta
+import datetime
 from decimal import Decimal
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -8,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.views import View
 from .models import FamilyMember, ServiceUsage, StaffMember,Customer,Service,Branch,Appointment
 
-from .utils import timeslot_gen_tf,calculate_end_time
+from .utils import date_range, timeslot_gen_tf,calculate_end_time
 
 # Create your views here.
 from django.shortcuts import render, redirect
@@ -64,11 +65,6 @@ def manager_dashboard(request):
     return render(request,'base.html')
 
 def appointment_booking(request):
-
-    """if request.method == 'POST':
-        selected_customer = request.POST.get('customer')
-        customer = get_object_or_404(Customer, id=selected_customer)
-    """
     time_slot_tf = timeslot_gen_tf('10:00 AM','10:00 PM')
     appointment_list=[]
     staff_members_list= StaffMember.objects.all()
@@ -1240,16 +1236,6 @@ def add_product_tips(request, product_id):
     return redirect('product_payment_options', product_id)
 
 
-
-
-
-
-
-
-
-
-
-
 def dashboard(request):
     #code to retrieve statistics and information for the dashboard goes here
  
@@ -1263,3 +1249,35 @@ def dashboard(request):
         'total_customers': total_customers,
     }
     return render(request, 'dashboard.html', context)
+
+
+
+
+from django.shortcuts import render
+from datetime import datetime, timedelta
+from .utils import date_range 
+
+def accounts_view(request):
+    #logic to retrieve Sales and Purchase data here
+    sales_data = [...]  #actual sales data
+    purchase_data = [...]  # actual purchase data
+    start_date = datetime(2022, 12, 1)
+    end_date = datetime(2023, 2, 28)
+
+    sales_dates = date_range(start_date, end_date)
+
+    purchase_dates = date_range(start_date, end_date)
+
+    staff_members = StaffMember.objects.all()
+
+    context = {
+        'sales_data': sales_data,
+        'purchase_data': purchase_data,
+        'sales_dates': sales_dates,
+        'purchase_dates': purchase_dates,
+        'staff_members': staff_members,  # Pass the staff members to the template
+    }
+
+    return render(request, 'accounts.html', context)
+
+ 

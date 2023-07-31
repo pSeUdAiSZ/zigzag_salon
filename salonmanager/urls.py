@@ -94,4 +94,6 @@ urlpatterns = [
     path('buy_package/', views.buy_package, name='buy_package'),
 
     path('membership/get_family_members/', views.get_family_members, name='get_family_members'),
+
+    path('accounts/', views.accounts_view, name='accounts'),
 ]
