@@ -147,14 +147,13 @@
                         <tr>
                             <td class="table-cell">{{ date }}</td>
                             <td class="table-cell">-</td>
+                            {% for _ in staff_members %}
+                                <td class="table-cell">-</td>
+                            {% endfor %}
                             <td class="table-cell">-</td>
                             <td class="table-cell">-</td>
                             <td class="table-cell">-</td>
-                            <td class="table-cell">-</td>
-                            <td class="table-cell">-</td>
-                            <td class="table-cell">-</td>
-                            <td class="table-cell">-</td>
-                            <td class="table-cell">-</td>
+                           
                         </tr>
                     {% endfor %}
                 </tbody>
