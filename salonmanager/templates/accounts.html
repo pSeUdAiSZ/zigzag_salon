@@ -34,16 +34,95 @@
         margin-bottom: 20px; /* Add margin between tables */
     }
     
+    .toggle-container {
+        display: flex;
+        align-items: center;
+        /*justify-content: space-between;*/
+        margin-bottom: 10px;
+    }
+
+    .toggle-label {
+        font-size: 20px;
+        margin: 10px; 
+    }
+
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+
+    /* Hide default HTML checkbox */
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    /* The slider */
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+        border-radius: 34px;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+    }
+
+    input:checked + .slider {
+        background-color: #2196F3;
+    }
+
+    input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
 </style>
 
 
 <h2>ZIG ZAG GENTS SALOON</h2>
 <h3>December 2022 - February 2023</h3>
 
+<div class="toggle-container">
+    <label class="toggle-label" for="salesPurchaseToggle">Sales</label>
+    <label class="switch">
+        <input type="checkbox" id="salesPurchaseToggle" onclick="toggleTables()">
+        <span class="slider round"></span>
+    </label>
+    <label class="toggle-label" for="salesPurchaseToggle">Purchase</label>
+</div>
+
+
 <div class="table-container">
     <!--<div class="col-md-6">-->
-        <div class="table-wrapper">
-            <h4>Sales:</h4>
+    <div class="table-wrapper" id="salesTableWrapper">
+        <h4>Sales:</h4>
+        <table class="table table-bordered">
+            <!-- Sales table content goes here -->
+            <!-- ... -->
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -74,14 +153,15 @@
                     {% endfor %}
                 </tbody>
             </table>
-        </div>
+        </table>
     </div>
-   
-    
-    <!--<div class="col-md-6">-->
-        <div class="table-wrapper">
-            <!-- Purchase table content -->
-            <h4>Purchase:</h4>
+
+    <div class="table-wrapper" id="purchaseTableWrapper" style="display: none;">
+        <!--<div class="col-md-6">-->
+        <h4>Purchase:</h4>
+        <table class="table table-bordered">
+            <!-- Purchase table content goes here -->
+            <!-- ... -->
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -109,8 +189,25 @@
                     {% endfor %}
                 </tbody>
             </table>
-        </div>
+        </table>
     </div>
 </div>
+
+
+<script>
+    function toggleTables() {
+        const salesTableWrapper = document.getElementById("salesTableWrapper");
+        const purchaseTableWrapper = document.getElementById("purchaseTableWrapper");
+        const toggleSwitch = document.getElementById("salesPurchaseToggle");
+
+        if (toggleSwitch.checked) {
+            salesTableWrapper.style.display = "none";
+            purchaseTableWrapper.style.display = "block";
+        } else {
+            salesTableWrapper.style.display = "block";
+            purchaseTableWrapper.style.display = "none";
+        }
+    }
+</script>
 {% endblock %}
 
