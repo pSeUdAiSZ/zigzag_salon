@@ -1280,4 +1280,24 @@ def accounts_view(request):
 
     return render(request, 'accounts.html', context)
 
- 
+ # views.py
+
+from django.http import JsonResponse
+
+def filter_sales_and_purchase(request):
+    if request.method == 'GET':
+        start_date = request.GET.get('startDate')
+        end_date = request.GET.get('endDate')
+
+        # Implement logic to filter sales and purchase data based on the selected date range
+        # For example:
+        # sales_data = Sales.objects.filter(date__range=[start_date, end_date])
+        # purchase_data = Purchase.objects.filter(date__range=[start_date, end_date])
+
+        # After filtering, create a dictionary with the filtered data and send it as a JSON response
+        data = {
+            'sales': [],  # Replace [] with the list of filtered sales data
+            'purchase': [],  # Replace [] with the list of filtered purchase data
+        }
+
+        return JsonResponse(data)

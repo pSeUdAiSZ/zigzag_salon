@@ -96,4 +96,5 @@ urlpatterns = [
     path('membership/get_family_members/', views.get_family_members, name='get_family_members'),
 
     path('accounts/', views.accounts_view, name='accounts'),
+    path('accounts/filter_sales_and_purchase/', views.filter_sales_and_purchase, name='filter_sales_and_purchase'),
 ]
