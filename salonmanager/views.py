@@ -1280,24 +1280,51 @@ def accounts_view(request):
 
     return render(request, 'accounts.html', context)
 
- # views.py
+
 
 from django.http import JsonResponse
+from datetime import datetime
 
 def filter_sales_and_purchase(request):
     if request.method == 'GET':
         start_date = request.GET.get('startDate')
         end_date = request.GET.get('endDate')
 
-        # Implement logic to filter sales and purchase data based on the selected date range
-        # For example:
-        # sales_data = Sales.objects.filter(date__range=[start_date, end_date])
-        # purchase_data = Purchase.objects.filter(date__range=[start_date, end_date])
+        # Convert start_date and end_date strings to datetime objects
+        start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
+        end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
 
-        # After filtering, create a dictionary with the filtered data and send it as a JSON response
+        # Implement logic to filter sales and purchase data for the specified date range
+        # and sort the data based on dates
+        sales_data = Sales.objects.filter(date__range=[start_date, end_date]).order_by('date')
+        purchase_data = Purchase.objects.filter(date__range=[start_date, end_date]).order_by('date')
+
+        # Create lists to store the filtered and sorted data
+        sales_list = []
+        for sale in sales_data:
+            # Convert sale data to a dictionary and append to the sales_list
+            sale_dict = {
+                'date': sale.date.strftime('%d-%b-%y'),
+                'sr_no': sale.sr_no,
+              
+            }
+            sales_list.append(sale_dict)
+
+        purchase_list = []
+        for purchase in purchase_data:
+            # Convert purchase data to a dictionary and append to the purchase_list
+            purchase_dict = {
+                'date': purchase.date.strftime('%d-%b-%y'),
+                'bill_no': purchase.bill_no,
+                # Add other fields here as needed
+            }
+            purchase_list.append(purchase_dict)
+
+        # Create a dictionary with the filtered and sorted data and send it as a JSON response
         data = {
-            'sales': [],  # Replace [] with the list of filtered sales data
-            'purchase': [],  # Replace [] with the list of filtered purchase data
+            'sales': sales_list,
+            'purchase': purchase_list,
         }
 
         return JsonResponse(data)
+
