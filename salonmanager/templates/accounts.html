@@ -228,38 +228,51 @@
         const startDate = document.getElementById("startDate").value;
         const endDate = document.getElementById("endDate").value;
 
-        // Make an AJAX request to the backend to filter and sort sales and purchase data based on the selected date range
+        // Make an AJAX request to the backend to generate date ranges based on the selected date range
         fetch(`/filter_sales_and_purchase/?startDate=${startDate}&endDate=${endDate}`)
             .then(response => response.json())
             .then(data => {
-                // Update the sales and purchase tables with the filtered and sorted data
-                updateSalesTable(data.sales);
-                updatePurchaseTable(data.purchase);
+                // Update the sales and purchase tables with the generated date ranges
+                updateSalesTable(data.dates);
+                updatePurchaseTable(data.dates);
             })
             .catch(error => console.error('Error:', error));
     }
 
-    function updateSalesTable(salesData) {
+    function updateSalesTable(dates) {
         // Get the sales table body element
         const salesTableBody = document.getElementById("salesTableBody");
 
         // Clear the existing table rows
         salesTableBody.innerHTML = '';
 
-        // Loop through the salesData and create table rows with the filtered and sorted data
-        salesData.forEach(sale => {
+        // Loop through the dates and create table rows for each date
+        dates.forEach(date => {
             const row = salesTableBody.insertRow();
-
-            // Add table cells with the sale data
             const dateCell = row.insertCell();
-            dateCell.textContent = sale.date;
-
-            const srNoCell = row.insertCell();
-            srNoCell.textContent = sale.sr_no;
+            dateCell.textContent = date;
 
             // Add other table cells here as needed
         });
     }
+
+    function updatePurchaseTable(dates) {
+        // Get the purchase table body element
+        const purchaseTableBody = document.getElementById("purchaseTableBody");
+
+        // Clear the existing table rows
+        purchaseTableBody.innerHTML = '';
+
+        // Loop through the dates and create table rows for each date
+        dates.forEach(date => {
+            const row = purchaseTableBody.insertRow();
+            const dateCell = row.insertCell();
+            dateCell.textContent = date;
+
+            // Add other table cells here as needed
+        });
+    }
+
 
     function updatePurchaseTable(purchaseData) {
         // Get the purchase table body element

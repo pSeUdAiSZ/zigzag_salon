@@ -1282,8 +1282,10 @@ def accounts_view(request):
 
 
 
+# views.py
+
 from django.http import JsonResponse
-from datetime import datetime
+from datetime import datetime, timedelta
 
 def filter_sales_and_purchase(request):
     if request.method == 'GET':
@@ -1294,37 +1296,16 @@ def filter_sales_and_purchase(request):
         start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
         end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
 
-        # Implement logic to filter sales and purchase data for the specified date range
-        # and sort the data based on dates
-        sales_data = Sales.objects.filter(date__range=[start_date, end_date]).order_by('date')
-        purchase_data = Purchase.objects.filter(date__range=[start_date, end_date]).order_by('date')
+        # Generate a list of date strings within the specified date range
+        date_list = []
+        current_date = start_date
+        while current_date <= end_date:
+            date_list.append(current_date.strftime('%d-%b-%y'))
+            current_date += timedelta(days=1)
 
-        # Create lists to store the filtered and sorted data
-        sales_list = []
-        for sale in sales_data:
-            # Convert sale data to a dictionary and append to the sales_list
-            sale_dict = {
-                'date': sale.date.strftime('%d-%b-%y'),
-                'sr_no': sale.sr_no,
-              
-            }
-            sales_list.append(sale_dict)
-
-        purchase_list = []
-        for purchase in purchase_data:
-            # Convert purchase data to a dictionary and append to the purchase_list
-            purchase_dict = {
-                'date': purchase.date.strftime('%d-%b-%y'),
-                'bill_no': purchase.bill_no,
-                # Add other fields here as needed
-            }
-            purchase_list.append(purchase_dict)
-
-        # Create a dictionary with the filtered and sorted data and send it as a JSON response
+        # Create a dictionary with the generated date list and send it as a JSON response
         data = {
-            'sales': sales_list,
-            'purchase': purchase_list,
+            'dates': date_list,
         }
 
         return JsonResponse(data)
-
